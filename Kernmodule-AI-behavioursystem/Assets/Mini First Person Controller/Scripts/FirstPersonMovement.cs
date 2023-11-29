@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-
 public class FirstPersonMovement : MonoBehaviour
 {
     public float speed = 5;
