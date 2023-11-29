@@ -10,7 +10,6 @@ public class Player : MonoBehaviour, IDamagable
     [SerializeField] private float gravity = 20f;
 
     private Vector3 moveDirection;
-    private bool isJumping;
 
     void Start()
     {
@@ -30,11 +29,8 @@ public class Player : MonoBehaviour, IDamagable
 
         if (characterController.isGrounded)
         {
-            isJumping = false;
-
             if (Input.GetButtonDown("Jump"))
             {
-                isJumping = true;
                 moveDirection.y = jumpForce;
             }
         }

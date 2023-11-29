@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class BlackBoard : MonoBehaviour
 {
-    private Dictionary<string, object> Variables = new Dictionary<string, object>();
+    public Dictionary<string, object> Variables = new Dictionary<string, object>();
 
     public object GetValues<T>(string _key)
     {
-        return Variables[_key];
+        if (Variables.ContainsKey(name))
+        {
+            return (T)Variables[name];
+        }
+        return default(T);
     }
     public void SetValue<T>(string _key, T _value)
     {
