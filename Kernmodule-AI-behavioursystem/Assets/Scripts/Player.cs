@@ -1,26 +1,42 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
-
 public class Player : MonoBehaviour
 {
-	public float moveSpeed = 5f;
-	public float jumpForce = 10f;
-	public Transform shootPoint;
-	public ObjectPool<Bullet> bulletPool;
+	[Header("Shooting")]
+	[SerializeField] private GameObject bulletPrefab;
+	[SerializeField] private Transform shootingPoint;
+	[SerializeField] private int bulletAmount = 10;
+	[SerializeField] private float bulletSpawnDistance = 1.0f;
+	
+	[Header("Movement")]
+	[SerializeField] private float moveSpeed = 5f;
+	[SerializeField] private float jumpForce = 10f;
+	[SerializeField] private List<KeyCode> keys;
 
+	private ObjectPool<Bullet> bulletPool;
 	private Rigidbody2D rb;
 	private bool isGrounded;
+	private float rotationSpeed = 200f;
 
 	void Start()
 	{
 		rb = GetComponent<Rigidbody2D>();
-		bulletPool = new ObjectPool<Bullet>();
+		shootingPoint.localPosition = new Vector3(bulletSpawnDistance, 0f, 0f);
+
+		bulletPool = new ObjectPool<Bullet>(bulletPrefab.GetComponent<Bullet>());
+		for (int i = 0; i < bulletAmount; i++)
+		{
+			Bullet bullet = (Bullet)bulletPool.AddNewItemToPool();
+			bullet.SetObjectPool(bulletPool);
+		}
 	}
+
 
 	void Update()
 	{
 		MovePlayer();
-		HandleJump();
-		HandleShoot();
+		HandleActions();
 	}
 
 	void MovePlayer()
@@ -30,29 +46,44 @@ public class Player : MonoBehaviour
 		rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
 	}
 
-	void HandleJump()
+	void HandleActions()
 	{
-		if (Input.GetButtonDown("Jump") && isGrounded)
+		if (Input.GetKeyDown(keys[0]) && isGrounded)
 		{
 			rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 		}
+
+		if (Input.GetKeyDown(keys[0]) && isGrounded)
+		{
+			rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+		}
+
+		if (bulletPool != null && Input.GetKeyDown(keys[1]))
+		{
+			ShootBullet();
+		}
 	}
 
-	void HandleShoot()
+	void ShootBullet()
 	{
-		if (Input.GetButtonDown("Fire1"))
+		Vector3 mousePosition = Input.mousePosition;
+		mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+		Vector2 direction = (mousePosition - (Vector3)shootingPoint.position).normalized;
+		float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+		
+		shootingPoint.rotation = Quaternion.Slerp(shootingPoint.rotation, Quaternion.AngleAxis(angle, Vector3.forward), rotationSpeed * Time.deltaTime);
+
+		Bullet bullet = bulletPool.RequestObject(shootingPoint.position) as Bullet;
+		if (bullet != null)
 		{
-			Bullet bullet = (Bullet)bulletPool.RequestObject(shootPoint.position);
-			if (bullet != null)
-			{
-				bullet.gameObject.SetActive(true);
-			}
+			bullet.SetDirection(direction);
+			bullet.gameObject.SetActive(true);
 		}
 	}
 
 	void OnCollisionEnter2D(Collision2D collision)
 	{
-		if (collision.gameObject.CompareTag("Ground"))
+		if (collision.gameObject.TryGetComponent<Ground>(out Ground _ground))
 		{
 			isGrounded = true;
 		}
@@ -60,7 +91,7 @@ public class Player : MonoBehaviour
 
 	void OnCollisionExit2D(Collision2D collision)
 	{
-		if (collision.gameObject.CompareTag("Ground"))
+		if (collision.gameObject.TryGetComponent<Ground>(out Ground _ground))
 		{
 			isGrounded = false;
 		}

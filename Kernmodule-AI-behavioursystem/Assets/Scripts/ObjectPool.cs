@@ -1,11 +1,16 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPool<T> where T : IPoolable
+public class ObjectPool<T> where T : MonoBehaviour, IPoolable
 {
 	private List<IPoolable> activePool = new List<IPoolable>();
 	private List<IPoolable> inactivePool = new List<IPoolable>();
+	private T prefab;
+
+	public ObjectPool(T prefab)
+	{
+		this.prefab = prefab;
+	}
 
 	public IPoolable RequestObject(Vector2 position)
 	{
@@ -25,7 +30,8 @@ public class ObjectPool<T> where T : IPoolable
 
 	public IPoolable AddNewItemToPool()
 	{
-		IPoolable instance = Activator.CreateInstance<T>();
+		T instance = GameObject.Instantiate(prefab);
+		instance.gameObject.SetActive(false);
 		inactivePool.Add(instance);
 		return instance;
 	}
