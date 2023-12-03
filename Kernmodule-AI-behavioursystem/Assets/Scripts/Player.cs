@@ -8,7 +8,8 @@ public class Player : MonoBehaviour
 	[SerializeField] private Transform shootingPoint;
 	[SerializeField] private int bulletAmount = 10;
 	[SerializeField] private float bulletSpawnDistance = 1.0f;
-	
+	[SerializeField] private float bulletSpeed = 10f;
+
 	[Header("Movement")]
 	[SerializeField] private float moveSpeed = 5f;
 	[SerializeField] private float jumpForce = 10f;
@@ -28,10 +29,9 @@ public class Player : MonoBehaviour
 		for (int i = 0; i < bulletAmount; i++)
 		{
 			Bullet bullet = (Bullet)bulletPool.AddNewItemToPool();
-			bullet.SetObjectPool(bulletPool);
+			bullet.SetupBullet(bulletPool);
 		}
 	}
-
 
 	void Update()
 	{
@@ -53,11 +53,6 @@ public class Player : MonoBehaviour
 			rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 		}
 
-		if (Input.GetKeyDown(keys[0]) && isGrounded)
-		{
-			rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-		}
-
 		if (bulletPool != null && Input.GetKeyDown(keys[1]))
 		{
 			ShootBullet();
@@ -69,18 +64,18 @@ public class Player : MonoBehaviour
 		Vector3 mousePosition = Input.mousePosition;
 		mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
-		Vector2 direction = (mousePosition - (Vector3)transform.position).normalized;
-		float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-		shootingPoint.localPosition = direction * bulletSpawnDistance;
+		Vector2 direction = (mousePosition - transform.position).normalized;
+		float angle = Mathf.Atan2(direction.y, direction.x);
+		float shootingPointX = Mathf.Cos(angle) * bulletSpawnDistance;
+		float shootingPointY = Mathf.Sin(angle) * bulletSpawnDistance;
+		shootingPoint.position = new Vector3(transform.position.x + shootingPointX, transform.position.y + shootingPointY, 0f);
 
 		Bullet bullet = bulletPool.RequestObject(shootingPoint.position) as Bullet;
 		if (bullet != null)
 		{
-			bullet.SetDirection(direction);
-			bullet.gameObject.SetActive(true);
+			bullet.SetDirection(direction, bulletSpeed);
 		}
 	}
-
 
 	void OnCollisionEnter2D(Collision2D collision)
 	{

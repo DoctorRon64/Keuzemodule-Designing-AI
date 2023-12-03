@@ -6,27 +6,24 @@ public class Bullet : MonoBehaviour, IPoolable
 	private ObjectPool<Bullet> objectPool;
 	public bool Active { get; set; }
 
-	void Start()
+	public void SetupBullet(ObjectPool<Bullet> _pool)
 	{
 		rb = GetComponent<Rigidbody2D>();
-	}
-
-	public void SetObjectPool(ObjectPool<Bullet> _pool)
-	{
 		objectPool = _pool;
 	}
 
-	public void SetDirection(Vector2 _direction)
+	public void SetDirection(Vector2 _direction, float _speed)
 	{
-		rb.velocity = _direction.normalized * 10f;
-		Debug.Log(_direction.normalized);
+		rb.velocity = _direction.normalized * _speed;
 	}
 
 	void OnTriggerEnter2D(Collider2D _other)
 	{
-		Debug.Log("Bullet OnTriggerEnter2D");
-		DisablePoolabe();
-		objectPool.DeactivateItem(this);
+		if (_other.gameObject.TryGetComponent<IEnviourment>(out IEnviourment enviourment))
+		{
+			DisablePoolabe();
+			objectPool.DeactivateItem(this);
+		}
 	}
 
 	public void SetPosition(Vector2 _position)
@@ -36,13 +33,13 @@ public class Bullet : MonoBehaviour, IPoolable
 
 	public void DisablePoolabe()
 	{
-		gameObject.SetActive(false);
 		rb.velocity = Vector2.zero;
+		gameObject.SetActive(false);
 	}
 
 	public void EnablePoolabe()
 	{
+		SetDirection(Vector2.left, 10f);
 		gameObject.SetActive(true);
-		rb.velocity = Vector2.right * 10f;
 	}
 }
