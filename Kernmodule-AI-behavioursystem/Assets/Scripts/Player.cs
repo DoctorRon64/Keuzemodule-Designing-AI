@@ -68,10 +68,10 @@ public class Player : MonoBehaviour
 	{
 		Vector3 mousePosition = Input.mousePosition;
 		mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-		Vector2 direction = (mousePosition - (Vector3)shootingPoint.position).normalized;
+
+		Vector2 direction = (mousePosition - (Vector3)transform.position).normalized;
 		float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-		
-		shootingPoint.rotation = Quaternion.Slerp(shootingPoint.rotation, Quaternion.AngleAxis(angle, Vector3.forward), rotationSpeed * Time.deltaTime);
+		shootingPoint.localPosition = direction * bulletSpawnDistance;
 
 		Bullet bullet = bulletPool.RequestObject(shootingPoint.position) as Bullet;
 		if (bullet != null)
@@ -80,6 +80,7 @@ public class Player : MonoBehaviour
 			bullet.gameObject.SetActive(true);
 		}
 	}
+
 
 	void OnCollisionEnter2D(Collision2D collision)
 	{

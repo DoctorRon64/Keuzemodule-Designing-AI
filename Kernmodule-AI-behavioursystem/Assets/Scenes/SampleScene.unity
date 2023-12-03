@@ -859,7 +859,7 @@ PrefabInstance:
       objectReference: {fileID: 1596437013}
     - target: {fileID: 2846523029879430, guid: 6c974a21ce40a8f4eac781e3b4308839, type: 3}
       propertyPath: bulletSpawnDistance
-      value: 5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 935530036205981127, guid: 6c974a21ce40a8f4eac781e3b4308839, type: 3}
       propertyPath: m_LocalPosition.x
