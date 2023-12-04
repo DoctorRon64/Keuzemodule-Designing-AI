@@ -622,7 +622,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2846523029879430, guid: 6c974a21ce40a8f4eac781e3b4308839, type: 3}
       propertyPath: bulletAmount
-      value: 100
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 2846523029879430, guid: 6c974a21ce40a8f4eac781e3b4308839, type: 3}
       propertyPath: shootingPoint
