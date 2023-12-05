@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Ground : MonoBehaviour, IEnviourment
+public class Ground : MonoBehaviour, IShootable
 {
 
 }

@@ -19,7 +19,7 @@ public class Bullet : MonoBehaviour, IPoolable
 
 	void OnTriggerEnter2D(Collider2D _other)
 	{
-		if (_other.gameObject.TryGetComponent<IEnviourment>(out IEnviourment enviourment))
+		if (_other.gameObject.TryGetComponent<IShootable>(out IShootable enviourment))
 		{
 			DisablePoolabe();
 			objectPool.DeactivateItem(this);

@@ -7,7 +7,7 @@ public abstract class BaseNode
     protected int currentIndex = 0;
     protected Blackboard blackBoard;
 
-    public virtual void AddChildren(List<BaseNode> _childerenNodes)
+    public virtual void referenceChildren(List<BaseNode> _childerenNodes)
     {
         foreach (var node in _childerenNodes)
         {

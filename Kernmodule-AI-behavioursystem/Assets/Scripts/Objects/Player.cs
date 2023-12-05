@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamagable
 {
 	[Header("Shooting")]
 	[SerializeField] private GameObject bulletPrefab;
@@ -17,8 +17,9 @@ public class Player : MonoBehaviour
 	private ObjectPool<Bullet> bulletPool;
 	private Rigidbody2D rb;
 	private bool isGrounded;
+    public int Health { get; set; }
 
-	void Start()
+    void Start()
 	{
 		rb = GetComponent<Rigidbody2D>();
 		shootingPoint.localPosition = new Vector3(bulletSpawnDistance, 0f, 0f);
@@ -30,7 +31,6 @@ public class Player : MonoBehaviour
 			bullet.SetupBullet(bulletPool);
 		}
 	}
-
 	void Update()
 	{
 		MovePlayer();
@@ -43,7 +43,6 @@ public class Player : MonoBehaviour
 		Vector2 moveDirection = new Vector2(horizontalInput, 0);
 		rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
 	}
-
 	void HandleActions()
 	{
 		if (Input.GetKeyDown(keys[0]) && isGrounded)
@@ -74,7 +73,6 @@ public class Player : MonoBehaviour
 			bullet.SetDirection(direction, bulletSpeed);
 		}
 	}
-
 	void OnCollisionEnter2D(Collision2D collision)
 	{
 		if (collision.gameObject.TryGetComponent<Ground>(out Ground _ground))
@@ -82,7 +80,6 @@ public class Player : MonoBehaviour
 			isGrounded = true;
 		}
 	}
-
 	void OnCollisionExit2D(Collision2D collision)
 	{
 		if (collision.gameObject.TryGetComponent<Ground>(out Ground _ground))
@@ -90,4 +87,17 @@ public class Player : MonoBehaviour
 			isGrounded = false;
 		}
 	}
+
+    public void TakeDamage(int _damage)
+    {
+		Health -= _damage;
+		if (Health <= 0)
+		{
+			Die();
+		}
+    }
+
+    public void Die()
+    {
+    }
 }

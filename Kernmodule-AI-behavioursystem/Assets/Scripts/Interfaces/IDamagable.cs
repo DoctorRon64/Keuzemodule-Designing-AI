@@ -5,8 +5,7 @@ using UnityEngine;
 public interface IDamagable
 {
     int Health { get; set; }
-    int MaxHealth { get; set; }
 
-    void TakeDamage(int amount);
-    void OnDie();
+    void TakeDamage(int _damage);
+    void Die();
 }
