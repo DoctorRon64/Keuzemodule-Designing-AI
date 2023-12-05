@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-
 public enum NodeStatus { Success, Failed, Running }
 public abstract class BaseNode
 {

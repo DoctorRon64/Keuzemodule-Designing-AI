@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 public class Player : MonoBehaviour
@@ -18,7 +17,6 @@ public class Player : MonoBehaviour
 	private ObjectPool<Bullet> bulletPool;
 	private Rigidbody2D rb;
 	private bool isGrounded;
-	private float rotationSpeed = 200f;
 
 	void Start()
 	{
