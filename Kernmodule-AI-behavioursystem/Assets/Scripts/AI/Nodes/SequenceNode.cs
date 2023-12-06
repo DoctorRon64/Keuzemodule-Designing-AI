@@ -1,15 +1,31 @@
-using System.Collections.Generic;
-
-public class SequenceNode : BaseNode
+﻿public class SequenceNode : BaseNode
 {
-    public override NodeStatus Process()
-    {
-        NodeStatus childStatus = childerenNodes[currentIndex].Process();
-        if (childStatus == NodeStatus.Running) { return NodeStatus.Running; }
-        if (childStatus == NodeStatus.Failed) { return childStatus; }
+    private int currentChildIndex = 0;
 
-        currentIndex++;
-        if (currentIndex >= childerenNodes.Count) { currentIndex = 0; return NodeStatus.Success; }
-        return NodeStatus.Running;
+    protected override NodeStatus Status()
+    {
+        for(; currentChildIndex < childerenNodes.Count; currentChildIndex++)
+        {
+            NodeStatus result = childerenNodes[currentChildIndex].Processing();
+            switch (result)
+            {
+                case NodeStatus.Success: continue;
+                case NodeStatus.Running: return NodeStatus.Running;
+                case NodeStatus.Failed: return NodeStatus.Failed;
+            }
+        }
+        return NodeStatus.Success;
     }
+
+	protected override void OnEnter() { currentChildIndex = 0; }
+	protected override void OnExit() { currentChildIndex = 0; }
+
+	public override void OnReset()
+	{
+		currentChildIndex = 0;
+        foreach (BaseNode child in childerenNodes)
+        { 
+            child.OnReset(); 
+        }
+	}
 }

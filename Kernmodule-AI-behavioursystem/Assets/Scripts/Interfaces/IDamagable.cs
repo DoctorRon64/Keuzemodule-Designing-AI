@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 
 public interface IDamagable
 {
-    int Health { get; set; }
-
-    void TakeDamage(int _damage);
-    void Die();
+	int Health { get; set; }
+	void TakeDamage(int damageAmount);
+	void Die();
 }

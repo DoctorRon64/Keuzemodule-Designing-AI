@@ -1,22 +1,25 @@
-using System.Collections.Generic;
-public class SelectorNode : BaseNode
+﻿public class SelectorNode : BaseNode
 {
-    public override NodeStatus Process()
-    {
-        NodeStatus childStatus = childerenNodes[currentIndex].Process();
-        if (childStatus == NodeStatus.Running) { return NodeStatus.Running; }
-        if (childStatus == NodeStatus.Success)
+	protected override NodeStatus Status()
+	{
+        foreach (BaseNode child in childerenNodes)
         {
-            currentIndex = 0;
-            return NodeStatus.Success;
-        }
-        
-        currentIndex++;
-        if (currentIndex >= childerenNodes.Count)
+			NodeStatus result = child.Processing();
+			switch (result)
+			{
+				case NodeStatus.Success: return NodeStatus.Success;
+				case NodeStatus.Running: return NodeStatus.Running;
+				case NodeStatus.Failed: continue;
+			}
+		}
+        return NodeStatus.Success;
+	}
+
+	public override void OnReset()
+	{
+        foreach (BaseNode child in childerenNodes)
         {
-            currentIndex = 0;
-            return NodeStatus.Failed;
+            child.OnReset();
         }
-        return NodeStatus.Running;
-    }
+	}
 }

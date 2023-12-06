@@ -2,30 +2,49 @@ using System.Collections.Generic;
 public enum NodeStatus { Success, Failed, Running }
 public abstract class BaseNode
 {
-    public NodeStatus Status;
-    public List<BaseNode> childerenNodes = new List<BaseNode>();
-    protected int currentIndex = 0;
+    public List<BaseNode> childerenNodes = null;
+    private bool wasNodeEntered = false;
     protected Blackboard blackBoard;
 
-    public virtual void referenceChildren(List<BaseNode> _childerenNodes)
+	public NodeStatus Processing()
     {
-        foreach (var node in _childerenNodes)
+        if (!wasNodeEntered)
+        {
+            OnEnter();
+            wasNodeEntered = true;
+        }
+
+        NodeStatus result = Status();
+        if (result != NodeStatus.Running)
+        {
+            OnExit();
+            wasNodeEntered = false;
+        }
+        return result;
+    }
+
+	public void referenceChildren(List<BaseNode> _childerenNodes)
+    {
+		childerenNodes = new List<BaseNode>();
+		foreach (var node in _childerenNodes)
         {
             childerenNodes.Add(node);
         }
     }
 
-    public virtual void SetupBlackboard(Blackboard _blackBoard)
+    public void SetupBlackboard(Blackboard _blackBoard)
     {
         this.blackBoard = _blackBoard;
-        foreach (BaseNode node in childerenNodes)
+        if (childerenNodes != null)
         {
-            node.SetupBlackboard(_blackBoard);
+            foreach (BaseNode node in childerenNodes)
+            {
+                node.SetupBlackboard(_blackBoard);
+            }
         }
     }
-
-    public virtual NodeStatus Process()
-    {
-        return childerenNodes[currentIndex].Process();
-    }
+    public virtual void OnReset() { }
+    protected abstract NodeStatus Status();
+	protected virtual void OnEnter() { }
+	protected virtual void OnExit() { }
 }

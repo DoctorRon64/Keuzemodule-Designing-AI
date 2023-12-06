@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 public class Player : MonoBehaviour, IDamagable
@@ -8,6 +9,10 @@ public class Player : MonoBehaviour, IDamagable
 	[SerializeField] private int bulletAmount = 10;
 	[SerializeField] private float bulletSpawnDistance = 1.0f;
 	[SerializeField] private float bulletSpeed = 10f;
+	[SerializeField] private float fireRate = 0.2f;
+	private ObjectPool<Bullet> bulletPool;
+	private bool isShooting;
+	private float nextFireTime;
 
 	[Header("Movement")]
 	[SerializeField] private float moveSpeed = 5f;
@@ -16,18 +21,28 @@ public class Player : MonoBehaviour, IDamagable
 	private Rigidbody2D rb;
 	private bool isGrounded;
 
-	[Header("Shooting")]
-	[SerializeField] private float fireRate = 0.2f;
-	private ObjectPool<Bullet> bulletPool;
-	private bool isShooting;
-	private float nextFireTime;
+	[Header("Health")]
+	public int MaxHealth = 20;
+	private int health;
+	public int Health
+	{
+		get { return health; }
+		set
+		{
+			if (health != value)
+			{
+				health = value;
+				OnHealthChanged(health);
+			}
+		}
+	}
+	public Action<int> onHealthChanged;
 
-	public int Health { get; set; }
-
-    void Start()
+	void Start()
 	{
 		rb = GetComponent<Rigidbody2D>();
 		shootingPoint.localPosition = new Vector3(bulletSpawnDistance, 0f, 0f);
+		Health = MaxHealth;
 
 		bulletPool = new ObjectPool<Bullet>(bulletPrefab.GetComponent<Bullet>());
 		for (int i = 0; i < bulletAmount; i++)
@@ -46,6 +61,10 @@ public class Player : MonoBehaviour, IDamagable
 		MovePlayer();
 		ShootBullet();
 	}
+	protected virtual void OnHealthChanged(int newHealth)
+	{
+		onHealthChanged?.Invoke(newHealth);
+	}
 
 	void MovePlayer()
 	{
@@ -53,6 +72,7 @@ public class Player : MonoBehaviour, IDamagable
 		Vector2 moveDirection = new Vector2(horizontalInput, 0);
 		rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
 	}
+
 	void HandleActions()
 	{
 		if (Input.GetKeyDown(keys[0]) && isGrounded) { Jump(); }
@@ -63,7 +83,6 @@ public class Player : MonoBehaviour, IDamagable
 	{
 		rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 	}
-
 
 	void ShootBullet()
 	{
@@ -90,8 +109,6 @@ public class Player : MonoBehaviour, IDamagable
 				bullet.SetDirection(direction, bulletSpeed);
 			}
 		}
-
-
 	}
 
 	void OnCollisionEnter2D(Collision2D collision)
@@ -101,6 +118,7 @@ public class Player : MonoBehaviour, IDamagable
 			isGrounded = true;
 		}
 	}
+
 	void OnCollisionExit2D(Collision2D collision)
 	{
 		if (collision.gameObject.TryGetComponent<Ground>(out Ground _ground))

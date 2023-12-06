@@ -1,10 +1,10 @@
 using UnityEngine;
-
 public class Bullet : MonoBehaviour, IPoolable
 {
 	private Rigidbody2D rb;
 	private ObjectPool<Bullet> objectPool;
 	public bool Active { get; set; }
+	private int damageValue = 1;
 
 	public void SetupBullet(ObjectPool<Bullet> _pool)
 	{
@@ -20,10 +20,15 @@ public class Bullet : MonoBehaviour, IPoolable
 	void OnTriggerEnter2D(Collider2D _other)
 	{
 		IShootable enviourment = _other.GetComponent<IShootable>();
-		if (enviourment != null )
+		BossAgent bossAgent = _other.GetComponent<BossAgent>();
+		if (enviourment != null)
 		{
 			DisablePoolabe();
 			objectPool.DeactivateItem(this);
+		}
+		if (bossAgent != null)
+		{
+			bossAgent.TakeDamage(damageValue);
 		}
 	}
 
