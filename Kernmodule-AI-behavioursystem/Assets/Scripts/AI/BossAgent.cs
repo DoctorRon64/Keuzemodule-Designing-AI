@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BossAgent : MonoBehaviour, IDamagable, IShootable
@@ -34,21 +35,43 @@ public class BossAgent : MonoBehaviour, IDamagable, IShootable
 		Health = MaxHealth;
 		animator.SetInteger(VariableNames.FaseAnimations, 0);
 
-		//Create your Behaviour Tree here!
+
 		Blackboard blackboard = new Blackboard();
 		blackboard.SetVariable(VariableNames.BossHealth, Health);
 		blackboard.SetVariable(VariableNames.PlayerPosition, player.transform.position);
+		blackboard.SetVariable(VariableNames.PlayerIsGrounded, player.isGrounded);
 		blackboard.SetVariable(VariableNames.PlayerHealth, player.Health);
 
-		//tree =
-		//    new BTRepeater(wayPoints.Length,
-		//        new BTSequence(
-		//            new BTGetNextPatrolPosition(wayPoints),
-		//            new BTMoveToPosition(agent, moveSpeed, VariableNames.TARGET_POSITION, keepDistance)
-		//           )
-		//    );
-		//
-		//tree.SetupBlackboard(blackboard);
+		//Add Nodes
+		AnimationNode FaseIdle = new AnimationNode(animator, 1);
+		AnimationNode FaseMissle = new AnimationNode(animator, 2);
+		AnimationNode FaseLeft = new AnimationNode(animator, 3);
+		AnimationNode FaseRight = new AnimationNode(animator, 4);
+
+		SelectorNode rootSelector = new SelectorNode();
+		SelectorNode secondSelector = new SelectorNode();
+
+		IsGroundNode isGroundNode = new IsGroundNode(blackboard.GetVariable<bool>(VariableNames.PlayerIsGrounded));
+		IsGroundNode isAirNode = new IsGroundNode(!blackboard.GetVariable<bool>(VariableNames.PlayerIsGrounded));
+		PlayerXPosNode isPlayerLeft = new PlayerXPosNode(player.transform, -9, -5);
+		PlayerXPosNode isPlayerRight = new PlayerXPosNode(player.transform, 5, 9);
+		PlayerXPosNode isPlayerCenter = new PlayerXPosNode(player.transform, -2, 2);
+
+		//link notes
+		FaseIdle.referenceChildren(rootSelector);
+		rootSelector.referenceChildren(new List<BaseNode>() { isGroundNode, isAirNode });
+		isAirNode.referenceChildren(FaseMissle);
+		isGroundNode.referenceChildren(secondSelector);
+		secondSelector.referenceChildren(new List<BaseNode>() { isPlayerLeft, isPlayerRight, isPlayerCenter });
+
+		// setup tree
+		rootSelector.SetupBlackboard(blackboard);
+		tree = rootSelector;
+	}
+
+	private void FixedUpdate()
+	{
+		NodeStatus result = tree.Processing();
 	}
 
 	protected virtual void OnHealthChanged(int newHealth)

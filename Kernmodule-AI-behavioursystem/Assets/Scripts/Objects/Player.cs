@@ -19,7 +19,8 @@ public class Player : MonoBehaviour, IDamagable
 	[SerializeField] private float jumpForce = 10f;
 	[SerializeField] private List<KeyCode> keys;
 	private Rigidbody2D rb;
-	private bool isGrounded;
+	public bool isGrounded;
+	private bool isWallGliding = false;
 
 	[Header("Health")]
 	public int MaxHealth = 20;
@@ -41,6 +42,7 @@ public class Player : MonoBehaviour, IDamagable
 	void Start()
 	{
 		rb = GetComponent<Rigidbody2D>();
+
 		shootingPoint.localPosition = new Vector3(bulletSpawnDistance, 0f, 0f);
 		Health = MaxHealth;
 
@@ -68,9 +70,12 @@ public class Player : MonoBehaviour, IDamagable
 
 	void MovePlayer()
 	{
-		float horizontalInput = Input.GetAxis("Horizontal");
-		Vector2 moveDirection = new Vector2(horizontalInput, 0);
-		rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
+		if (!isWallGliding || isGrounded)
+		{
+			float horizontalInput = Input.GetAxis("Horizontal");
+			Vector2 moveDirection = new Vector2(horizontalInput, 0);
+			rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
+		}
 	}
 
 	void HandleActions()
@@ -113,6 +118,11 @@ public class Player : MonoBehaviour, IDamagable
 
 	void OnCollisionEnter2D(Collision2D collision)
 	{
+		if (collision.gameObject.TryGetComponent<Wall>(out Wall wall))
+		{
+			isWallGliding = true;
+		}
+
 		if (collision.gameObject.TryGetComponent<Ground>(out Ground _ground))
 		{
 			isGrounded = true;
@@ -121,6 +131,11 @@ public class Player : MonoBehaviour, IDamagable
 
 	void OnCollisionExit2D(Collision2D collision)
 	{
+		if (collision.gameObject.TryGetComponent<Wall>(out Wall wall))
+		{
+			isWallGliding = false;
+		}
+
 		if (collision.gameObject.TryGetComponent<Ground>(out Ground _ground))
 		{
 			isGrounded = false;

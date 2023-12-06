@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
+
 public enum NodeStatus { Success, Failed, Running }
 public abstract class BaseNode
 {
@@ -22,6 +24,12 @@ public abstract class BaseNode
         }
         return result;
     }
+
+	public void referenceChildren(BaseNode _childerenNodes)
+	{
+		childerenNodes = new List<BaseNode>();
+		childerenNodes.Add(_childerenNodes);
+	}
 
 	public void referenceChildren(List<BaseNode> _childerenNodes)
     {

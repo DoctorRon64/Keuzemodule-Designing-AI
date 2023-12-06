@@ -159,7 +159,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 0
 --- !u!114 &2846523029879430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,12 +173,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 3237551037882721876, guid: 4658ba01f7141d74eaf171fde5b21df1, type: 3}
-  shootPoint: {fileID: 792094423701284665}
+  shootingPoint: {fileID: 0}
+  bulletAmount: 10
+  bulletSpawnDistance: 1
+  bulletSpeed: 10
+  fireRate: 0.2
   moveSpeed: 7
   jumpForce: 7
-  bulletAmount: 10
-  bulletSpeed: 10
   keys: 2000000066000000
+  MaxHealth: 20
 --- !u!1 &8661746150186195287
 GameObject:
   m_ObjectHideFlags: 0
