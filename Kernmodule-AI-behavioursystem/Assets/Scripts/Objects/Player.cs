@@ -13,11 +13,16 @@ public class Player : MonoBehaviour, IDamagable
 	[SerializeField] private float moveSpeed = 5f;
 	[SerializeField] private float jumpForce = 10f;
 	[SerializeField] private List<KeyCode> keys;
-
-	private ObjectPool<Bullet> bulletPool;
 	private Rigidbody2D rb;
 	private bool isGrounded;
-    public int Health { get; set; }
+
+	[Header("Shooting")]
+	[SerializeField] private float fireRate = 0.2f;
+	private ObjectPool<Bullet> bulletPool;
+	private bool isShooting;
+	private float nextFireTime;
+
+	public int Health { get; set; }
 
     void Start()
 	{
@@ -33,8 +38,13 @@ public class Player : MonoBehaviour, IDamagable
 	}
 	void Update()
 	{
-		MovePlayer();
 		HandleActions();
+	}
+
+	void FixedUpdate()
+	{
+		MovePlayer();
+		ShootBullet();
 	}
 
 	void MovePlayer()
@@ -45,34 +55,45 @@ public class Player : MonoBehaviour, IDamagable
 	}
 	void HandleActions()
 	{
-		if (Input.GetKeyDown(keys[0]) && isGrounded)
-		{
-			rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-		}
-
-		if (bulletPool != null && Input.GetKeyDown(keys[1]))
-		{
-			ShootBullet();
-		}
+		if (Input.GetKeyDown(keys[0]) && isGrounded) { Jump(); }
+		isShooting = Input.GetKey(keys[1]);
 	}
+
+	void Jump()
+	{
+		rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+	}
+
 
 	void ShootBullet()
 	{
-		Vector3 mousePosition = Input.mousePosition;
-		mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-
-		Vector2 direction = (mousePosition - transform.position).normalized;
-		float angle = Mathf.Atan2(direction.y, direction.x);
-		float shootingPointX = Mathf.Cos(angle) * bulletSpawnDistance;
-		float shootingPointY = Mathf.Sin(angle) * bulletSpawnDistance;
-		shootingPoint.position = new Vector3(transform.position.x + shootingPointX, transform.position.y + shootingPointY, 0f);
-
-		Bullet bullet = bulletPool.RequestObject(shootingPoint.position) as Bullet;
-		if (bullet != null)
+        if (isShooting && Time.time > nextFireTime)
 		{
-			bullet.SetDirection(direction, bulletSpeed);
+			nextFireTime = Time.time + fireRate;
+
+			//get mouse pos
+			Vector3 mousePosition = Input.mousePosition;
+			mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+
+			//let it be around the player
+			Vector2 direction = (mousePosition - transform.position).normalized;
+			Vector3 shootingPointPosition = transform.position + (Vector3)direction * bulletSpawnDistance;
+
+			// Ensure shooting point stays on the circumference of the circle
+			shootingPointPosition = transform.position + (shootingPointPosition - transform.position).normalized * bulletSpawnDistance;
+			shootingPoint.position = shootingPointPosition;
+
+			//spawn bullet
+			Bullet bullet = bulletPool.RequestObject(shootingPoint.position) as Bullet;
+			if (bullet != null)
+			{
+				bullet.SetDirection(direction, bulletSpeed);
+			}
 		}
+
+
 	}
+
 	void OnCollisionEnter2D(Collision2D collision)
 	{
 		if (collision.gameObject.TryGetComponent<Ground>(out Ground _ground))

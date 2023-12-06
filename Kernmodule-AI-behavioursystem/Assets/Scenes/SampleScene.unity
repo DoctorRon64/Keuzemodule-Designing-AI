@@ -831,6 +831,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2846523029879430, guid: 6c974a21ce40a8f4eac781e3b4308839, type: 3}
+      propertyPath: fireRate
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2846523029879430, guid: 6c974a21ce40a8f4eac781e3b4308839, type: 3}
       propertyPath: jumpForce
       value: 7
       objectReference: {fileID: 0}
@@ -847,8 +851,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1596437013}
     - target: {fileID: 2846523029879430, guid: 6c974a21ce40a8f4eac781e3b4308839, type: 3}
+      propertyPath: keys.Array.data[1]
+      value: 304
+      objectReference: {fileID: 0}
+    - target: {fileID: 2846523029879430, guid: 6c974a21ce40a8f4eac781e3b4308839, type: 3}
       propertyPath: bulletSpawnDistance
-      value: 1
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 935530036205981127, guid: 6c974a21ce40a8f4eac781e3b4308839, type: 3}
       propertyPath: m_LocalPosition.x
