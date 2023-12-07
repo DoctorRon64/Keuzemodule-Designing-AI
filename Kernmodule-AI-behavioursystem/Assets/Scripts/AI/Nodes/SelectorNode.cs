@@ -1,5 +1,9 @@
 ﻿public class SelectorNode : BaseNode
 {
+	public SelectorNode(Blackboard _blackBoard) : base(_blackBoard)
+	{
+	}
+
 	protected override NodeStatus Status()
 	{
         foreach (BaseNode child in childerenNodes)

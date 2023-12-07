@@ -1,5 +1,3 @@
-using System;
-
 public interface IDamagable
 {
 	int Health { get; set; }

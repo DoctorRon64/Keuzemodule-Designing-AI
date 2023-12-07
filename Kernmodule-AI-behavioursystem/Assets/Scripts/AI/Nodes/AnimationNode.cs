@@ -3,9 +3,9 @@ using UnityEngine;
 public class AnimationNode : BaseNode
 {
     private Animator animator;
-    private int animationFase;
+	private int animationFase;
 
-    public AnimationNode(Animator _animator, int _animationFase)
+    public AnimationNode(Animator _animator, int _animationFase, Blackboard _blackBoard) : base(_blackBoard)
 	{
 		this.animator = _animator;
 		this.animationFase = _animationFase;
@@ -13,7 +13,15 @@ public class AnimationNode : BaseNode
 
 	protected override NodeStatus Status()
 	{
-		return NodeStatus.Running;
+		int currentAnimationPhase = animator.GetInteger(VariableNames.FaseAnimations);
+		if (currentAnimationPhase == animationFase)
+		{
+			return NodeStatus.Success;
+		}
+		else
+		{
+			return NodeStatus.Running;
+		}
 	}
 
 	protected override void OnEnter()

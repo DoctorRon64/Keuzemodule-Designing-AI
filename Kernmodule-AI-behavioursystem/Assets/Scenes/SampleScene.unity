@@ -326,7 +326,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -2
-  m_Sprite: {fileID: 21300000, guid: e6090724f3730d1498be709e5e34005a, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -334,7 +334,7 @@ SpriteRenderer:
   m_Size: {x: 19.2, y: 10.8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &570791300
@@ -347,7 +347,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.7062979, y: 2.7833767, z: 0.53739965}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 4, y: 4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1624394496}
@@ -362,7 +362,7 @@ Animator:
   m_GameObject: {fileID: 570791298}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 5aab58953ee023c489d7152885b0105e, type: 2}
+  m_Controller: {fileID: 9100000, guid: 38425445199238e429c494b5d9ed6ed0, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1388,13 +1388,61 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 291914915552855683, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
+      propertyPath: m_Radius
+      value: 0.6181611
+      objectReference: {fileID: 0}
+    - target: {fileID: 291914915552855683, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.034583807
+      objectReference: {fileID: 0}
+    - target: {fileID: 291914915552855683, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.2334403
+      objectReference: {fileID: 0}
+    - target: {fileID: 1515301503541352599, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1633455262687948724, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.39481
+      objectReference: {fileID: 0}
     - target: {fileID: 2655942423853024069, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 2ae033d8e6d3d404da4ee664ff3bb164, type: 2}
+    - target: {fileID: 3523211261404771725, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
+      propertyPath: m_Size.x
+      value: 4.096
+      objectReference: {fileID: 0}
+    - target: {fileID: 3523211261404771725, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
+      propertyPath: m_Size.y
+      value: 3.7375
+      objectReference: {fileID: 0}
+    - target: {fileID: 3523211261404771725, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1791236749, guid: c026d28683f946445a72f7abbff0d184, type: 3}
+    - target: {fileID: 3523211261404771725, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4172318517143333572, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5053520227710040219, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
       propertyPath: m_Name
       value: Boss
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592822411934830633, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
+      propertyPath: m_Radius
+      value: 0.43344545
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592822411934830633, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
+      propertyPath: m_Offset.x
+      value: 1.5473969
       objectReference: {fileID: 0}
     - target: {fileID: 5889261661567791480, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
       propertyPath: health
@@ -1403,6 +1451,14 @@ PrefabInstance:
     - target: {fileID: 5889261661567791480, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
       propertyPath: MaxHealth
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5889261661567791480, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
+      propertyPath: blackboard
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8298938897747886208, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.657
       objectReference: {fileID: 0}
     - target: {fileID: 9123093650299988045, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
       propertyPath: m_LocalScale.x

@@ -1,18 +1,16 @@
-
-
-using UnityEngine;
-
 public class IsGroundNode : BaseNode
 {
 	private bool isGrounded;
 
-	public IsGroundNode(bool _isGrounded)
+	public IsGroundNode(Blackboard _blackBoard) : base(_blackBoard)
 	{
-		this.isGrounded = _isGrounded;
+
 	}
 
 	protected override NodeStatus Status()
 	{
+		bool isGrounded = blackBoard.GetVariable<bool>(VariableNames.PlayerIsGrounded);
+
 		if (isGrounded)
 		{
 			return NodeStatus.Success;

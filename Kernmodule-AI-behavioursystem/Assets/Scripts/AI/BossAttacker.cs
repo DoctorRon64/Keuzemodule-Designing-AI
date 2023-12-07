@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BossDamagable : MonoBehaviour, IShootable
+public class BossAttacker : MonoBehaviour, IShootable
 {
 	[SerializeField] private int damageAmount = 2;
 

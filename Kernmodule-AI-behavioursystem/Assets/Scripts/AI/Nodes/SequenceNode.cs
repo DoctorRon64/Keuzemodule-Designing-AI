@@ -2,7 +2,12 @@
 {
     private int currentChildIndex = 0;
 
-    protected override NodeStatus Status()
+	public SequenceNode(Blackboard _blackBoard) : base(_blackBoard)
+	{
+
+	}
+
+	protected override NodeStatus Status()
     {
         for(; currentChildIndex < childerenNodes.Count; currentChildIndex++)
         {

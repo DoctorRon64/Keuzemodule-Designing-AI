@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 
 public enum NodeStatus { Success, Failed, Running }
 public abstract class BaseNode
@@ -7,6 +6,18 @@ public abstract class BaseNode
     public List<BaseNode> childerenNodes = null;
     private bool wasNodeEntered = false;
     protected Blackboard blackBoard;
+
+	public BaseNode(Blackboard _blackBoard)
+	{
+		this.blackBoard = _blackBoard;
+		if (childerenNodes != null)
+		{
+			foreach (BaseNode node in childerenNodes)
+			{
+				node.SetupBlackboard(_blackBoard);
+			}
+		}
+	}
 
 	public NodeStatus Processing()
     {
@@ -27,7 +38,7 @@ public abstract class BaseNode
 
 	public void referenceChildren(BaseNode _childerenNodes)
 	{
-		childerenNodes = new List<BaseNode>();
+        childerenNodes = new List<BaseNode>();
 		childerenNodes.Add(_childerenNodes);
 	}
 

@@ -20,6 +20,7 @@ public class BossAgent : MonoBehaviour, IDamagable, IShootable
 	}
 	public Action<int> onHealthChanged;
 
+	[SerializeField] private Blackboard blackboard;
 	private BaseNode tree;
 	private Animator animator;
 	private Player player;
@@ -35,27 +36,27 @@ public class BossAgent : MonoBehaviour, IDamagable, IShootable
 		Health = MaxHealth;
 		animator.SetInteger(VariableNames.FaseAnimations, 0);
 
-
-		Blackboard blackboard = new Blackboard();
+		//blackboard = new Blackboard();
 		blackboard.SetVariable(VariableNames.BossHealth, Health);
 		blackboard.SetVariable(VariableNames.PlayerPosition, player.transform.position);
 		blackboard.SetVariable(VariableNames.PlayerIsGrounded, player.isGrounded);
 		blackboard.SetVariable(VariableNames.PlayerHealth, player.Health);
 
 		//Add Nodes
-		AnimationNode FaseIdle = new AnimationNode(animator, 1);
-		AnimationNode FaseMissle = new AnimationNode(animator, 2);
-		AnimationNode FaseLeft = new AnimationNode(animator, 3);
-		AnimationNode FaseRight = new AnimationNode(animator, 4);
+		SelectorNode rootSelector = new SelectorNode(blackboard);
+		SelectorNode secondSelector = new SelectorNode(blackboard);
 
-		SelectorNode rootSelector = new SelectorNode();
-		SelectorNode secondSelector = new SelectorNode();
+		AnimationNode FaseIdle = new AnimationNode(animator, 0, blackboard);
+		AnimationNode FaseCenter = new AnimationNode(animator, 1, blackboard);
+		AnimationNode FaseLeft = new AnimationNode(animator, 2, blackboard);
+		AnimationNode FaseRight = new AnimationNode(animator, 3, blackboard);
+		AnimationNode FaseMissle = new AnimationNode(animator, 4, blackboard);
 
-		IsGroundNode isGroundNode = new IsGroundNode(blackboard.GetVariable<bool>(VariableNames.PlayerIsGrounded));
-		IsGroundNode isAirNode = new IsGroundNode(!blackboard.GetVariable<bool>(VariableNames.PlayerIsGrounded));
-		PlayerXPosNode isPlayerLeft = new PlayerXPosNode(player.transform, -9, -5);
-		PlayerXPosNode isPlayerRight = new PlayerXPosNode(player.transform, 5, 9);
-		PlayerXPosNode isPlayerCenter = new PlayerXPosNode(player.transform, -2, 2);
+		IsGroundNode isGroundNode = new IsGroundNode(blackboard);
+		IsGroundNode isAirNode = new IsGroundNode(blackboard);
+		PlayerXPosNode isPlayerLeft = new PlayerXPosNode(-9, -5, blackboard);
+		PlayerXPosNode isPlayerRight = new PlayerXPosNode(5, 9, blackboard);
+		PlayerXPosNode isPlayerCenter = new PlayerXPosNode(-2, 2, blackboard);
 
 		//link notes
 		FaseIdle.referenceChildren(rootSelector);
@@ -63,15 +64,24 @@ public class BossAgent : MonoBehaviour, IDamagable, IShootable
 		isAirNode.referenceChildren(FaseMissle);
 		isGroundNode.referenceChildren(secondSelector);
 		secondSelector.referenceChildren(new List<BaseNode>() { isPlayerLeft, isPlayerRight, isPlayerCenter });
+		isPlayerLeft.referenceChildren(FaseLeft);
+		isPlayerRight.referenceChildren(FaseRight);
+		isPlayerCenter.referenceChildren(FaseCenter);
 
 		// setup tree
-		rootSelector.SetupBlackboard(blackboard);
-		tree = rootSelector;
+		//rootSelector.SetupBlackboard(blackboard);
+		tree = FaseIdle;
 	}
 
 	private void FixedUpdate()
 	{
+		blackboard.SetVariable(VariableNames.BossHealth, Health);
+		blackboard.SetVariable(VariableNames.PlayerPosition, player.transform.position);
+		blackboard.SetVariable(VariableNames.PlayerIsGrounded, player.isGrounded);
+		blackboard.SetVariable(VariableNames.PlayerHealth, player.Health);
+
 		NodeStatus result = tree.Processing();
+		Debug.Log(result);
 	}
 
 	protected virtual void OnHealthChanged(int newHealth)

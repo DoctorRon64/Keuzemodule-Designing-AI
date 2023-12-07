@@ -19,16 +19,16 @@ public class Bullet : MonoBehaviour, IPoolable
 
 	void OnTriggerEnter2D(Collider2D _other)
 	{
-		IShootable enviourment = _other.GetComponent<IShootable>();
 		BossAgent bossAgent = _other.GetComponent<BossAgent>();
-		if (enviourment != null)
+		if (_other.gameObject.TryGetComponent<BossAgent>(out BossAgent _bossagent))
+		{
+			bossAgent.TakeDamage(damageValue);
+		}
+
+		if (_other.gameObject.TryGetComponent<IShootable>(out IShootable _shootable))
 		{
 			DisablePoolabe();
 			objectPool.DeactivateItem(this);
-		}
-		if (bossAgent != null)
-		{
-			bossAgent.TakeDamage(damageValue);
 		}
 	}
 
