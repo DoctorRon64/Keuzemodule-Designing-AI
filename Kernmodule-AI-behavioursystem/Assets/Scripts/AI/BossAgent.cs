@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BossAgent : MonoBehaviour, IDamagable, IShootable
@@ -18,12 +19,18 @@ public class BossAgent : MonoBehaviour, IDamagable, IShootable
 			}
 		}
 	}
-	public Action<int> onHealthChanged;
 
-	[SerializeField] private Blackboard blackboard;
+	public Action<int> onHealthChanged;
+	public Action<int> onBossDied;
+
+	[SerializeField] private MissleSpawner missleSpanwer;
+	private Blackboard blackboard;
 	private BaseNode tree;
+	private BaseNode currentNode;
 	private Animator animator;
 	private Player player;
+
+	[SerializeField] private List<Collider2D> bossColliders = new List<Collider2D>();
 
 	private void Awake()
 	{
@@ -34,54 +41,50 @@ public class BossAgent : MonoBehaviour, IDamagable, IShootable
 	private void Start()
 	{
 		Health = MaxHealth;
-		animator.SetInteger(VariableNames.FaseAnimations, 0);
-
-		//blackboard = new Blackboard();
+		blackboard = new Blackboard();
+		blackboard.SetVariable(VariableNames.PlayerTransform, player.transform);
+		blackboard.SetVariable(VariableNames.BossColliders, bossColliders);
 		blackboard.SetVariable(VariableNames.BossHealth, Health);
-		blackboard.SetVariable(VariableNames.PlayerPosition, player.transform.position);
 		blackboard.SetVariable(VariableNames.PlayerIsGrounded, player.isGrounded);
 		blackboard.SetVariable(VariableNames.PlayerHealth, player.Health);
+		missleSpanwer.SetupBlackBoard(blackboard);
 
-		//Add Nodes
-		SelectorNode rootSelector = new SelectorNode(blackboard);
-		SelectorNode secondSelector = new SelectorNode(blackboard);
+		tree = new RandomSelectorNode(
+			() => true, 
+			new BaseNode[] {
+				new SelectorNode(
+					() => blackboard.GetVariable<bool>(VariableNames.PlayerIsGrounded),
+					new BossFaseNode(animator, 4, bossColliders[0], 1) //in air fase
+				 ),
+				new RandomSelectorNode(
+					() => true,
+				    new BaseNode[] {
+						new IsPlayerXPosNode(-9, -5),
+						new BossFaseNode(animator, 2, bossColliders[2], 1), //Left fase
+						new SelectorNode(
+							() => blackboard.GetVariable<Transform>(VariableNames.PlayerTransform).position.x >= 5 &&
+								  blackboard.GetVariable<Transform>(VariableNames.PlayerTransform).position.x <= 9,
+							new BossFaseNode(animator, 3, bossColliders[3], 1), //right fase
+							new BossFaseNode(animator, 1, bossColliders[1], 1) //center fase
+						)
+					}
+				),
+				new BossFaseNode(animator, 0, bossColliders[0], 10) // idle fase
+			}
+		);
 
-		AnimationNode FaseIdle = new AnimationNode(animator, 0, blackboard);
-		AnimationNode FaseCenter = new AnimationNode(animator, 1, blackboard);
-		AnimationNode FaseLeft = new AnimationNode(animator, 2, blackboard);
-		AnimationNode FaseRight = new AnimationNode(animator, 3, blackboard);
-		AnimationNode FaseMissle = new AnimationNode(animator, 4, blackboard);
-
-		IsGroundNode isGroundNode = new IsGroundNode(blackboard);
-		IsGroundNode isAirNode = new IsGroundNode(blackboard);
-		PlayerXPosNode isPlayerLeft = new PlayerXPosNode(-9, -5, blackboard);
-		PlayerXPosNode isPlayerRight = new PlayerXPosNode(5, 9, blackboard);
-		PlayerXPosNode isPlayerCenter = new PlayerXPosNode(-2, 2, blackboard);
-
-		//link notes
-		FaseIdle.referenceChildren(rootSelector);
-		rootSelector.referenceChildren(new List<BaseNode>() { isGroundNode, isAirNode });
-		isAirNode.referenceChildren(FaseMissle);
-		isGroundNode.referenceChildren(secondSelector);
-		secondSelector.referenceChildren(new List<BaseNode>() { isPlayerLeft, isPlayerRight, isPlayerCenter });
-		isPlayerLeft.referenceChildren(FaseLeft);
-		isPlayerRight.referenceChildren(FaseRight);
-		isPlayerCenter.referenceChildren(FaseCenter);
-
-		// setup tree
-		//rootSelector.SetupBlackboard(blackboard);
-		tree = FaseIdle;
+		tree.SetupBlackboard(blackboard);
 	}
 
 	private void FixedUpdate()
 	{
-		blackboard.SetVariable(VariableNames.BossHealth, Health);
-		blackboard.SetVariable(VariableNames.PlayerPosition, player.transform.position);
+		blackboard.SetVariable(VariableNames.BossHealth, health);
 		blackboard.SetVariable(VariableNames.PlayerIsGrounded, player.isGrounded);
 		blackboard.SetVariable(VariableNames.PlayerHealth, player.Health);
 
+		currentNode = tree;
 		NodeStatus result = tree.Processing();
-		Debug.Log(result);
+		Debug.Log($"Current Node: {currentNode.GetNodeName()}, {currentNode.GetNodeType()}, Tree Result: {result}");
 	}
 
 	protected virtual void OnHealthChanged(int newHealth)
@@ -100,6 +103,6 @@ public class BossAgent : MonoBehaviour, IDamagable, IShootable
 
 	public void Die()
 	{
-
+		onBossDied?.Invoke(1);
 	}
 }

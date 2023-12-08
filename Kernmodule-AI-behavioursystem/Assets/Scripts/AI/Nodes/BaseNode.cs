@@ -1,69 +1,64 @@
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public enum NodeStatus { Success, Failed, Running }
 public abstract class BaseNode
 {
-    public List<BaseNode> childerenNodes = null;
-    private bool wasNodeEntered = false;
-    protected Blackboard blackBoard;
-
-	public BaseNode(Blackboard _blackBoard)
-	{
-		this.blackBoard = _blackBoard;
-		if (childerenNodes != null)
-		{
-			foreach (BaseNode node in childerenNodes)
-			{
-				node.SetupBlackboard(_blackBoard);
-			}
-		}
-	}
+	protected Blackboard blackboard;
+	private bool wasEntered = false;
+	public string NodeName { get; protected set; }
+	public virtual void OnReset() { }
 
 	public NodeStatus Processing()
-    {
-        if (!wasNodeEntered)
-        {
-            OnEnter();
-            wasNodeEntered = true;
-        }
-
-        NodeStatus result = Status();
-        if (result != NodeStatus.Running)
-        {
-            OnExit();
-            wasNodeEntered = false;
-        }
-        return result;
-    }
-
-	public void referenceChildren(BaseNode _childerenNodes)
 	{
-        childerenNodes = new List<BaseNode>();
-		childerenNodes.Add(_childerenNodes);
+		if (!wasEntered)
+		{
+			OnEnter();
+			wasEntered = true;
+		}
+
+		var result = OnUpdate();
+		if (result != NodeStatus.Running)
+		{
+			OnExit();
+			wasEntered = false;
+		}
+		return result;
 	}
 
-	public void referenceChildren(List<BaseNode> _childerenNodes)
-    {
-		childerenNodes = new List<BaseNode>();
-		foreach (var node in _childerenNodes)
-        {
-            childerenNodes.Add(node);
-        }
-    }
+	public virtual string GetNodeType()
+	{
+		return this.GetType().Name;
+	}
 
-    public void SetupBlackboard(Blackboard _blackBoard)
-    {
-        this.blackBoard = _blackBoard;
-        if (childerenNodes != null)
-        {
-            foreach (BaseNode node in childerenNodes)
-            {
-                node.SetupBlackboard(_blackBoard);
-            }
-        }
-    }
-    public virtual void OnReset() { }
-    protected abstract NodeStatus Status();
+	public virtual string GetNodeName()
+	{
+		return NodeName;
+	}
+
+	public virtual void SetupBlackboard(Blackboard blackboard)
+	{
+		this.blackboard = blackboard;
+	}
+	protected abstract NodeStatus OnUpdate();
 	protected virtual void OnEnter() { }
 	protected virtual void OnExit() { }
+
+}
+
+public abstract class Composite : BaseNode
+{
+	protected BaseNode[] children;
+	public Composite(params BaseNode[] children)
+	{
+		this.children = children;
+	}
+
+	public override void SetupBlackboard(Blackboard blackboard)
+	{
+		base.SetupBlackboard(blackboard);
+		foreach (BaseNode node in children)
+		{
+			node.SetupBlackboard(blackboard);
+		}
+	}
 }

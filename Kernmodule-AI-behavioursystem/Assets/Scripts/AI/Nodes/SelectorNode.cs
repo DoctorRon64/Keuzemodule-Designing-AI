@@ -1,29 +1,33 @@
-﻿public class SelectorNode : BaseNode
+﻿using System;
+public class SelectorNode : Composite
 {
-	public SelectorNode(Blackboard _blackBoard) : base(_blackBoard)
+	private Func<bool> condition;
+
+	public SelectorNode(Func<bool> condition, params BaseNode[] children) : base(children)
 	{
+		this.condition = condition;
 	}
 
-	protected override NodeStatus Status()
+	protected override NodeStatus OnUpdate()
 	{
-        foreach (BaseNode child in childerenNodes)
-        {
-			NodeStatus result = child.Processing();
+		for (var i = 0; i < children.Length; i++)
+		{
+			var result = children[i].Processing();
 			switch (result)
 			{
 				case NodeStatus.Success: return NodeStatus.Success;
-				case NodeStatus.Running: return NodeStatus.Running;
 				case NodeStatus.Failed: continue;
+				case NodeStatus.Running: return NodeStatus.Running;
 			}
 		}
-        return NodeStatus.Success;
+		return NodeStatus.Success;
 	}
 
 	public override void OnReset()
 	{
-        foreach (BaseNode child in childerenNodes)
-        {
-            child.OnReset();
-        }
+		foreach (var c in children)
+		{
+			c.OnReset();
+		}
 	}
 }

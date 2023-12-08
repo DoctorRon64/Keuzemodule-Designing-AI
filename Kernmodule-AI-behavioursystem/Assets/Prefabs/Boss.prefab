@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8298938897747886208}
   - component: {fileID: 4172318517143333572}
+  - component: {fileID: 5519381338686992499}
   m_Layer: 0
   m_Name: SpriteFaseR2
   m_TagString: Untagged
@@ -84,6 +85,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5519381338686992499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653804878737685167}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38ec750341aa86f4ba6d113f368dc75f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missilePrefab: {fileID: 2598349782592439686, guid: 0b039dc57b3d2244cb64d9c3a89cff1a, type: 3}
+  spawnInterval: 2
+  spawnXMin: 2
+  spawnXMax: 2.2
+  spawnY: -0.36
 --- !u!1 &2832247160499256637
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,6 +112,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1515301503541352599}
   - component: {fileID: 3523211261404771725}
+  - component: {fileID: 5353292484611671913}
   m_Layer: 0
   m_Name: SpriteFaseL2
   m_TagString: Untagged
@@ -168,6 +187,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5353292484611671913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2832247160499256637}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38ec750341aa86f4ba6d113f368dc75f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missilePrefab: {fileID: 2598349782592439686, guid: 0b039dc57b3d2244cb64d9c3a89cff1a, type: 3}
+  spawnInterval: 2
+  spawnXMin: -1.8
+  spawnXMax: -2
+  spawnY: -0.36
 --- !u!1 &3132314278979161049
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,6 +363,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 5000
+  missleSpanwer: {fileID: 2616796186875853513}
+  bossColliders:
+  - {fileID: 2327539697055111733}
+  - {fileID: 291914915552855683}
+  - {fileID: 5592822411934830633}
+  - {fileID: 194286444917800486}
 --- !u!60 &2327539697055111733
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -504,6 +546,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8003542619609666788}
   - component: {fileID: 6094881047269173789}
+  - component: {fileID: 2616796186875853513}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -578,3 +621,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2616796186875853513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5622495118490724594}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60a0bd5528bec3b44ab2e8d4b842ee8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missilePrefab: {fileID: 5438317736302389436, guid: 40dbe98f8ab622942b78f0977f2e8c00, type: 3}
+  spawnInterval: 2

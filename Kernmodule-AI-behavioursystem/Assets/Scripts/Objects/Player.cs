@@ -24,6 +24,7 @@ public class Player : MonoBehaviour, IDamagable
 
 	[Header("Health")]
 	public int MaxHealth = 20;
+	public Action<int> onPlayerDied;
 	private int health;
 	public int Health
 	{
@@ -153,5 +154,6 @@ public class Player : MonoBehaviour, IDamagable
 
     public void Die()
     {
+		onPlayerDied?.Invoke(2);
     }
 }
