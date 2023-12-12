@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class BossAgent : MonoBehaviour, IDamagable, IShootable
+public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 {
 	public int MaxHealth = 5000;
 	private int health;
@@ -23,70 +23,89 @@ public class BossAgent : MonoBehaviour, IDamagable, IShootable
 	public Action<int> onHealthChanged;
 	public Action<int> onBossDied;
 
-	[SerializeField] private MissleSpawner missleSpanwer;
-	private Blackboard blackboard;
-	private BaseNode tree;
-	private BaseNode currentNode;
+	[SerializeField] private MissileSpawner missleSpanwer;
+	[SerializeField] private Transform player;
+	private Blackboard blackboard = new Blackboard();
+	private RandomSelectorNode tree;
 	private Animator animator;
-	private Player player;
+	private Player playerScript;
 
 	[SerializeField] private List<Collider2D> bossColliders = new List<Collider2D>();
 
 	private void Awake()
 	{
+		playerScript = player.GetComponent<Player>();
 		animator = GetComponentInChildren<Animator>();
-		player = FindObjectOfType<Player>();
 	}
 
 	private void Start()
 	{
-		Health = MaxHealth;
-		blackboard = new Blackboard();
-		blackboard.SetVariable(VariableNames.PlayerTransform, player.transform);
+		blackboard.SetVariable(VariableNames.PlayerTransform, player);
 		blackboard.SetVariable(VariableNames.BossColliders, bossColliders);
 		blackboard.SetVariable(VariableNames.BossHealth, Health);
-		blackboard.SetVariable(VariableNames.PlayerIsGrounded, player.isGrounded);
-		blackboard.SetVariable(VariableNames.PlayerHealth, player.Health);
+		blackboard.SetVariable(VariableNames.PlayerIsGrounded, playerScript.isGrounded);
+		blackboard.SetVariable(VariableNames.PlayerHealth, playerScript.Health);
 		missleSpanwer.SetupBlackBoard(blackboard);
+		Health = MaxHealth;
 
 		tree = new RandomSelectorNode(
-			() => true, 
-			new BaseNode[] {
+			() => true,
+			new BaseNode[] 
+			{
 				new SelectorNode(
-					() => blackboard.GetVariable<bool>(VariableNames.PlayerIsGrounded),
+					() => IsAirCondition(), //if player in air
 					new BossFaseNode(animator, 4, bossColliders[0], 1) //in air fase
-				 ),
+				),
 				new RandomSelectorNode(
 					() => true,
-				    new BaseNode[] {
-						new IsPlayerXPosNode(-9, -5),
-						new BossFaseNode(animator, 2, bossColliders[2], 1), //Left fase
+					new BaseNode[] 
+					{
 						new SelectorNode(
-							() => blackboard.GetVariable<Transform>(VariableNames.PlayerTransform).position.x >= 5 &&
-								  blackboard.GetVariable<Transform>(VariableNames.PlayerTransform).position.x <= 9,
-							new BossFaseNode(animator, 3, bossColliders[3], 1), //right fase
-							new BossFaseNode(animator, 1, bossColliders[1], 1) //center fase
+							() => IsPlayerInRange(-9, -5),
+							new BossFaseNode(animator, 2, bossColliders[2], 1) //Left fase
+						),
+						new SelectorNode(
+							() => IsPlayerInRange(-2, 2),
+							new BossFaseNode(animator, 1, bossColliders[1], 1)  // center fase
+						),
+						new SelectorNode(
+							() => IsPlayerInRange(5, 9),
+							new BossFaseNode(animator, 3, bossColliders[3], 1) // right fase
 						)
 					}
 				),
-				new BossFaseNode(animator, 0, bossColliders[0], 10) // idle fase
+				new BossFaseNode(animator, 0, bossColliders[0], 1) // dle fase
 			}
 		);
 
 		tree.SetupBlackboard(blackboard);
 	}
 
+	//conditions///----------------------------------------
+	bool IsAirCondition()
+	{
+		return !blackboard.GetVariable<bool>(VariableNames.PlayerIsGrounded);
+	}
+
+	bool IsPlayerInRange(float min, float max)
+	{
+		Transform playerTransform = blackboard.GetVariable<Transform>(VariableNames.PlayerTransform);
+		float xPosition = playerTransform.position.x;
+		return xPosition >= min && xPosition <= max;
+	}
+	///--------------------------------------------
+
 	private void FixedUpdate()
 	{
 		blackboard.SetVariable(VariableNames.BossHealth, health);
-		blackboard.SetVariable(VariableNames.PlayerIsGrounded, player.isGrounded);
-		blackboard.SetVariable(VariableNames.PlayerHealth, player.Health);
+		blackboard.SetVariable(VariableNames.PlayerIsGrounded, playerScript.isGrounded);
+		blackboard.SetVariable(VariableNames.PlayerHealth, playerScript.Health);
 
-		currentNode = tree;
-		NodeStatus result = tree.Processing();
-		Debug.Log($"Current Node: {currentNode.GetNodeName()}, {currentNode.GetNodeType()}, Tree Result: {result}");
+		NodeStatus result = tree.Tick();
+		Debug.Log($"tree Node: {tree.GetNodeName()}, {tree.GetNodeType()}, Tree Result: {result}");
 	}
 
+	
 	protected virtual void OnHealthChanged(int newHealth)
 	{
 		onHealthChanged?.Invoke(newHealth);

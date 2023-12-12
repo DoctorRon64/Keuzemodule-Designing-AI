@@ -4,12 +4,11 @@ public class BossAttacker : MonoBehaviour, IShootable
 {
 	[SerializeField] private int damageAmount = 2;
 
-	private void OnCollisionEnter2D(Collision2D collision)
+	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		IDamagable damagePlayer = collision.gameObject.GetComponent<IDamagable>();
-		if (damagePlayer != null )
+		if (collision.gameObject.TryGetComponent<Player>(out Player _damagable))
 		{
-			damagePlayer.TakeDamage(damageAmount);
+			_damagable.TakeDamage(damageAmount);
 		}
 	}
 }

@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using System.Diagnostics;
 
 public enum NodeStatus { Success, Failed, Running }
 public abstract class BaseNode
@@ -6,9 +6,12 @@ public abstract class BaseNode
 	protected Blackboard blackboard;
 	private bool wasEntered = false;
 	public string NodeName { get; protected set; }
-	public virtual void OnReset() { }
+	public virtual void OnReset() 
+	{
+		wasEntered = false;
+	}
 
-	public NodeStatus Processing()
+	public NodeStatus Tick()
 	{
 		if (!wasEntered)
 		{
@@ -39,6 +42,7 @@ public abstract class BaseNode
 	{
 		this.blackboard = blackboard;
 	}
+
 	protected abstract NodeStatus OnUpdate();
 	protected virtual void OnEnter() { }
 	protected virtual void OnExit() { }
@@ -59,6 +63,27 @@ public abstract class Composite : BaseNode
 		foreach (BaseNode node in children)
 		{
 			node.SetupBlackboard(blackboard);
+		}
+	}
+
+	public void ResetTree()
+	{
+		foreach (BaseNode node in children)
+		{
+			ResetNodeRecursive(node);
+		}
+	}
+
+	private void ResetNodeRecursive(BaseNode node)
+	{
+		node.OnReset();
+
+		if (node is Composite composite)
+		{
+			foreach (BaseNode child in composite.children)
+			{
+				ResetNodeRecursive(child);
+			}
 		}
 	}
 }

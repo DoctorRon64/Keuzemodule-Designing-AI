@@ -21,7 +21,7 @@ public class RandomSelectorNode : Composite
 			int randomIndex = UnityEngine.Random.Range(i, children.Length);
 			BaseNode randomChild = children[randomIndex];
 
-			NodeStatus result = randomChild.Processing();
+			NodeStatus result = randomChild.Tick();
 
 			switch (result)
 			{
@@ -35,6 +35,7 @@ public class RandomSelectorNode : Composite
 
 	public override void OnReset()
 	{
+		base.OnReset();
 		foreach (var c in children)
 		{
 			c.OnReset();

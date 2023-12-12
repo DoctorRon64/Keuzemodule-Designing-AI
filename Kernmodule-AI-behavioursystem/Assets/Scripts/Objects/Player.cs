@@ -152,7 +152,7 @@ public class Player : MonoBehaviour, IDamagable
 		}
     }
 
-    public void Die()
+    private void Die()
     {
 		onPlayerDied?.Invoke(2);
     }

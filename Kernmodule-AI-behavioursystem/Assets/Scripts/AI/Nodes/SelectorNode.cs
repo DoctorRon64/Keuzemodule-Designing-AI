@@ -12,7 +12,7 @@ public class SelectorNode : Composite
 	{
 		for (var i = 0; i < children.Length; i++)
 		{
-			var result = children[i].Processing();
+			var result = children[i].Tick();
 			switch (result)
 			{
 				case NodeStatus.Success: return NodeStatus.Success;

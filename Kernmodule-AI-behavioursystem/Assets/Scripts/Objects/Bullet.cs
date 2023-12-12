@@ -19,7 +19,7 @@ public class Bullet : MonoBehaviour, IPoolable
 
 	void OnTriggerEnter2D(Collider2D _other)
 	{
-		if (_other.gameObject.TryGetComponent<IDamagable>(out IDamagable _Idamagable))
+		if (_other.gameObject.TryGetComponent<IDamagableBoss>(out IDamagableBoss _Idamagable))
 		{
 			_Idamagable.TakeDamage(damageValue);
 		}

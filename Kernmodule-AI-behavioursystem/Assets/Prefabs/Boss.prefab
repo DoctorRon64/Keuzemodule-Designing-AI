@@ -98,10 +98,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   missilePrefab: {fileID: 2598349782592439686, guid: 0b039dc57b3d2244cb64d9c3a89cff1a, type: 3}
-  spawnInterval: 2
-  spawnXMin: 2
-  spawnXMax: 2.2
-  spawnY: -0.36
+  spawnInterval: 0.3
+  spawnXMin: 7
+  spawnXMax: 9
+  spawnY: 1
 --- !u!1 &2832247160499256637
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,10 +200,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   missilePrefab: {fileID: 2598349782592439686, guid: 0b039dc57b3d2244cb64d9c3a89cff1a, type: 3}
-  spawnInterval: 2
-  spawnXMin: -1.8
-  spawnXMax: -2
-  spawnY: -0.36
+  spawnInterval: 0.3
+  spawnXMin: -9
+  spawnXMax: -7
+  spawnY: 1
 --- !u!1 &3132314278979161049
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,6 +364,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHealth: 5000
   missleSpanwer: {fileID: 2616796186875853513}
+  player: {fileID: 0}
   bossColliders:
   - {fileID: 2327539697055111733}
   - {fileID: 291914915552855683}
@@ -376,7 +377,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5053520227710040219}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -401,7 +402,7 @@ PolygonCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.21}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -413,23 +414,25 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.3088055, y: 0.27460778}
-      - {x: 0.05328767, y: 0.4647144}
-      - {x: 0.037381813, y: 0.45900282}
-      - {x: -0.1121048, y: 0.44419384}
-      - {x: -0.33270776, y: 0.2881269}
-      - {x: -0.31784788, y: 0.066735685}
+    - - {x: 0.41406015, y: 0.28630275}
+      - {x: 0.13905072, y: 0.5036976}
+      - {x: 0.10365327, y: 0.5525625}
+      - {x: -0.25244436, y: 0.46368545}
+      - {x: -0.42236912, y: 0.23744869}
+      - {x: -0.46598402, y: 0.035549134}
       - {x: -0.48663056, y: -0.006227821}
-      - {x: -0.6029662, y: -0.32701892}
-      - {x: -0.48629662, y: -0.4796413}
-      - {x: -0.17389208, y: -0.3846398}
-      - {x: -0.13670193, y: -0.21590745}
-      - {x: -0.013662063, y: -0.30343902}
-      - {x: 0.12681833, y: -0.21446031}
-      - {x: 0.4460081, y: -0.41871798}
-      - {x: 0.5336016, y: -0.30121347}
-      - {x: 0.4815181, y: -0.057555377}
-      - {x: 0.23375231, y: 0.08130151}
+      - {x: -0.6131359, y: -0.13439931}
+      - {x: -0.7550007, y: -0.4907484}
+      - {x: -0.575958, y: -0.6433708}
+      - {x: -0.24406186, y: -0.6146408}
+      - {x: -0.19907509, y: -0.33675545}
+      - {x: -0.01756037, y: -0.41259205}
+      - {x: 0.15410657, y: -0.35090154}
+      - {x: 0.55516106, y: -0.48888773}
+      - {x: 0.6310596, y: -0.50782454}
+      - {x: 0.7548817, y: -0.34353453}
+      - {x: 0.5127046, y: 0.028207704}
+      - {x: 0.34290528, y: 0.06960657}
   m_UseDelaunayMesh: 0
 --- !u!58 &291914915552855683
 CircleCollider2D:
@@ -438,7 +441,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5053520227710040219}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -463,9 +466,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.17868268}
+  m_Offset: {x: 0.0076081753, y: -0.105918884}
   serializedVersion: 2
-  m_Radius: 0.6210431
+  m_Radius: 0.65985084
 --- !u!58 &5592822411934830633
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -473,7 +476,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5053520227710040219}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -498,9 +501,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 1.5473969, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.43344545
 --- !u!58 &194286444917800486
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -508,7 +511,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5053520227710040219}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
