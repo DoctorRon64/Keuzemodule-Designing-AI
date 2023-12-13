@@ -1,23 +1,15 @@
 ﻿using System;
 public class SelectorNode : Composite
 {
-	private Func<bool> condition;
-
-	public SelectorNode(Func<bool> condition, params BaseNode[] children) : base(children)
+	public SelectorNode(params BaseNode[] children) : base(children)
 	{
-		this.condition = condition;
 	}
 
 	protected override NodeStatus OnUpdate()
 	{
-		if (!condition.Invoke())
+		for (int i = 0; i < children.Length; i++)
 		{
-			return NodeStatus.Failed;
-		}
-
-		for (var i = 0; i < children.Length; i++)
-		{
-			var result = children[i].Tick();
+			NodeStatus result = children[i].Tick();
 			switch (result)
 			{
 				case NodeStatus.Success: return NodeStatus.Success;

@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class MissilleController : MonoBehaviour, IDamagableBoss, IShootable
+public class MissileController : MonoBehaviour, IDamagableBoss, IShootable
 {
 	[SerializeField] float speed = 5f;
 	[SerializeField] float rotationSpeed = 10f;
 	[SerializeField] int damage;
 	public Transform Player = null;
-	public int Health { get; set; } = 8;
+	public int Health { get; set; } = 6;
 
 	private void Update()
 	{

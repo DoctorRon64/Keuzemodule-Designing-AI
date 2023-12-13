@@ -9,13 +9,7 @@ public class MissileSpawner : MonoBehaviour
 
 	private void Start()
 	{
-		player = blackboard.GetVariable<Transform>(VariableNames.PlayerTransform);
-
-		if (player == null)
-		{
-			Debug.LogError("Player transform not found in the blackboard.");
-		}
-		else
+		if (gameObject.activeSelf && gameObject.activeInHierarchy)
 		{
 			InvokeRepeating(nameof(SpawnMissile), 0f, spawnInterval);
 		}
@@ -24,6 +18,17 @@ public class MissileSpawner : MonoBehaviour
 	public void SetupBlackBoard(Blackboard _blackboard)
 	{
 		blackboard = _blackboard;
+		PlayerSetup();
+	}
+
+	private void PlayerSetup()
+	{
+		player = blackboard.GetVariable<Transform>(VariableNames.PlayerTransform);
+
+		if (player == null)
+		{
+			Debug.LogError("Player transform not found in the blackboard.");
+		}
 	}
 
 	private void SpawnMissile()
@@ -31,7 +36,7 @@ public class MissileSpawner : MonoBehaviour
 		if (missilePrefab != null && player != null)
 		{
 			GameObject missile = Instantiate(missilePrefab, transform.position, Quaternion.identity);
-			MissilleController missileScript = missile.GetComponent<MissilleController>();
+			MissileController missileScript = missile.GetComponent<MissileController>();
 			Debug.Log(missileScript);
 			if (missileScript != null) { missileScript.Player = player; }
 		}

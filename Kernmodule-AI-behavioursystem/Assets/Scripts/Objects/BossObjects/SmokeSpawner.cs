@@ -10,8 +10,11 @@ public class SmokeSpawner : MonoBehaviour
 
 	private void Start()
 	{
-		//super handige monobehaviour method weet niet of het efficient is
-		InvokeRepeating("SpawnMissile", 0f, spawnInterval);
+		if (gameObject.activeSelf && gameObject.activeInHierarchy)
+		{
+			//super handige monobehaviour method ik las dat er minder null calls waren inplaats van void Update
+			InvokeRepeating("SpawnMissile", 0f, spawnInterval);
+		}
 	}
 
 	private void SpawnMissile()

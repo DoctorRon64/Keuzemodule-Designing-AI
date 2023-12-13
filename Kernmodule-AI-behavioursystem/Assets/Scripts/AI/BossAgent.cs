@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 {
+	[Header("Health")]
 	public int MaxHealth = 5000;
 	private int health;
 	public int Health
@@ -23,6 +24,7 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 	public Action<int> onHealthChanged;
 	public Action<int> onBossDied;
 
+	[Header("Objects")]
 	[SerializeField] private MissileSpawner missleSpanwer;
 	[SerializeField] private Transform player;
 	private Blackboard blackboard = new Blackboard();
@@ -30,72 +32,82 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 	private Animator animator;
 	private Player playerScript;
 
+	[Header("BossColliders")]
 	[SerializeField] private List<Collider2D> bossColliders = new List<Collider2D>();
+
+	[Header("FaseDurations")]
+	[SerializeField] private List<float> durationFase = new List<float> { 3, 5, 10 };
 
 	private void Awake()
 	{
 		playerScript = player.GetComponent<Player>();
-		animator = GetComponentInChildren<Animator>();
+		animator = GetComponent<Animator>();
 	}
 
 	private void Start()
 	{
 		blackboard.SetVariable(VariableNames.PlayerTransform, player);
+		missleSpanwer.SetupBlackBoard(blackboard);
 		blackboard.SetVariable(VariableNames.BossColliders, bossColliders);
 		blackboard.SetVariable(VariableNames.BossHealth, Health);
 		blackboard.SetVariable(VariableNames.PlayerIsGrounded, playerScript.isGrounded);
 		blackboard.SetVariable(VariableNames.PlayerHealth, playerScript.Health);
-		missleSpanwer.SetupBlackBoard(blackboard);
 		Health = MaxHealth;
 
 		tree = new RandomSelectorNode(
-			() => true,
-			new BaseNode[] 
+			new BaseNode[]
 			{
+				//idle
+				new ParrallelNode(
+					new ColliderNode(bossColliders[0]),
+					new AnimationNode(animator, 0),
+					new WaitingNode(durationFase[0])
+				),
+
+				//InAir
+				new SequenceNode(
+					new IsPlayerInAirCondition(),
+					new ParrallelNode(
+						new ColliderNode(bossColliders[0]),
+						new AnimationNode(animator, 4),
+						new WaitingNode(durationFase[2])
+					)
+				),
+
+				//OnGround
 				new SelectorNode(
-					() => IsAirCondition(), //if player in air
-					new BossFaseNode(animator, 4, bossColliders[0], 1) //in air fase
-				),
-				new RandomSelectorNode(
-					() => true,
-					new BaseNode[] 
-					{
-						new SelectorNode(
-							() => IsPlayerInRange(-9, -5),
-							new BossFaseNode(animator, 2, bossColliders[2], 1) //Left fase
-						),
-						new SelectorNode(
-							() => IsPlayerInRange(-2, 2),
-							new BossFaseNode(animator, 1, bossColliders[1], 1)  // center fase
-						),
-						new SelectorNode(
-							() => IsPlayerInRange(5, 9),
-							new BossFaseNode(animator, 3, bossColliders[3], 1) // right fase
+					//Left
+					new SequenceNode(
+						new IsObjectInRangeOf(blackboard.GetVariable<Transform>(VariableNames.PlayerTransform), -9.0f, -5.0f),
+						new ParrallelNode(
+							new ColliderNode(bossColliders[2]),
+							new AnimationNode(animator, 2),
+							new WaitingNode(durationFase[1])
 						)
-					}
-				),
-				new BossFaseNode(animator, 0, bossColliders[0], 1) // dle fase
+					),
+					//Center
+					new SequenceNode(
+						new IsObjectInRangeOf(blackboard.GetVariable<Transform>(VariableNames.PlayerTransform), -2.0f, 2.0f),
+						new ParrallelNode(
+							new ColliderNode(bossColliders[1]),
+							new AnimationNode(animator, 1),
+							new WaitingNode(durationFase[1])
+						)
+					),
+					//Right
+					new SequenceNode(
+						new IsObjectInRangeOf(blackboard.GetVariable<Transform>(VariableNames.PlayerTransform), 5.0f, 9.0f),
+						new ParrallelNode(
+							new ColliderNode(bossColliders[3]),
+							new AnimationNode(animator, 3),
+							new WaitingNode(durationFase[1])
+						)
+					)
+				)
 			}
 		);
-
 		tree.SetupBlackboard(blackboard);
 	}
-
-	//conditions///----------------------------------------
-	bool IsAirCondition()
-	{
-		Debug.Log(!blackboard.GetVariable<bool>(VariableNames.PlayerIsGrounded));
-		return !blackboard.GetVariable<bool>(VariableNames.PlayerIsGrounded);
-	}
-
-	bool IsPlayerInRange(float min, float max)
-	{
-		Debug.Log(min + max);
-		Transform playerTransform = blackboard.GetVariable<Transform>(VariableNames.PlayerTransform);
-		float xPosition = playerTransform.position.x;
-		return xPosition >= min && xPosition <= max;
-	}
-	///--------------------------------------------
 
 	private void FixedUpdate()
 	{

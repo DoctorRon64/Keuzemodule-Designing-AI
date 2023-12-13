@@ -92,7 +92,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1653804878737685167}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 38ec750341aa86f4ba6d113f368dc75f, type: 3}
   m_Name: 
@@ -194,7 +194,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2832247160499256637}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 38ec750341aa86f4ba6d113f368dc75f, type: 3}
   m_Name: 
@@ -362,7 +362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 990d9f88546d2e24fb7663b4f830a611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 5000
+  MaxHealth: 1000
   missleSpanwer: {fileID: 2616796186875853513}
   player: {fileID: 0}
   bossColliders:
@@ -370,6 +370,10 @@ MonoBehaviour:
   - {fileID: 291914915552855683}
   - {fileID: 5592822411934830633}
   - {fileID: 194286444917800486}
+  durationFase:
+  - 10
+  - 30
+  - 70
 --- !u!60 &2327539697055111733
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -631,10 +635,10 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5622495118490724594}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 60a0bd5528bec3b44ab2e8d4b842ee8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missilePrefab: {fileID: 5438317736302389436, guid: 40dbe98f8ab622942b78f0977f2e8c00, type: 3}
+  missilePrefab: {fileID: 4902649085758575532, guid: 40dbe98f8ab622942b78f0977f2e8c00, type: 3}
   spawnInterval: 2
