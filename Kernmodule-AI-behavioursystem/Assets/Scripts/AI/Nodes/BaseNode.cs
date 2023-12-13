@@ -65,25 +65,4 @@ public abstract class Composite : BaseNode
 			node.SetupBlackboard(blackboard);
 		}
 	}
-
-	public void ResetTree()
-	{
-		foreach (BaseNode node in children)
-		{
-			ResetNodeRecursive(node);
-		}
-	}
-
-	private void ResetNodeRecursive(BaseNode node)
-	{
-		node.OnReset();
-
-		if (node is Composite composite)
-		{
-			foreach (BaseNode child in composite.children)
-			{
-				ResetNodeRecursive(child);
-			}
-		}
-	}
 }

@@ -84,11 +84,13 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 	//conditions///----------------------------------------
 	bool IsAirCondition()
 	{
+		Debug.Log(!blackboard.GetVariable<bool>(VariableNames.PlayerIsGrounded));
 		return !blackboard.GetVariable<bool>(VariableNames.PlayerIsGrounded);
 	}
 
 	bool IsPlayerInRange(float min, float max)
 	{
+		Debug.Log(min + max);
 		Transform playerTransform = blackboard.GetVariable<Transform>(VariableNames.PlayerTransform);
 		float xPosition = playerTransform.position.x;
 		return xPosition >= min && xPosition <= max;
@@ -104,7 +106,6 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 		NodeStatus result = tree.Tick();
 		Debug.Log($"tree Node: {tree.GetNodeName()}, {tree.GetNodeType()}, Tree Result: {result}");
 	}
-
 	
 	protected virtual void OnHealthChanged(int newHealth)
 	{

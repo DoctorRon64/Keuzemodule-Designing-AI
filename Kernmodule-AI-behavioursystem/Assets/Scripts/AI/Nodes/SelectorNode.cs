@@ -10,6 +10,11 @@ public class SelectorNode : Composite
 
 	protected override NodeStatus OnUpdate()
 	{
+		if (!condition.Invoke())
+		{
+			return NodeStatus.Failed;
+		}
+
 		for (var i = 0; i < children.Length; i++)
 		{
 			var result = children[i].Tick();

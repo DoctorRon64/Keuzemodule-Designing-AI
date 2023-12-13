@@ -11,11 +11,13 @@ public class RandomSelectorNode : Composite
 
 	protected override NodeStatus OnUpdate()
 	{
-		if (condition.Invoke())
+		if (!condition.Invoke())
 		{
-			return NodeStatus.Success;
-		}
+            return NodeStatus.Failed;
+        }
 
+        //shuffle
+        BaseNode[] childs = children;
 		for (int i = 0; i < children.Length; i++)
 		{
 			int randomIndex = UnityEngine.Random.Range(i, children.Length);
@@ -30,7 +32,8 @@ public class RandomSelectorNode : Composite
 				case NodeStatus.Running: return NodeStatus.Running;
 			}
 		}
-		return NodeStatus.Success;
+
+        return NodeStatus.Success;
 	}
 
 	public override void OnReset()
