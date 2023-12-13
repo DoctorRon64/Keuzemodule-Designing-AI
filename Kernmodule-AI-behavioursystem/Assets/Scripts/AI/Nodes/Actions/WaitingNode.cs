@@ -3,32 +3,35 @@ using UnityEngine;
 public class WaitingNode : BaseNode
 {
 	private float waitDuration; //in Seconds
-	private float elapsedTime;
+	private float startTime;
 
 	public WaitingNode(float _waitDuration)
 	{
 		this.waitDuration = _waitDuration;
-		this.elapsedTime = 0f;
+		this.startTime = 0f;
 	}
 
 	protected override NodeStatus OnUpdate()
 	{
+		if (!wasEntered)
+		{
+			startTime = Time.time;
+			wasEntered = true;
+		}
+
+		float elapsedTime = Time.time - startTime;
+		Debug.Log(elapsedTime);
+
 		if (elapsedTime >= waitDuration)
 		{
 			return NodeStatus.Success;
 		}
-		if (elapsedTime < 0f)
-		{
-			return NodeStatus.Running;
-		}
-
-		elapsedTime += Time.deltaTime;
 
 		return NodeStatus.Running;
 	}
 
 	protected override void OnEnter()
 	{
-		elapsedTime = 0f;
+		wasEntered = false;
 	}
 }

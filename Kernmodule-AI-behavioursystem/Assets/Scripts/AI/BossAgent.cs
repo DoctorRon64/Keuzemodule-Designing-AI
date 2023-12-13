@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
@@ -36,7 +35,7 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 	[SerializeField] private List<Collider2D> bossColliders = new List<Collider2D>();
 
 	[Header("FaseDurations")]
-	[SerializeField] private List<float> durationFase = new List<float> { 3, 5, 10 };
+	[SerializeField] private List<float> durationFase = new List<float>();
 
 	private void Awake()
 	{
@@ -55,57 +54,56 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 		Health = MaxHealth;
 
 		tree = new RandomSelectorNode(
-			new BaseNode[]
-			{
-				//idle
+			// Composite 1 - Idle
+			new ParrallelNode(
+				new ColliderNode(bossColliders[0]),
+				new AnimationNode(animator, 0),
+				new WaitingNode(durationFase[0])
+			),
+
+			// Composite 2 - InAir
+			new SequenceNode(
+				new IsPlayerInAirCondition(),
 				new ParrallelNode(
 					new ColliderNode(bossColliders[0]),
-					new AnimationNode(animator, 0),
-					new WaitingNode(durationFase[0])
+					new AnimationNode(animator, 4)
 				),
+				new WaitingNode(durationFase[1])
+			),
 
-				//InAir
+			// Composite 3 - OnGround
+			new SelectorNode(
+				// Left
 				new SequenceNode(
-					new IsPlayerInAirCondition(),
+					new IsObjectInRangeOf(blackboard.GetVariable<Transform>(VariableNames.PlayerTransform), -9.0f, -5.0f),
 					new ParrallelNode(
-						new ColliderNode(bossColliders[0]),
-						new AnimationNode(animator, 4),
-						new WaitingNode(durationFase[2])
-					)
+						new ColliderNode(bossColliders[2]),
+						new AnimationNode(animator, 2)
+					),
+					new WaitingNode(durationFase[2])
 				),
-
-				//OnGround
-				new SelectorNode(
-					//Left
-					new SequenceNode(
-						new IsObjectInRangeOf(blackboard.GetVariable<Transform>(VariableNames.PlayerTransform), -9.0f, -5.0f),
-						new ParrallelNode(
-							new ColliderNode(bossColliders[2]),
-							new AnimationNode(animator, 2),
-							new WaitingNode(durationFase[1])
-						)
+				// Center
+				new SequenceNode(
+					new IsObjectInRangeOf(blackboard.GetVariable<Transform>(VariableNames.PlayerTransform), -2.0f, 2.0f),
+					new ParrallelNode(
+						new ColliderNode(bossColliders[1]),
+						new AnimationNode(animator, 1)
 					),
-					//Center
-					new SequenceNode(
-						new IsObjectInRangeOf(blackboard.GetVariable<Transform>(VariableNames.PlayerTransform), -2.0f, 2.0f),
-						new ParrallelNode(
-							new ColliderNode(bossColliders[1]),
-							new AnimationNode(animator, 1),
-							new WaitingNode(durationFase[1])
-						)
+					new WaitingNode(durationFase[2])
+				),
+				// Right
+				new SequenceNode(
+					new IsObjectInRangeOf(blackboard.GetVariable<Transform>(VariableNames.PlayerTransform), 5.0f, 9.0f),
+					new ParrallelNode(
+						new ColliderNode(bossColliders[3]),
+						new AnimationNode(animator, 3)
 					),
-					//Right
-					new SequenceNode(
-						new IsObjectInRangeOf(blackboard.GetVariable<Transform>(VariableNames.PlayerTransform), 5.0f, 9.0f),
-						new ParrallelNode(
-							new ColliderNode(bossColliders[3]),
-							new AnimationNode(animator, 3),
-							new WaitingNode(durationFase[1])
-						)
-					)
+					new WaitingNode(durationFase[2])
 				)
-			}
+			)
 		);
+
+		// Setup blackboard and tree
 		tree.SetupBlackboard(blackboard);
 	}
 

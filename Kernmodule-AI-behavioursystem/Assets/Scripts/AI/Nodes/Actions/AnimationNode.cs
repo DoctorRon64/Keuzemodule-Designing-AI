@@ -18,12 +18,10 @@ public class AnimationNode : BaseNode
 
 		if (currentAnimationPhase == animationFase)
 		{
-			OnReset();
 			return NodeStatus.Success;
 		}
 		else
 		{
-			OnReset();
 			return NodeStatus.Failed;
 		}
 	}

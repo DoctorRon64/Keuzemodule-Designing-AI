@@ -13,16 +13,12 @@ public class ColliderNode : BaseNode
 
 	protected override NodeStatus OnUpdate()
 	{
-		Debug.Log($"Checking {GetNodeName()} condition");
-
 		if (enabledCollider != null && enabledCollider.enabled == true)
 		{
-			OnReset();
 			return NodeStatus.Success;
 		} 
 		else
 		{
-			OnReset();
 			return NodeStatus.Failed;
 		}
 	}

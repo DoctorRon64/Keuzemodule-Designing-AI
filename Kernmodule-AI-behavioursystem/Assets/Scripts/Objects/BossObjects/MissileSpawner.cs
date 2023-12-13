@@ -37,7 +37,6 @@ public class MissileSpawner : MonoBehaviour
 		{
 			GameObject missile = Instantiate(missilePrefab, transform.position, Quaternion.identity);
 			MissileController missileScript = missile.GetComponent<MissileController>();
-			Debug.Log(missileScript);
 			if (missileScript != null) { missileScript.Player = player; }
 		}
 	}
