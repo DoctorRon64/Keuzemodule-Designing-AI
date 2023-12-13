@@ -4,7 +4,7 @@ public enum NodeStatus { Success, Failed, Running }
 public abstract class BaseNode
 {
 	protected Blackboard blackboard;
-	private bool wasEntered = false;
+	protected bool wasEntered = false;
 	public string NodeName { get; protected set; }
 	public virtual void OnReset() 
 	{
