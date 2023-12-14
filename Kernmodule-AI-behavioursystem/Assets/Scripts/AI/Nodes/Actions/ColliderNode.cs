@@ -25,6 +25,8 @@ public class ColliderNode : BaseNode
 
 	protected override void OnEnter()
 	{
+		base.OnEnter();
+		blackboard.SetVariable(VariableNames.BossCurrentNode, $"{GetNodeName()}, Result: {allColliders}");
 		allColliders = blackboard.GetVariable<List<Collider2D>>(VariableNames.BossColliders);
 		foreach (var collider in allColliders)
 		{

@@ -128,6 +128,11 @@ public class Player : MonoBehaviour, IDamagable
 		{
 			isGrounded = true;
 		}
+
+		if (collision.gameObject.TryGetComponent<Platform>(out Platform _platform))
+		{
+			isGrounded = true;
+		}
 	}
 
 	void OnCollisionExit2D(Collision2D collision)
@@ -138,6 +143,11 @@ public class Player : MonoBehaviour, IDamagable
 		}
 
 		if (collision.gameObject.TryGetComponent<Ground>(out Ground _ground))
+		{
+			isGrounded = false;
+		}
+
+		if (collision.gameObject.TryGetComponent<Platform>(out Platform _platform))
 		{
 			isGrounded = false;
 		}

@@ -7,14 +7,16 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider playerHealthBar;
 	[SerializeField] private BossAgent bossAgent;
 	[SerializeField] private Player player;
-
+	[SerializeField] private Text StateText;
 	private void Awake()
 	{
+		StateText.text = bossAgent.CurrentBossNode;
 		playerHealthBar.maxValue = player.MaxHealth;
 		bossBar.maxValue = bossAgent.MaxHealth;
 		bossAgent.onHealthChanged += UpdateBossBar;
 		player.onHealthChanged += UpdatePlayerHealthBar;
 	}
+
 
 	private void OnDisable()
 	{
@@ -24,6 +26,7 @@ public class UIManager : MonoBehaviour
 
 	private void Update()
 	{
+		StateText.text = bossAgent.CurrentBossNode;
 		playerHealthBar.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 1, 0);
 	}
 

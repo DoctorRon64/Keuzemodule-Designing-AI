@@ -22,6 +22,7 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 
 	public Action<int> onHealthChanged;
 	public Action<int> onBossDied;
+	public string CurrentBossNode;
 
 	[Header("Objects")]
 	[SerializeField] private MissileSpawner missleSpanwer;
@@ -72,7 +73,7 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 					new ColliderNode(bossColliders[0]),
 					new AnimationNode(animator, 4)
 				),
-				new WaitingNode(durationFase[1])
+				new WaitingNode(durationFase[0])
 			),
 
 			// Composite 3 - OnGround
@@ -84,16 +85,22 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 						new ColliderNode(bossColliders[3]),
 						new AnimationNode(animator, 2)
 					),
-					new WaitingNode(durationFase[2])
+					new WaitingNode(durationFase[1])
 				),
 				// Center
 				new SequenceNode(
 					new IsObjectInRangeOf(blackboard.GetVariable<Transform>(VariableNames.PlayerTransform), -2.0f, 2.0f),
-					new ParrallelNode(
-						new ColliderNode(bossColliders[1]),
-						new AnimationNode(animator, 1)
+					new RandomSelectorNode(
+						new ParrallelNode(
+							new ColliderNode(bossColliders[1]),
+							new AnimationNode(animator, 1)
+						),
+						new ParrallelNode(
+							new ColliderNode(bossColliders[1]),
+							new AnimationNode(animator, 5)
+						)
 					),
-					new WaitingNode(durationFase[0])
+					new WaitingNode(durationFase[1])
 				),
 				// Right
 				new SequenceNode(
@@ -102,10 +109,10 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 						new ColliderNode(bossColliders[2]),
 						new AnimationNode(animator, 3)
 					),
-					new WaitingNode(durationFase[2])
+					new WaitingNode(durationFase[1])
 				)
 			)
-		); ;
+		);
 
 		// Setup blackboard and tree
 		tree.SetupBlackboard(blackboard);
@@ -118,7 +125,7 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 		blackboard.SetVariable(VariableNames.PlayerHealth, playerScript.Health);
 
 		NodeStatus result = tree.Tick();
-		Debug.Log($"tree Node: {tree.GetNodeName()}, {tree.GetNodeType()}, Tree Result: {result}");
+		CurrentBossNode = blackboard.GetVariable<string>(VariableNames.BossCurrentNode);
 	}
 	
 	protected virtual void OnHealthChanged(int newHealth)

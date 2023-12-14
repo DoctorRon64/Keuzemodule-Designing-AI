@@ -6,4 +6,5 @@
     public const string BossHealth = "BossHealth";
     public const string BossColliders = "BossColliders";
 	public const string FaseAnimations = "Fase";
+    public const string BossCurrentNode = "BossCurrentNode";
 }

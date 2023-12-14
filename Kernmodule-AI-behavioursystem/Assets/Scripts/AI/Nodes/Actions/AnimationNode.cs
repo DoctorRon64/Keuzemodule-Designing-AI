@@ -14,8 +14,6 @@ public class AnimationNode : BaseNode
 	protected override NodeStatus OnUpdate()
 	{
 		int currentAnimationPhase = animator.GetInteger(VariableNames.FaseAnimations);
-		Debug.Log($"Checking {GetNodeName()} condition. Current Animation Phase: {currentAnimationPhase}, Target Animation Phase: {animationFase}");
-
 		if (currentAnimationPhase == animationFase)
 		{
 			return NodeStatus.Success;
@@ -28,11 +26,8 @@ public class AnimationNode : BaseNode
 
 	protected override void OnEnter()
 	{
+		base.OnEnter();
+		blackboard.SetVariable(VariableNames.BossCurrentNode, $"{GetNodeName()}, Result: {animationFase}");
 		animator.SetInteger(VariableNames.FaseAnimations, animationFase);
-	}
-
-	public override string GetNodeType()
-	{
-		return $"{NodeName}-{animationFase}";
 	}
 }

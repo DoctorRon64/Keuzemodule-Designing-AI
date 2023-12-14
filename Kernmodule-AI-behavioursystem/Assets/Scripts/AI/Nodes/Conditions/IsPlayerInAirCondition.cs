@@ -17,6 +17,7 @@ public class IsPlayerInAirCondition : BaseNode
 
 	protected override void OnEnter()
 	{
+		base.OnEnter();
 		IsGrounded = false;
 	}
 }

@@ -28,14 +28,9 @@ public abstract class BaseNode
 		return result;
 	}
 
-	public virtual string GetNodeType()
-	{
-		return this.GetType().Name;
-	}
-
 	public virtual string GetNodeName()
 	{
-		return NodeName;
+		return this.ToString();
 	}
 
 	public virtual void SetupBlackboard(Blackboard blackboard)
@@ -44,7 +39,10 @@ public abstract class BaseNode
 	}
 
 	protected abstract NodeStatus OnUpdate();
-	protected virtual void OnEnter() { }
+	protected virtual void OnEnter() 
+	{
+		blackboard.SetVariable(VariableNames.BossCurrentNode, $"{GetNodeName()}, Result: {wasEntered}");
+	}
 	protected virtual void OnExit() { }
 
 }
