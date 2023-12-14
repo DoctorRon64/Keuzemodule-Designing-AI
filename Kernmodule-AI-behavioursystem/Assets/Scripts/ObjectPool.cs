@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-
 public class ObjectPool<T> where T : MonoBehaviour, IPoolable
 {
 	private List<IPoolable> activePool = new List<IPoolable>();

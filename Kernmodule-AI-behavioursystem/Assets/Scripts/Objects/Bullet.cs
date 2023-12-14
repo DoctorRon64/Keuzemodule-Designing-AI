@@ -5,7 +5,6 @@ public class Bullet : MonoBehaviour, IPoolable
 	private ObjectPool<Bullet> objectPool;
 	public bool Active { get; set; }
 	private int damageValue = 1;
-
 	public void SetupBullet(ObjectPool<Bullet> _pool)
 	{
 		rb = GetComponent<Rigidbody2D>();

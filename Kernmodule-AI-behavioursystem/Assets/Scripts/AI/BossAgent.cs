@@ -54,8 +54,6 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 		blackboard.SetVariable(VariableNames.PlayerHealth, playerScript.Health);
 		Health = MaxHealth;
 
-		Debug.Log(durationFase[0] + "Durationfase");
-
 		tree = new RandomSelectorNode(
 			// Composite 1 - Idle
 			new SequenceNode(
