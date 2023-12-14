@@ -9,10 +9,7 @@ public class MissileSpawner : MonoBehaviour
 
 	private void Start()
 	{
-		if (gameObject.activeSelf && gameObject.activeInHierarchy)
-		{
-			InvokeRepeating(nameof(SpawnMissile), 0f, spawnInterval);
-		}
+		InvokeRepeating(nameof(SpawnMissile), 0f, spawnInterval);
 	}
 
 	public void SetupBlackBoard(Blackboard _blackboard)
@@ -33,11 +30,14 @@ public class MissileSpawner : MonoBehaviour
 
 	private void SpawnMissile()
 	{
-		if (missilePrefab != null && player != null)
+		if (gameObject.activeSelf && gameObject.activeInHierarchy)
 		{
-			GameObject missile = Instantiate(missilePrefab, transform.position, Quaternion.identity);
-			MissileController missileScript = missile.GetComponent<MissileController>();
-			if (missileScript != null) { missileScript.Player = player; }
+			if (missilePrefab != null && player != null)
+			{
+				GameObject missile = Instantiate(missilePrefab, transform.position, Quaternion.identity);
+				MissileController missileScript = missile.GetComponent<MissileController>();
+				if (missileScript != null) { missileScript.Player = player; }
+			}
 		}
 	}
 }

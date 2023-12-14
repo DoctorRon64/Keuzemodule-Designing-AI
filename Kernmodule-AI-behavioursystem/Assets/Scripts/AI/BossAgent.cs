@@ -53,12 +53,16 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 		blackboard.SetVariable(VariableNames.PlayerHealth, playerScript.Health);
 		Health = MaxHealth;
 
+		Debug.Log(durationFase[0] + "Durationfase");
+
 		tree = new RandomSelectorNode(
 			// Composite 1 - Idle
-			new ParrallelNode(
-				new ColliderNode(bossColliders[0]),
-				new AnimationNode(animator, 0),
-				new WaitingNode(durationFase[0])
+			new SequenceNode(
+				new ParrallelNode(
+					new ColliderNode(bossColliders[0]),
+					new AnimationNode(animator, 0)
+				),
+				new WaitingNode(durationFase[1])
 			),
 
 			// Composite 2 - InAir
@@ -77,7 +81,7 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 				new SequenceNode(
 					new IsObjectInRangeOf(blackboard.GetVariable<Transform>(VariableNames.PlayerTransform), -9.0f, -5.0f),
 					new ParrallelNode(
-						new ColliderNode(bossColliders[2]),
+						new ColliderNode(bossColliders[3]),
 						new AnimationNode(animator, 2)
 					),
 					new WaitingNode(durationFase[2])
@@ -89,25 +93,25 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 						new ColliderNode(bossColliders[1]),
 						new AnimationNode(animator, 1)
 					),
-					new WaitingNode(durationFase[2])
+					new WaitingNode(durationFase[0])
 				),
 				// Right
 				new SequenceNode(
 					new IsObjectInRangeOf(blackboard.GetVariable<Transform>(VariableNames.PlayerTransform), 5.0f, 9.0f),
 					new ParrallelNode(
-						new ColliderNode(bossColliders[3]),
+						new ColliderNode(bossColliders[2]),
 						new AnimationNode(animator, 3)
 					),
 					new WaitingNode(durationFase[2])
 				)
 			)
-		);
+		); ;
 
 		// Setup blackboard and tree
 		tree.SetupBlackboard(blackboard);
 	}
 
-	private void FixedUpdate()
+	private void Update()
 	{
 		blackboard.SetVariable(VariableNames.BossHealth, health);
 		blackboard.SetVariable(VariableNames.PlayerIsGrounded, playerScript.isGrounded);

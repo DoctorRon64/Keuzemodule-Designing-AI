@@ -10,7 +10,7 @@ public class IsPlayerInAirCondition : BaseNode
 
 	protected override NodeStatus OnUpdate()
 	{
-		IsGrounded = !blackboard.GetVariable<bool>(VariableNames.PlayerIsGrounded);
+		IsGrounded = blackboard.GetVariable<bool>(VariableNames.PlayerIsGrounded);
 		if (IsGrounded) { return NodeStatus.Failed; }
 		return NodeStatus.Success;
 	}

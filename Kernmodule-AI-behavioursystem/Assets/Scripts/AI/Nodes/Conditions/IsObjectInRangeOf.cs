@@ -29,7 +29,7 @@ public class IsObjectInRangeOf : BaseNode
 		} 
 		else
 		{
-			return NodeStatus.Running;
+			return NodeStatus.Failed;
 		}
 	}
 }

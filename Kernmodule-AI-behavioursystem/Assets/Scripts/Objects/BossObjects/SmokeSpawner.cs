@@ -10,17 +10,17 @@ public class SmokeSpawner : MonoBehaviour
 
 	private void Start()
 	{
-		if (gameObject.activeSelf && gameObject.activeInHierarchy)
-		{
-			//super handige monobehaviour method ik las dat er minder null calls waren inplaats van void Update
-			InvokeRepeating("SpawnMissile", 0f, spawnInterval);
-		}
+		//super handige monobehaviour method ik las dat er minder null calls waren inplaats van void Update
+		InvokeRepeating(nameof(SpawnSmoke), 0f, spawnInterval);
 	}
 
-	private void SpawnMissile()
+	private void SpawnSmoke()
 	{
-		float randomX = Random.Range(spawnXMin, spawnXMax);
-		Vector3 spawnPosition = new Vector3(randomX, spawnY, 0f);
-		Instantiate(missilePrefab, spawnPosition, Quaternion.identity);
+		if (gameObject.activeSelf && gameObject.activeInHierarchy)
+		{
+			float randomX = Random.Range(spawnXMin, spawnXMax);
+			Vector3 spawnPosition = new Vector3(randomX, spawnY, 0f);
+			Instantiate(missilePrefab, spawnPosition, Quaternion.identity);
+		}
 	}
 }

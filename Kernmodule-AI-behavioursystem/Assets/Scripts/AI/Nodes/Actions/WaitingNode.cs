@@ -4,19 +4,21 @@ public class WaitingNode : BaseNode
 {
 	private float waitDuration; //in Seconds
 	private float startTime;
+	private bool isWaiting;
 
 	public WaitingNode(float _waitDuration)
 	{
 		this.waitDuration = _waitDuration;
 		this.startTime = 0f;
+		this.isWaiting = false;
 	}
 
 	protected override NodeStatus OnUpdate()
 	{
-		if (!wasEntered)
+		if (!isWaiting)
 		{
 			startTime = Time.time;
-			wasEntered = true;
+			isWaiting = true;
 		}
 
 		float elapsedTime = Time.time - startTime;
@@ -24,6 +26,7 @@ public class WaitingNode : BaseNode
 
 		if (elapsedTime >= waitDuration)
 		{
+			isWaiting = false;
 			return NodeStatus.Success;
 		}
 
@@ -32,6 +35,12 @@ public class WaitingNode : BaseNode
 
 	protected override void OnEnter()
 	{
-		wasEntered = false;
+		isWaiting = false;
+		startTime = Time.time;
+	}
+
+	protected override void OnExit()
+	{
+		isWaiting = false;
 	}
 }
