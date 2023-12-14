@@ -7,10 +7,10 @@ public class MissileSpawner : MonoBehaviour
 	private Transform player;
 	private Blackboard blackboard;
 
-	private void Start()
-	{
+    private void OnEnable()
+    {
 		InvokeRepeating(nameof(SpawnMissile), 0f, spawnInterval);
-	}
+    }
 
 	public void SetupBlackBoard(Blackboard _blackboard)
 	{

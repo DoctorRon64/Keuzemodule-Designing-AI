@@ -1,7 +1,8 @@
 using UnityEngine;
 
-public class Smoke : BossAttacker, IDamagableBoss
+public class Smoke : MonoBehaviour, IDamagableBoss, IShootable
 {
+	[SerializeField] private int damageAmount = 1;
 	public int Health { get; set; } = 2;
 
 	public void Die()
@@ -23,6 +24,11 @@ public class Smoke : BossAttacker, IDamagableBoss
 		if (collision.TryGetComponent<Ground>(out Ground _ground))
 		{
 			Destroy(gameObject);
+		}
+
+		if (collision.TryGetComponent<Player>(out Player _player))
+		{
+			_player.TakeDamage(damageAmount);
 		}
 	}
 }

@@ -89,7 +89,7 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 				),
 				// Center
 				new SequenceNode(
-					new IsObjectInRangeOf(blackboard.GetVariable<Transform>(VariableNames.PlayerTransform), -2.0f, 2.0f),
+					new IsObjectInRangeOf(blackboard.GetVariable<Transform>(VariableNames.PlayerTransform), -9.0f, 9.0f),
 					new RandomSelectorNode(
 						new ParrallelNode(
 							new ColliderNode(bossColliders[1]),
