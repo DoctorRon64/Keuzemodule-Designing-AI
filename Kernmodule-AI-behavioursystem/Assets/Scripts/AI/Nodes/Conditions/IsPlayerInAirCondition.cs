@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class IsPlayerInAirCondition : BaseNode
 {
 	private bool IsGrounded;

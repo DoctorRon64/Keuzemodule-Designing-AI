@@ -23,7 +23,7 @@ public class Player : MonoBehaviour, IDamagable
 	private bool isWallGliding = false;
 
 	[Header("Health")]
-	public int MaxHealth = 20;
+	public int MaxHealth = 50;
 	public Action<int> onPlayerDied;
 	private int health;
 	public int Health
