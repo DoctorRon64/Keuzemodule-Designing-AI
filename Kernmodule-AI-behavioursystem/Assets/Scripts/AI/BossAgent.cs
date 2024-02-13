@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,8 +32,9 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 	private RandomSelectorNode tree;
 	private Animator animator;
 	private Player playerScript;
+    private Coroutine behaviorTreeCoroutine;
 
-	[Header("BossColliders")]
+    [Header("BossColliders")]
 	[SerializeField] private List<Collider2D> bossColliders = new List<Collider2D>();
 
 	[Header("FaseDurations")]
@@ -56,7 +58,7 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 
 		tree = new RandomSelectorNode (
 				new SequenceNode(
-					new IsBossHealthUnder(500),
+					new IsBossHealthUnder(MaxHealth / 2),
 					new ParrallelNode(
 						new ColliderNode(bossColliders[4]),
 						new AnimationNode(animator, 6)
@@ -67,7 +69,7 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 
 				//Idle Task
 				new SequenceNode(
-					new IsBossHealthAbove(900),
+					new IsBossHealthAbove(MaxHealth / 2),
 					new ParrallelNode(
 						new ColliderNode(bossColliders[0]),
 						new AnimationNode(animator, 0)
@@ -135,11 +137,30 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 		blackboard.SetVariable(VariableNames.PlayerIsGrounded, playerScript.isGrounded);
 		blackboard.SetVariable(VariableNames.PlayerHealth, playerScript.Health);
 
-		NodeStatus result = tree.Tick();
-		CurrentBossNode = blackboard.GetVariable<string>(VariableNames.BossCurrentNode);
+        if (behaviorTreeCoroutine == null)
+        {
+            behaviorTreeCoroutine = StartCoroutine(ExecuteBehaviorTree());
+        }
+		Debug.Log(tree.ToString());
+
+        CurrentBossNode = blackboard.GetVariable<string>(VariableNames.BossCurrentNode);
 	}
-	
-	protected virtual void OnHealthChanged(int newHealth)
+
+    private IEnumerator ExecuteBehaviorTree()
+    {
+        while (true)
+        {
+            NodeStatus result = tree.Tick();
+            if (result != NodeStatus.Running)
+            {
+                break;
+            }
+            yield return null;
+        }
+        behaviorTreeCoroutine = null;
+    }
+
+    protected virtual void OnHealthChanged(int newHealth)
 	{
 		onHealthChanged?.Invoke(newHealth);
 	}

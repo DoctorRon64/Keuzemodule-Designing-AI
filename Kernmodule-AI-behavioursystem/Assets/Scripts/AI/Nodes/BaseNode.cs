@@ -1,34 +1,47 @@
-using System.Diagnostics;
-
 public enum NodeStatus { Success, Failed, Running }
 public abstract class BaseNode
 {
 	protected Blackboard blackboard;
 	protected bool wasEntered = false;
-	public string NodeName { get; protected set; }
+    protected bool isActive = false;
+    public string NodeName { get; protected set; }
 	public virtual void OnReset() 
 	{
 		wasEntered = false;
 	}
 
-	public NodeStatus Tick()
-	{
-		if (!wasEntered)
-		{
-			OnEnter();
-			wasEntered = true;
-		}
+    public NodeStatus Tick()
+    {
+        if (isActive)
+        {
+            var result = OnUpdate();
+            if (result != NodeStatus.Running)
+            {
+                OnExit();
+                wasEntered = false;
+                isActive = false;
+            }
+            return result;
+        }
 
-		var result = OnUpdate();
-		if (result != NodeStatus.Running)
-		{
-			OnExit();
-			wasEntered = false;
-		}
-		return result;
-	}
+        if (!wasEntered)
+        {
+            OnEnter();
+            wasEntered = true;
+            isActive = true;
+        }
 
-	public virtual string GetNodeName()
+        var finalResult = OnUpdate();
+        if (finalResult != NodeStatus.Running)
+        {
+            OnExit();
+            wasEntered = false;
+            isActive = false;
+        }
+        return finalResult;
+    }
+
+    public virtual string GetNodeName()
 	{
 		return this.ToString();
 	}

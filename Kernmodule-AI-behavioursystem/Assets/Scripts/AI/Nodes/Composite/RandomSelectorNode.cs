@@ -1,43 +1,70 @@
+using System.Collections.Generic;
+
 public class RandomSelectorNode : Composite
 {
-	public RandomSelectorNode(params BaseNode[] children) : base(children)
-	{
-	}
+    private List<int> availableIndices;
 
-	protected override NodeStatus OnUpdate()
-	{
-		ShuffleChildren();
+    public RandomSelectorNode(params BaseNode[] children) : base(children)
+    {
+        ResetAvailableIndices();
+    }
 
-		foreach (BaseNode child in children)
-		{
-			NodeStatus result = child.Tick();
-			switch (result)
-			{
-				case NodeStatus.Success: return NodeStatus.Success;
-				case NodeStatus.Failed: continue;
-				case NodeStatus.Running: return NodeStatus.Running;
-			}
-		}
-		return NodeStatus.Success;
-	}
+    protected override NodeStatus OnUpdate()
+    {
+        if (availableIndices.Count == 0)
+        {
+            ResetAvailableIndices();
+        }
 
-	private void ShuffleChildren()
-	{
-		for (int i = 0; i < children.Length; i++)
-		{
-			int randomIndex = UnityEngine.Random.Range(i, children.Length);
-			BaseNode tempChild = children[i];
-			children[i] = children[randomIndex];
-			children[randomIndex] = tempChild;
-		}
-	}
+        ShuffleAvailableIndices();
 
-	public override void OnReset()
-	{
-		base.OnReset();
-		foreach (var c in children)
-		{
-			c.OnReset();
-		}
-	}
+        foreach (int index in availableIndices)
+        {
+            BaseNode child = children[index];
+            NodeStatus result = child.Tick();
+            switch (result)
+            {
+                case NodeStatus.Success:
+                    ResetAvailableIndices();
+                    return NodeStatus.Success;
+                case NodeStatus.Failed:
+                    continue;
+                case NodeStatus.Running:
+                    return NodeStatus.Running;
+            }
+        }
+
+        ResetAvailableIndices();
+        return NodeStatus.Failed;
+    }
+
+    private void ResetAvailableIndices()
+    {
+        availableIndices = new List<int>();
+        for (int i = 0; i < children.Length; i++)
+        {
+            availableIndices.Add(i);
+        }
+    }
+
+    private void ShuffleAvailableIndices()
+    {
+        for (int i = 0; i < availableIndices.Count; i++)
+        {
+            int randomIndex = UnityEngine.Random.Range(i, availableIndices.Count);
+            int tempIndex = availableIndices[i];
+            availableIndices[i] = availableIndices[randomIndex];
+            availableIndices[randomIndex] = tempIndex;
+        }
+    }
+
+    public override void OnReset()
+    {
+        base.OnReset();
+        ResetAvailableIndices();
+        foreach (var c in children)
+        {
+            c.OnReset();
+        }
+    }
 }

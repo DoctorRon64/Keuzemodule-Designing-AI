@@ -15,6 +15,8 @@ public class WaitingNode : BaseNode
 	{
 		float elapsedTime = Time.time - startTime;
 
+		Debug.Log(elapsedTime + "time wait");
+
 		if (elapsedTime >= waitDuration)
 		{
 			return NodeStatus.Success;

@@ -1658,6 +1658,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1445473345}
     - target: {fileID: 5889261661567791480, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
+      propertyPath: MaxHealth
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 5889261661567791480, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
       propertyPath: blackboard
       value: 
       objectReference: {fileID: 0}
@@ -1671,11 +1675,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5889261661567791480, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
       propertyPath: durationFase.Array.data[0]
-      value: 40
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5889261661567791480, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
       propertyPath: durationFase.Array.data[1]
-      value: 15
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5889261661567791480, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
       propertyPath: durationFase.Array.data[2]
