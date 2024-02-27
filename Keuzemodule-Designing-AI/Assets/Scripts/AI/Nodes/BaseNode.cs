@@ -12,33 +12,19 @@ public abstract class BaseNode
 
     public NodeStatus Tick()
     {
-        if (isActive)
-        {
-            var result = OnUpdate();
-            if (result != NodeStatus.Running)
-            {
-                OnExit();
-                wasEntered = false;
-                isActive = false;
-            }
-            return result;
-        }
-
         if (!wasEntered)
         {
             OnEnter();
             wasEntered = true;
-            isActive = true;
         }
 
-        var finalResult = OnUpdate();
-        if (finalResult != NodeStatus.Running)
+        NodeStatus result2 = OnUpdate();
+        if (result2 != NodeStatus.Running)
         {
             OnExit();
             wasEntered = false;
-            isActive = false;
         }
-        return finalResult;
+        return result2;
     }
 
     public virtual string GetNodeName()

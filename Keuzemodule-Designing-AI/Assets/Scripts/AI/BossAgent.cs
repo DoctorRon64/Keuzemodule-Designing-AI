@@ -32,7 +32,6 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 	private RandomSelectorNode tree;
 	private Animator animator;
 	private Player playerScript;
-    private Coroutine behaviorTreeCoroutine;
 
     [Header("BossColliders")]
 	[SerializeField] private List<Collider2D> bossColliders = new List<Collider2D>();
@@ -137,28 +136,11 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 		blackboard.SetVariable(VariableNames.PlayerIsGrounded, playerScript.isGrounded);
 		blackboard.SetVariable(VariableNames.PlayerHealth, playerScript.Health);
 
-        if (behaviorTreeCoroutine == null)
-        {
-            behaviorTreeCoroutine = StartCoroutine(ExecuteBehaviorTree());
-        }
-		Debug.Log(tree.ToString());
+		NodeStatus result = tree.Tick();
+		Debug.Log(result);
 
-        CurrentBossNode = blackboard.GetVariable<string>(VariableNames.BossCurrentNode);
+		CurrentBossNode = blackboard.GetVariable<string>(VariableNames.BossCurrentNode);
 	}
-
-    private IEnumerator ExecuteBehaviorTree()
-    {
-        while (true)
-        {
-            NodeStatus result = tree.Tick();
-            if (result != NodeStatus.Running)
-            {
-                break;
-            }
-            yield return null;
-        }
-        behaviorTreeCoroutine = null;
-    }
 
     protected virtual void OnHealthChanged(int newHealth)
 	{
