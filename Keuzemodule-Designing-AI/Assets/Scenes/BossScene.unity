@@ -1613,10 +1613,6 @@ PrefabInstance:
       propertyPath: m_FlipX
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4440497252241468169, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
-      propertyPath: spawnInterval
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5053520227710040219, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
       propertyPath: m_Name
       value: Boss
@@ -1671,7 +1667,7 @@ PrefabInstance:
       objectReference: {fileID: 1305408801}
     - target: {fileID: 5889261661567791480, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
       propertyPath: durationFase.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5889261661567791480, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
       propertyPath: durationFase.Array.data[0]
@@ -1684,6 +1680,10 @@ PrefabInstance:
     - target: {fileID: 5889261661567791480, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
       propertyPath: durationFase.Array.data[2]
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5889261661567791480, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
+      propertyPath: durationFase.Array.data[3]
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6026882142121233967, guid: 20204052ba8d82543a587bea4ee1967d, type: 3}
       propertyPath: m_Color.b

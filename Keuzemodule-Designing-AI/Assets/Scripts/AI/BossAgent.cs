@@ -55,7 +55,7 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 		blackboard.SetVariable(VariableNames.PlayerHealth, playerScript.Health);
 		Health = MaxHealth;
 
-		tree = new RandomSelectorNode (
+		tree = new RandomSelectorNode(
 				new SequenceNode(
 					new IsBossHealthUnder(MaxHealth / 2),
 					new ParrallelNode(
@@ -113,7 +113,7 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 						),
 						new WaitingNode(durationFase[1])
 					),
-					
+
 					// Right
 					new SequenceNode(
 						new IsObjectInRangeOf(blackboard.GetVariable<Transform>(VariableNames.PlayerTransform), 5.0f, 9.0f),
