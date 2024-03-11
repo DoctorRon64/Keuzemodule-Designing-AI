@@ -28,7 +28,7 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 	[Header("Objects")]
 	[SerializeField] private MissileSpawner missleSpanwer;
 	[SerializeField] private Transform player;
-	private Blackboard blackboard = new Blackboard();
+	private readonly Blackboard blackboard = new Blackboard();
 	private RandomSelectorNode tree;
 	private Animator animator;
 	private Player playerScript;
@@ -38,6 +38,8 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 
 	[Header("FaseDurations")]
 	[SerializeField] private List<float> durationFase = new List<float>();
+
+	private NodeStatus result;
 
 	private void Awake()
 	{
@@ -136,7 +138,7 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 		blackboard.SetVariable(VariableNames.PlayerIsGrounded, playerScript.isGrounded);
 		blackboard.SetVariable(VariableNames.PlayerHealth, playerScript.Health);
 
-		NodeStatus result = tree.Tick();
+		result = tree.Tick();
 		Debug.Log(result);
 
 		CurrentBossNode = blackboard.GetVariable<string>(VariableNames.BossCurrentNode);
@@ -156,7 +158,7 @@ public class BossAgent : MonoBehaviour, IDamagableBoss, IShootable
 		}
 	}
 
-	public void Die()
+	private void Die()
 	{
 		onBossDied?.Invoke(1);
 	}

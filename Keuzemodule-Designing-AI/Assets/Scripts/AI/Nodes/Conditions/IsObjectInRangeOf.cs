@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class IsObjectInRangeOf : BaseNode
+public class IsObjectInRangeOf : Node
 {
 	private Transform Transform;
-	private float minRange;
-	private float maxRange;
+	private readonly float minRange;
+	private readonly float maxRange;
 
 	public IsObjectInRangeOf(Transform _transform, float _minRange, float _maxRange)
 	{

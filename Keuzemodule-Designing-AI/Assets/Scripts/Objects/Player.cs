@@ -1,169 +1,191 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+
 public class Player : MonoBehaviour, IDamagable
 {
-	[Header("Shooting")]
-	[SerializeField] private GameObject bulletPrefab;
-	[SerializeField] private Transform shootingPoint;
-	[SerializeField] private int bulletAmount = 10;
-	[SerializeField] private float bulletSpawnDistance = 1.0f;
-	[SerializeField] private float bulletSpeed = 10f;
-	[SerializeField] private float fireRate = 0.2f;
-	private ObjectPool<Bullet> bulletPool;
-	private bool isShooting;
-	private float nextFireTime;
+    private Animator anim;
+    private Transform playerTransform;
+    private Camera mainCamera;
 
-	[Header("Movement")]
-	[SerializeField] private float moveSpeed = 5f;
-	[SerializeField] private float jumpForce = 10f;
-	[SerializeField] private List<KeyCode> keys;
-	private Rigidbody2D rb;
-	public bool isGrounded;
-	private bool isWallGliding = false;
+    [Header("Shooting")] [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Transform shootingPoint;
+    [SerializeField] private int bulletAmount = 10;
+    [SerializeField] private float bulletSpawnDistance = 1.0f;
+    [SerializeField] private float bulletSpeed = 10f;
+    [SerializeField] private float fireRate = 0.2f;
+    private ObjectPool<Bullet> bulletPool;
+    private bool isShooting;
+    private float nextFireTime;
 
-	[Header("Health")]
-	public int MaxHealth = 50;
-	public Action<int> onPlayerDied;
-	private int health;
-	public int Health
-	{
-		get { return health; }
-		set
-		{
-			if (health != value)
-			{
-				health = value;
-				OnHealthChanged(health);
-			}
-		}
-	}
-	public Action<int> onHealthChanged;
+    [Header("Movement")] [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float jumpForce = 10f;
+    [SerializeField] private List<KeyCode> keys;
+    private Rigidbody2D rb;
+    public bool isGrounded;
+    private bool isWallGliding = false;
+    private bool isWalking = false;
+    private Collider2D playerCollider;
 
-	void Start()
-	{
-		rb = GetComponent<Rigidbody2D>();
+    [Header("Health")] public int MaxHealth = 50;
+    private int health;
 
-		shootingPoint.localPosition = new Vector3(bulletSpawnDistance, 0f, 0f);
-		Health = MaxHealth;
+    public int Health
+    {
+        get { return health; }
+        set
+        {
+            if (health != value)
+            {
+                health = value;
+                OnHealthChanged(health);
+            }
+        }
+    }
 
-		bulletPool = new ObjectPool<Bullet>(bulletPrefab.GetComponent<Bullet>());
-		for (int i = 0; i < bulletAmount; i++)
-		{
-			Bullet bullet = (Bullet)bulletPool.AddNewItemToPool();
-			bullet.SetupBullet(bulletPool);
-		}
-	}
-	void Update()
-	{
-		HandleActions();
-	}
+    public Action<int> onPlayerDied;
+    public Action<int> onHealthChanged;
 
-	void FixedUpdate()
-	{
-		MovePlayer();
-		ShootBullet();
-	}
-	protected virtual void OnHealthChanged(int newHealth)
-	{
-		onHealthChanged?.Invoke(newHealth);
-	}
+    //beter animation int to string
+    private static readonly int walking = Animator.StringToHash("isWalking");
+    private static readonly int shoot = Animator.StringToHash("Shoot");
+    private static readonly int isWalkingShoot = Animator.StringToHash("isWalkingShoot");
 
-	void MovePlayer()
-	{
-		if (!isWallGliding || isGrounded)
-		{
-			float horizontalInput = Input.GetAxis("Horizontal");
-			Vector2 moveDirection = new Vector2(horizontalInput, 0);
-			rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
-		}
-	}
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        playerTransform = transform;
+        playerCollider = GetComponent<Collider2D>();
+        mainCamera = Camera.main;
 
-	void HandleActions()
-	{
-		if (Input.GetKeyDown(keys[0]) && isGrounded) { Jump(); }
-		isShooting = Input.GetKey(keys[1]);
-	}
+        shootingPoint.localPosition = new Vector3(bulletSpawnDistance, 0f, 0f);
+        Health = MaxHealth;
 
-	void Jump()
-	{
-		rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-	}
+        bulletPool = new ObjectPool<Bullet>(bulletPrefab.GetComponent<Bullet>());
+        for (int i = 0; i < bulletAmount; i++)
+        {
+            Bullet bullet = (Bullet)bulletPool.AddNewItemToPool();
+            bullet.SetupBullet(bulletPool);
+        }
+    }
 
-	void ShootBullet()
-	{
+    void Update()
+    {
+        HandleActions();
+    }
+
+    void FixedUpdate()
+    {
+        MovePlayer();
+
         if (isShooting && Time.time > nextFireTime)
-		{
-			nextFireTime = Time.time + fireRate;
+        {
+            ShootBullet();
+        }
+    }
 
-			//get mouse pos
-			Vector3 mousePosition = Input.mousePosition;
-			mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+    protected virtual void OnHealthChanged(int newHealth)
+    {
+        onHealthChanged?.Invoke(newHealth);
+    }
 
-			//let it be around the player
-			Vector2 direction = (mousePosition - transform.position).normalized;
-			Vector3 shootingPointPosition = transform.position + (Vector3)direction * bulletSpawnDistance;
+    void MovePlayer()
+    {
+        if (!isWallGliding || isGrounded)
+        {
+            float horizontalInput = Input.GetAxis("Horizontal");
+            rb.velocity = new Vector2(horizontalInput * moveSpeed, rb.velocity.y);
+            isWalking = (horizontalInput != 0);
+            anim.SetBool(walking, horizontalInput != 0);
+        }
+    }
 
-			// Ensure shooting point stays on the circumference of the circle
-			shootingPointPosition = transform.position + (shootingPointPosition - transform.position).normalized * bulletSpawnDistance;
-			shootingPoint.position = shootingPointPosition;
+    void HandleActions()
+    {
+        if (Input.GetKeyDown(keys[0]) && isGrounded)
+        {
+            Jump();
+        }
 
-			//spawn bullet
-			Bullet bullet = bulletPool.RequestObject(shootingPoint.position) as Bullet;
-			if (bullet != null)
-			{
-				bullet.SetDirection(direction, bulletSpeed);
-			}
-		}
-	}
+        isShooting = Input.GetKey(keys[1]);
+    }
 
-	void OnCollisionEnter2D(Collision2D collision)
-	{
-		if (collision.gameObject.TryGetComponent<Wall>(out Wall wall))
-		{
-			isWallGliding = true;
-		}
+    void Jump()
+    {
+        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+    }
 
-		if (collision.gameObject.TryGetComponent<Ground>(out Ground _ground))
-		{
-			isGrounded = true;
-		}
+    void ShootBullet()
+    {
+        nextFireTime = Time.time + fireRate;
+        anim.SetTrigger(shoot);
 
-		if (collision.gameObject.TryGetComponent<Platform>(out Platform _platform))
-		{
-			isGrounded = true;
-		}
-	}
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition = mainCamera.ScreenToWorldPoint(mousePosition);
 
-	void OnCollisionExit2D(Collision2D collision)
-	{
-		if (collision.gameObject.TryGetComponent<Wall>(out Wall wall))
-		{
-			isWallGliding = false;
-		}
+        Vector2 direction = (mousePosition - playerTransform.position).normalized;
+        Vector3 shootingPointPosition = playerTransform.position + (Vector3)direction * bulletSpawnDistance;
 
-		if (collision.gameObject.TryGetComponent<Ground>(out Ground _ground))
-		{
-			isGrounded = false;
-		}
+        shootingPointPosition = playerTransform.position +
+                                (shootingPointPosition - playerTransform.position).normalized * bulletSpawnDistance;
+        shootingPoint.position = shootingPointPosition;
 
-		if (collision.gameObject.TryGetComponent<Platform>(out Platform _platform))
-		{
-			isGrounded = false;
-		}
-	}
+        Bullet bullet = bulletPool.RequestObject(shootingPoint.position) as Bullet;
+        if (bullet != null)
+        {
+            bullet.SetDirection(direction, bulletSpeed);
+            bullet.SetRotation(direction);
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.TryGetComponent(out Wall wall))
+        {
+            isWallGliding = true;
+        }
+
+        if (collision.collider.TryGetComponent(out Ground _ground) ||
+            collision.collider.TryGetComponent(out Platform _platform))
+        {
+            isGrounded = true;
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.collider.TryGetComponent(out Wall wall))
+        {
+            isWallGliding = false;
+        }
+
+        if (collision.collider.TryGetComponent(out Ground _ground) ||
+            collision.collider.TryGetComponent(out Platform _platform))
+        {
+            isGrounded = false;
+        }
+    }
 
     public void TakeDamage(int _damage)
     {
-		Health -= _damage;
-		if (Health <= 0)
-		{
-			Die();
-		}
+        Health -= _damage;
+        if (Health <= 0)
+        {
+            Die();
+        }
     }
 
     private void Die()
     {
-		onPlayerDied?.Invoke(2);
+        onPlayerDied?.Invoke(2);
+    }
+
+    void UpdateAnimation()
+    {
+        if (isWalking && isShooting)
+            anim.SetBool(isWalkingShoot, (isWalking && isShooting));
+        else
+            anim.SetBool(isWalkingShoot, false);
     }
 }

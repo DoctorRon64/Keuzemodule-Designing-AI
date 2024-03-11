@@ -4,7 +4,7 @@ public class RandomSelectorNode : Composite
 {
     private List<int> availableIndices;
 
-    public RandomSelectorNode(params BaseNode[] children) : base(children)
+    public RandomSelectorNode(params Node[] children) : base(children)
     {
         ResetAvailableIndices();
     }
@@ -20,7 +20,7 @@ public class RandomSelectorNode : Composite
 
         foreach (int index in availableIndices)
         {
-            BaseNode child = children[index];
+            Node child = children[index];
             NodeStatus result = child.Tick();
             switch (result)
             {
@@ -52,9 +52,7 @@ public class RandomSelectorNode : Composite
         for (int i = 0; i < availableIndices.Count; i++)
         {
             int randomIndex = UnityEngine.Random.Range(i, availableIndices.Count);
-            int tempIndex = availableIndices[i];
-            availableIndices[i] = availableIndices[randomIndex];
-            availableIndices[randomIndex] = tempIndex;
+            (availableIndices[i], availableIndices[randomIndex]) = (availableIndices[randomIndex], availableIndices[i]);
         }
     }
 

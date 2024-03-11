@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ColliderNode : BaseNode
+public class ColliderNode : Node
 {
-	private Collider2D enabledCollider;
+	private readonly Collider2D enabledCollider;
 	List<Collider2D> allColliders = new List<Collider2D>();
 
 	public ColliderNode(Collider2D _colliderEnabled)

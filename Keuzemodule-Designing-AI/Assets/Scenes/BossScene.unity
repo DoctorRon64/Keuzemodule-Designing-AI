@@ -1869,7 +1869,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!82 &1902736154
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2276,7 +2276,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2846523029879430, guid: 6c974a21ce40a8f4eac781e3b4308839, type: 3}
       propertyPath: bulletAmount
-      value: 50
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2846523029879430, guid: 6c974a21ce40a8f4eac781e3b4308839, type: 3}
       propertyPath: shootingPoint
@@ -2334,6 +2334,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1959385837360055537, guid: 6c974a21ce40a8f4eac781e3b4308839, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: fc32eff12a5a5c847ab5a37544191b14, type: 2}
     - target: {fileID: 3316980081181789226, guid: 6c974a21ce40a8f4eac781e3b4308839, type: 3}
       propertyPath: m_Name
       value: Player

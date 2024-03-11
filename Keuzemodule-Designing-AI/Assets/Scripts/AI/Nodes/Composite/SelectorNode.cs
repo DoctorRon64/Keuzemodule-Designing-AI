@@ -1,15 +1,15 @@
 ﻿using System;
 public class SelectorNode : Composite
 {
-	public SelectorNode(params BaseNode[] children) : base(children)
+	public SelectorNode(params Node[] children) : base(children)
 	{
 	}
 
 	protected override NodeStatus OnUpdate()
 	{
-		for (int i = 0; i < children.Length; i++)
+		foreach (var t in children)
 		{
-			NodeStatus result = children[i].Tick();
+			NodeStatus result = t.Tick();
 			switch (result)
 			{
 				case NodeStatus.Success: return NodeStatus.Success;
@@ -17,6 +17,7 @@ public class SelectorNode : Composite
 				case NodeStatus.Running: return NodeStatus.Running;
 			}
 		}
+
 		return NodeStatus.Success;
 	}
 

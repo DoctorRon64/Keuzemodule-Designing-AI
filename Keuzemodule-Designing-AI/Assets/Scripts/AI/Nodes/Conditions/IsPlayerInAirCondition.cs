@@ -1,4 +1,4 @@
-public class IsPlayerInAirCondition : BaseNode
+public class IsPlayerInAirCondition : Node
 {
 	private bool IsGrounded;
 

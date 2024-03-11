@@ -2,7 +2,7 @@ public class SequenceNode : Composite
 {
 	private int currentChildIndex;
 
-	public SequenceNode(params BaseNode[] children) : base(children)
+	public SequenceNode(params Node[] children) : base(children)
 	{
 		currentChildIndex = 0;
 	}

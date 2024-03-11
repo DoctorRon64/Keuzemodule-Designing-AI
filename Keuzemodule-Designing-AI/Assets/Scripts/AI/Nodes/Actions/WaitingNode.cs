@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class WaitingNode : BaseNode
+public class WaitingNode : Node
 {
-	private float waitDuration; //in Seconds
+	private readonly float waitDuration; //in Seconds
 	private float startTime;
 
 	public WaitingNode(float _waitDuration)

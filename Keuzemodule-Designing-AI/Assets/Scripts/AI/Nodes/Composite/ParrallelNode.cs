@@ -2,7 +2,7 @@ using System;
 
 public class ParrallelNode : Composite
 {
-	public ParrallelNode(params BaseNode[] children) : base(children)
+	public ParrallelNode(params Node[] children) : base(children)
 	{
 	}
 
@@ -11,7 +11,7 @@ public class ParrallelNode : Composite
 		bool allChildrenSucceeded = true;
 		bool anyChildRunning = false;
 
-		foreach (BaseNode child in children)
+		foreach (Node child in children)
 		{
 			NodeStatus childStatus = child.Tick();
 			switch(childStatus)

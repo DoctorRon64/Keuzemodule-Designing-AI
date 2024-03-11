@@ -1,6 +1,6 @@
-public class IsBossHealthUnder : BaseNode
+public class IsBossHealthUnder : Node
 {
-	private int health;
+	private readonly int health;
 
 	public IsBossHealthUnder(int _health)
 	{

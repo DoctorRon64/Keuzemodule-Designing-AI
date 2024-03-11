@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class AnimationNode : BaseNode
+public class AnimationNode : Node
 {
-	private Animator animator;
+	private readonly Animator animator;
 	private int animationFase;
 
 	public AnimationNode(Animator _animator, int _animationFase)
