@@ -55,6 +55,7 @@ public class Player : MonoBehaviour, IDamagable
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        anim.SetInteger("Player", 0);
         playerTransform = transform;
         playerCollider = GetComponent<Collider2D>();
         mainCamera = Camera.main;
@@ -73,6 +74,7 @@ public class Player : MonoBehaviour, IDamagable
     void Update()
     {
         HandleActions();
+        UpdateAnimation();
     }
 
     void FixedUpdate()
