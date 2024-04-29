@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class BossSmoke : BossObject<BossSmoke>
+public class BossSmoke : BossProjectile<BossSmoke>
 {
     public override void SetDirection(Vector2 _direction, float _speed)
     {

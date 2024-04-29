@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Platform : MonoBehaviour, IShootable
+public class Platform : MonoBehaviour, Iwallable
 {
 
 }

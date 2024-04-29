@@ -16,15 +16,26 @@ public class Bullet : MonoBehaviour, IPoolable
 		rb.velocity = _direction.normalized * _speed;
 	}
 
-	public void SetRotation(Vector2 direction)
+	public void SetRotation(Vector2 _direction)
 	{
-		float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+		float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
 		transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 	}
 
 	void OnTriggerEnter2D(Collider2D _other)
 	{
-		if (!_other.gameObject.TryGetComponent<IShootable>(out IShootable _shootable)) return;
+		if (_other.gameObject.TryGetComponent(out IDamagableBoss damagableBoss))
+		{
+			damagableBoss.TakeDamage(damageValue);
+		}
+
+		if (_other.gameObject.TryGetComponent(out IShootable _shootable))
+		{
+			DisablePoolable();
+			objectPool.DeactivateItem(this);
+		}
+		
+		if (!_other.gameObject.TryGetComponent<Iwallable>(out Iwallable _wallable)) return;
 		DisablePoolable();
 		objectPool.DeactivateItem(this);
 	}

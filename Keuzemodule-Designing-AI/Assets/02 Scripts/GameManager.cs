@@ -6,15 +6,18 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 	[SerializeField] private Player player;
-
+	[SerializeField] private Boss boss;
+	
 	private void OnEnable()
 	{
-		player.onPlayerDied += GameOver;
+		player.OnPlayerDied += GameOver;
+		boss.OnBossDied += GameOver;
 	}
 
 	private void OnDisable()
 	{
-		player.onPlayerDied -= GameOver;
+		player.OnPlayerDied -= GameOver;
+		boss.OnBossDied -= GameOver;
 	}
 
 	private void GameOver(int _sceneChange)

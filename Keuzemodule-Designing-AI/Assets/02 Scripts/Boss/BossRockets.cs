@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class BossRockets : BossObject<BossRockets>
+public class BossRockets : BossProjectile<BossRockets>
 {
     public override void SetDirection(Vector2 _direction, float _speed)
     {

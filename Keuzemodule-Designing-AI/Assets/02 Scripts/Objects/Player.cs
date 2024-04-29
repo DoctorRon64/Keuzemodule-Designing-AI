@@ -32,18 +32,16 @@ public class Player : MonoBehaviour, IDamagable
 
     public int Health
     {
-        get { return health; }
+        get => health;
         set
         {
-            if (health != value)
-            {
-                health = value;
-                OnHealthChanged(health);
-            }
+            if (health == value) return;
+            health = value;
+            InvokeNewHealth(health);
         }
     }
 
-    public Action<int> onPlayerDied;
+    public Action<int> OnPlayerDied;
     public Action<int> onHealthChanged;
 
     //beter animation int to string
@@ -87,7 +85,7 @@ public class Player : MonoBehaviour, IDamagable
         }
     }
 
-    protected virtual void OnHealthChanged(int newHealth)
+    protected virtual void InvokeNewHealth(int newHealth)
     {
         onHealthChanged?.Invoke(newHealth);
     }
@@ -159,7 +157,7 @@ public class Player : MonoBehaviour, IDamagable
     {
         if (collision.collider.TryGetComponent(out Wall wall))
         {
-            isWallGliding = false;
+            //isWallGliding = false;
         }
 
         if (collision.collider.TryGetComponent(out Ground _ground) ||
@@ -172,8 +170,6 @@ public class Player : MonoBehaviour, IDamagable
     public void TakeDamage(int _damage)
     {
         Health -= _damage;
-        Debug.Log(health +"health");
-        Debug.Log(_damage + "damage");
         if (Health <= 0)
         {
             Die();
@@ -182,7 +178,7 @@ public class Player : MonoBehaviour, IDamagable
 
     private void Die()
     {
-        onPlayerDied?.Invoke(2);
+        OnPlayerDied?.Invoke(2);
     }
 
     void UpdateAnimation()

@@ -1,5 +1,5 @@
 using UnityEngine;
 
-public class Wall : MonoBehaviour, IShootable
+public class Wall : MonoBehaviour, Iwallable
 {
 }
