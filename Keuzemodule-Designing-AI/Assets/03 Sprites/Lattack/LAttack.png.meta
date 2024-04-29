@@ -1,0 +1,919 @@
+fileFormatVersion: 2
+guid: c026d28683f946445a72f7abbff0d184
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 170
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: LAttack_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1557.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c5e751a5715df8418b7697cc925314a
+      internalID: -1791236749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_1
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 1557.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fbc841e5e4251064d94ed122d4d90ff0
+      internalID: -1915521735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_2
+      rect:
+        serializedVersion: 2
+        x: 682
+        y: 1557.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d31b4b3ed0095949942057ac38ed436
+      internalID: -1176786514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_3
+      rect:
+        serializedVersion: 2
+        x: 1023
+        y: 1557.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6a8ecdb06a5a45c458d6c5c9177bab14
+      internalID: -649828296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_4
+      rect:
+        serializedVersion: 2
+        x: 1364
+        y: 1557.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dfbb89e91cc1026448a05af4a494721d
+      internalID: -648817594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_5
+      rect:
+        serializedVersion: 2
+        x: 1705
+        y: 1557.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc509e6154329ca4f9eddf8282feccac
+      internalID: -151397771
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1246.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5c1307ffe5774341a73d5f152250190
+      internalID: 1227306923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_7
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 1246.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2717c2f0792ad234eb7e2c81ca22f261
+      internalID: 1055201271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_8
+      rect:
+        serializedVersion: 2
+        x: 682
+        y: 1246.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 97571be8f5c4c894f9a52841ccea52f3
+      internalID: -1081998331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_9
+      rect:
+        serializedVersion: 2
+        x: 1023
+        y: 1246.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4ba3258f0d3f1d244b1148f69fd2e403
+      internalID: -964233623
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_10
+      rect:
+        serializedVersion: 2
+        x: 1364
+        y: 1246.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fbac03028b297224b9dd95fb3941a3f2
+      internalID: -2041496169
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_11
+      rect:
+        serializedVersion: 2
+        x: 1705
+        y: 1246.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1bc13a1ca85cd7543afc8bc32657605e
+      internalID: -1173949206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 935.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cac885e9c70384146ac78443080ea2e1
+      internalID: 517995950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_13
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 935.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dc2d7c16f0ed9dd41980ca9ab25352dc
+      internalID: 1719770008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_14
+      rect:
+        serializedVersion: 2
+        x: 682
+        y: 935.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a0139e9845b42c049a8aa003181c196f
+      internalID: 496889610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_15
+      rect:
+        serializedVersion: 2
+        x: 1023
+        y: 935.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1634d3dd8a04cd84d850da849aad12ab
+      internalID: 1188286261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_16
+      rect:
+        serializedVersion: 2
+        x: 1364
+        y: 935.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a9c479786a325c4bbdbdbc18f46e398
+      internalID: -1773405041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_17
+      rect:
+        serializedVersion: 2
+        x: 1705
+        y: 935.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b3a59004127a064c87f566f97221b74
+      internalID: 81465851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_18
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 624.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fe3e8b136055fa944be0c33a69f237ef
+      internalID: -925459641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_19
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 624.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a9525d8bee1bf2646b35a3f6b9064104
+      internalID: 1840877801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_20
+      rect:
+        serializedVersion: 2
+        x: 682
+        y: 624.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 26826610a202eac46b4b5f5e044789f8
+      internalID: -1791888466
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_21
+      rect:
+        serializedVersion: 2
+        x: 1023
+        y: 624.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c6dd39167c239d408aff68d30bb79c7
+      internalID: 577722508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_22
+      rect:
+        serializedVersion: 2
+        x: 1364
+        y: 624.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce6c7f3a50355b141ab0c2213f1da445
+      internalID: 865798215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_23
+      rect:
+        serializedVersion: 2
+        x: 1705
+        y: 624.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b80752dc049f8e947bb3777e9adeca6d
+      internalID: 1618472589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 313.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b7ef7596a22f27a4fac08a7520efc2d1
+      internalID: 940287396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_25
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 313.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 119fcad9376443441bd44596dc953e48
+      internalID: -1020048650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_26
+      rect:
+        serializedVersion: 2
+        x: 682
+        y: 313.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5f1458948b9513a41b6a93e59a00fdb3
+      internalID: -1804594147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_27
+      rect:
+        serializedVersion: 2
+        x: 1023
+        y: 313.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1623f567ac3afa941ac7ee8529f2e52f
+      internalID: -195136768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_28
+      rect:
+        serializedVersion: 2
+        x: 1364
+        y: 313.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 611d4f53198ea0a4a8805d8f07203e5b
+      internalID: 260027205
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_29
+      rect:
+        serializedVersion: 2
+        x: 1705
+        y: 313.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb018539695375c47bc4f4d598c2cefb
+      internalID: 1902347635
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_30
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91ded6f776cf12946915510c9263640f
+      internalID: -350345323
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_31
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 2.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6e0eb29fae774c949bb728b1c04ed7bc
+      internalID: -580708123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_32
+      rect:
+        serializedVersion: 2
+        x: 682
+        y: 2.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dce4611bce2da2d4d84cb12008d54aeb
+      internalID: 1703393372
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_33
+      rect:
+        serializedVersion: 2
+        x: 1023
+        y: 2.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b6c3c2f1146ab63428cbf322412df0c5
+      internalID: -559127472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_34
+      rect:
+        serializedVersion: 2
+        x: 1364
+        y: 2.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 66320efdcc97dfa428e85f6061131d9b
+      internalID: 151864718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LAttack_35
+      rect:
+        serializedVersion: 2
+        x: 1705
+        y: 2.5
+        width: 341.33334
+        height: 311.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 082fc0ee8df75384cb48437e1209f7a6
+      internalID: -609451307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      LAttack_0: -1791236749
+      LAttack_1: -1915521735
+      LAttack_10: -2041496169
+      LAttack_11: -1173949206
+      LAttack_12: 517995950
+      LAttack_13: 1719770008
+      LAttack_14: 496889610
+      LAttack_15: 1188286261
+      LAttack_16: -1773405041
+      LAttack_17: 81465851
+      LAttack_18: -925459641
+      LAttack_19: 1840877801
+      LAttack_2: -1176786514
+      LAttack_20: -1791888466
+      LAttack_21: 577722508
+      LAttack_22: 865798215
+      LAttack_23: 1618472589
+      LAttack_24: 940287396
+      LAttack_25: -1020048650
+      LAttack_26: -1804594147
+      LAttack_27: -195136768
+      LAttack_28: 260027205
+      LAttack_29: 1902347635
+      LAttack_3: -649828296
+      LAttack_30: -350345323
+      LAttack_31: -580708123
+      LAttack_32: 1703393372
+      LAttack_33: -559127472
+      LAttack_34: 151864718
+      LAttack_35: -609451307
+      LAttack_4: -648817594
+      LAttack_5: -151397771
+      LAttack_6: 1227306923
+      LAttack_7: 1055201271
+      LAttack_8: -1081998331
+      LAttack_9: -964233623
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
