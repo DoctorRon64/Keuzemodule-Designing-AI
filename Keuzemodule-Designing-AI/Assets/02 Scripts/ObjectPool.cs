@@ -2,16 +2,24 @@ using System.Collections.Generic;
 using UnityEngine;
 public class ObjectPool<T> where T : MonoBehaviour, IPoolable
 {
-	private List<IPoolable> activePool = new List<IPoolable>();
-	private List<IPoolable> inactivePool = new List<IPoolable>();
-	private T prefab;
+	private readonly List<IPoolable> activePool = new List<IPoolable>();
+	private readonly List<IPoolable> inactivePool = new List<IPoolable>();
+	private readonly List<T> prefabs;
 
-	public ObjectPool(T prefab)
+	public ObjectPool(T _prefab)
 	{
-		this.prefab = prefab;
+		prefabs = new List<T>
+		{
+			_prefab
+		};
+	}
+	
+	public ObjectPool(List<T> _prefabs)
+	{
+		prefabs = _prefabs;
 	}
 
-	public IPoolable RequestObject(Vector2 position)
+	public IPoolable RequestObject(Vector2 _position)
 	{
 		if (inactivePool.Count <= 0)
 		{
@@ -21,7 +29,7 @@ public class ObjectPool<T> where T : MonoBehaviour, IPoolable
 		else
 		{
 			IPoolable currentPool = inactivePool[0];
-			currentPool.SetPosition(position);
+			currentPool.SetPosition(_position);
 			ActivateItem(currentPool);
 			return currentPool;
 		}
@@ -29,34 +37,35 @@ public class ObjectPool<T> where T : MonoBehaviour, IPoolable
 
 	public IPoolable AddNewItemToPool()
 	{
-		T instance = GameObject.Instantiate(prefab);
+		T prefab = prefabs[Random.Range(0, prefabs.Count)];
+		T instance = Object.Instantiate(prefab);
 		instance.gameObject.SetActive(false);
 		inactivePool.Add(instance);
 		return instance;
 	}
 
-	public IPoolable ActivateItem(IPoolable item)
+	private IPoolable ActivateItem(IPoolable _item)
 	{
-		item.EnablePoolable();
-		item.Active = true;
-		int index = inactivePool.IndexOf(item);
+		_item.EnablePoolable();
+		_item.Active = true;
+		int index = inactivePool.IndexOf(_item);
 		if (index != -1)
 		{
 			inactivePool.RemoveAt(index);
 		}
-		activePool.Add(item);
-		return item;
+		activePool.Add(_item);
+		return _item;
 	}
 
-	public void DeactivateItem(IPoolable item)
+	public void DeactivateItem(IPoolable _item)
 	{
-		int index = activePool.IndexOf(item);
+		int index = activePool.IndexOf(_item);
 		if (index != -1)
 		{
 			activePool.RemoveAt(index);
 		}
-		item.DisablePoolable();
-		item.Active = false;
-		inactivePool.Add(item);
+		_item.DisablePoolable();
+		_item.Active = false;
+		inactivePool.Add(_item);
 	}
 }

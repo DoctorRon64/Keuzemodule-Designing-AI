@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public interface IDamagableBoss
@@ -22,7 +23,7 @@ public class Boss : MonoBehaviour, IBossable, IDamagableBoss, IShootable
     [SerializeField] private float xRocketSpawnRange = 2.0f;
     [SerializeField] private int rocketAmount = 10;
 
-    
+    [Header("bullet")]
     [SerializeField] private Transform shootingPoint;
     [SerializeField] private float bulletSpawnDistance = 1.0f;
     [SerializeField] private float fireRate = 0.2f;
@@ -32,7 +33,7 @@ public class Boss : MonoBehaviour, IBossable, IDamagableBoss, IShootable
     private float nextFireTime;
 
     [Header("Arms")] 
-    [SerializeField] private List<BossArms> bossArms;
+    private List<BossArms> bossArms;
 
     [Header("health")]
     public Action<int> OnBossDied;
@@ -49,6 +50,11 @@ public class Boss : MonoBehaviour, IBossable, IDamagableBoss, IShootable
             InvokeNewHealth(health);
         }
     }
+    
+    [Header("Glass")]
+    [SerializeField] private List<GameObject> glassPrefab;
+    [SerializeField] private int glassAmount = 10;
+    private ObjectPool<BossGlass> glassPool;
 
     protected virtual void InvokeNewHealth(int _newHealth)
     {
@@ -66,7 +72,9 @@ public class Boss : MonoBehaviour, IBossable, IDamagableBoss, IShootable
         
         smokePool = new ObjectPool<BossSmoke>(smokePrefab.GetComponent<BossSmoke>());
         rocketPool = new ObjectPool<BossRockets>(rocketPrefab.GetComponent<BossRockets>());
+        glassPool = new ObjectPool<BossGlass>(glassPrefab.Select(_prefab => _prefab.GetComponent<BossGlass>()).ToList());
         
+        InitializePool(glassPool, glassAmount);
         InitializePool(rocketPool, rocketAmount);
         InitializePool(smokePool, smokeAmount);
     }
@@ -96,6 +104,24 @@ public class Boss : MonoBehaviour, IBossable, IDamagableBoss, IShootable
         }
     }
     
+    public void ThrowGlass(int _amount)
+    {
+        for (int i = 0; i < _amount; i++)
+        {
+            float randomY = UnityEngine.Random.Range(-ySmokeSpawnRange, ySmokeSpawnRange);
+            Vector3 spawnPosition = new Vector3(transform.position.x, transform.position.y + randomY, transform.position.z);
+            RequestGlass(spawnPosition);
+        }
+    }
+
+    private void RequestGlass(Vector3 _spawnPosition)
+    {
+        BossGlass glass = (BossGlass)glassPool.RequestObject(_spawnPosition);
+        if (glass == null) return;
+
+        glass.ThrowGlass();
+    }
+
     public void ShootRockets(int _amount)
     {
         for (int i = 0; i < _amount; i++)
