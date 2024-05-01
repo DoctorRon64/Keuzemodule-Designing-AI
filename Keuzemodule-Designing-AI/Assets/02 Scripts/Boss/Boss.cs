@@ -23,6 +23,15 @@ public class Boss : MonoBehaviour, IBossable, IDamagableBoss, IShootable
     [SerializeField] private float xRocketSpawnRange = 2.0f;
     [SerializeField] private int rocketAmount = 10;
 
+    [SerializeField] private GameObject followRocketPrefab;
+    [SerializeField] private int followRocketAmount = 10;
+    private ObjectPool<BossFollowingRocket> followingRocketPool;
+
+    [Header("Glass")]
+    [SerializeField] private List<GameObject> glassPrefab;
+    [SerializeField] private int glassAmount = 10;
+    private ObjectPool<BossGlass> glassPool;
+    
     [Header("bullet")]
     [SerializeField] private Transform shootingPoint;
     [SerializeField] private float bulletSpawnDistance = 1.0f;
@@ -51,10 +60,7 @@ public class Boss : MonoBehaviour, IBossable, IDamagableBoss, IShootable
         }
     }
     
-    [Header("Glass")]
-    [SerializeField] private List<GameObject> glassPrefab;
-    [SerializeField] private int glassAmount = 10;
-    private ObjectPool<BossGlass> glassPool;
+
 
     protected virtual void InvokeNewHealth(int _newHealth)
     {
@@ -73,7 +79,9 @@ public class Boss : MonoBehaviour, IBossable, IDamagableBoss, IShootable
         smokePool = new ObjectPool<BossSmoke>(smokePrefab.GetComponent<BossSmoke>());
         rocketPool = new ObjectPool<BossRockets>(rocketPrefab.GetComponent<BossRockets>());
         glassPool = new ObjectPool<BossGlass>(glassPrefab.Select(_prefab => _prefab.GetComponent<BossGlass>()).ToList());
+        followingRocketPool = new ObjectPool<BossFollowingRocket>(followRocketPrefab.GetComponent<BossFollowingRocket>());
         
+        InitializePool(followingRocketPool, followRocketAmount);
         InitializePool(glassPool, glassAmount);
         InitializePool(rocketPool, rocketAmount);
         InitializePool(smokePool, smokeAmount);
@@ -111,6 +119,15 @@ public class Boss : MonoBehaviour, IBossable, IDamagableBoss, IShootable
             float randomY = UnityEngine.Random.Range(-ySmokeSpawnRange, ySmokeSpawnRange);
             Vector3 spawnPosition = new Vector3(transform.position.x, transform.position.y + randomY, transform.position.z);
             RequestGlass(spawnPosition);
+        }
+    }
+
+    public void ShootFollowRocket(int _amount)
+    {
+        for (int i = 0; i < _amount; i++)
+        {
+            Vector3 spawnRange = new Vector3(0f, 0f, 0f);
+            RequestProjectile(followingRocketPool, spawnRange, Vector2.up, rocketSpeed);
         }
     }
 

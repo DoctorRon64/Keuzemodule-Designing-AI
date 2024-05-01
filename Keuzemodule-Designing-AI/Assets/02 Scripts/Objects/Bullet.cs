@@ -27,7 +27,6 @@ public class Bullet : MonoBehaviour, IPoolable
         float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
-    
     void OnTriggerEnter2D(Collider2D _other)
     {
         if (_other.gameObject.TryGetComponent(out IDamagableBoss damagableBoss))
@@ -40,15 +39,15 @@ public class Bullet : MonoBehaviour, IPoolable
 
         
         if (spriteRenderer != null) spriteRenderer.enabled = false;
-        anim.SetInteger("shoot", 1);
+        anim.Play("shoot");
 
         StartCoroutine(WaitUntilAnimationFinished());
     }
 
     IEnumerator WaitUntilAnimationFinished()
     {
-        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
-        anim.SetInteger("shoot", 0);
+        yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsName("shoot")); //stopped playing
+        yield return new WaitForSeconds(0.2f);
         objectPool.DeactivateItem(this);
     }
 
@@ -61,6 +60,7 @@ public class Bullet : MonoBehaviour, IPoolable
     {
         rb.velocity = Vector2.zero;
         gameObject.SetActive(false);
+        if (spriteRenderer != null) spriteRenderer.enabled = true;
     }
 
     public void EnablePoolable()
