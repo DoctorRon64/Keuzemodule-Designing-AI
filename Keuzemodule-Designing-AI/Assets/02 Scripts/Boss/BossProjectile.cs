@@ -3,7 +3,7 @@
 public abstract class BossProjectile<T> : MonoBehaviour, IBossable, IPoolable where T : BossProjectile<T>
 {
     protected Rigidbody2D rb;
-    private ObjectPool<T> objectPool;
+    protected ObjectPool<T> objectPool;
     public bool Active { get; set; }
     private readonly int damageValue = 1;
 

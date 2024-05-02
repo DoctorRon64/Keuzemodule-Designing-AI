@@ -1,12 +1,12 @@
 ﻿using System;
 using UnityEngine;
 
-public class BossFollowingRocket : BossProjectile<BossFollowingRocket>
+public class BossFollowingRocket : BossProjectile<BossFollowingRocket>, IDamagableBoss
     {
         [SerializeField] private float speed = 5f;
         [SerializeField] private float rotationSpeed = 10f;
         [SerializeField] private int damage;
-        public Transform Player = null;
+        private Transform Player = null;
 
         private void Awake()
         {
@@ -28,7 +28,7 @@ public class BossFollowingRocket : BossProjectile<BossFollowingRocket>
 
         public override void SetDirection(Vector2 _direction, float _speed)
         {
-            rb.velocity = _direction.normalized * _speed;
+            
         }
 
         public override void SetRotation(Vector2 _direction)
@@ -37,11 +37,14 @@ public class BossFollowingRocket : BossProjectile<BossFollowingRocket>
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
 
-        private void OnTriggerEnter2D(Collider2D other)
+        public int Health { get; set; }
+        public void TakeDamage(int damageAmount)
         {
-            if (other.gameObject.TryGetComponent<Player>(out Player _player))
+            Health -= damageAmount;
+            if (Health < 0)
             {
-                _player.TakeDamage(damage);
+                DisablePoolable();
+                objectPool.DeactivateItem(this);
             }
         }
     }

@@ -3,11 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public interface IDamagableBoss
-{
-    int Health { get; set; }
-    void TakeDamage(int _damageAmount);
-}
+
 
 public class Boss : MonoBehaviour, IBossable, IDamagableBoss, IShootable
 {
@@ -126,7 +122,8 @@ public class Boss : MonoBehaviour, IBossable, IDamagableBoss, IShootable
     {
         for (int i = 0; i < _amount; i++)
         {
-            Vector3 spawnRange = new Vector3(0f, 0f, 0f);
+            float random = UnityEngine.Random.Range(-xRocketSpawnRange, xRocketSpawnRange);
+            Vector3 spawnRange = new Vector3(random, random, 0f);
             RequestProjectile(followingRocketPool, spawnRange, Vector2.up, rocketSpeed);
         }
     }

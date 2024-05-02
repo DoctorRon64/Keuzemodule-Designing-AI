@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: throwDirection.x
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: 3037962709857545211, guid: 48746cae15721b640a1ee045efe728e1, type: 3}
+      propertyPath: throwDirection.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3576963516165000285, guid: 48746cae15721b640a1ee045efe728e1, type: 3}
       propertyPath: m_Name
       value: glassY
