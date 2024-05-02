@@ -192,8 +192,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetTransform: {fileID: 3806429907510179249}
   speed: 15
-  activationDuration: 3
-  returnDuration: 3
+  activationDuration: 2
+  returnDuration: 1
+  damageValue: 1
 --- !u!1 &7630140834626089712
 GameObject:
   m_ObjectHideFlags: 0
