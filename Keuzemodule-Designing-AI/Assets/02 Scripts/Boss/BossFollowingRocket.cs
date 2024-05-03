@@ -1,48 +1,52 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class BossFollowingRocket : BossProjectile<BossFollowingRocket>, IDamagableBoss
     {
         [SerializeField] private float speed = 5f;
         [SerializeField] private float rotationSpeed = 10f;
-        [SerializeField] private int damage;
         [SerializeField] private float followDelay = 2f;
+        [SerializeField] private int health = 5;
+        
         private Transform player = null;
         private bool isFollowing = false;
         private float followTimer = 0f;
 
         private void Awake()
         {
+            Health = health;
             player = FindObjectOfType<Player>().transform;
+        }
+
+        private void Start()
+        {
+            StartCoroutine(StartFollowingDelay());
+        }
+
+        private IEnumerator StartFollowingDelay()
+        {
+            Vector2 initialDirection = Vector2.up * speed * Time.deltaTime;
+            SetDirection(initialDirection, speed);
+            SetRotation(initialDirection);
+        
+            yield return new WaitForSeconds(followDelay);
+            isFollowing = true;
         }
 
         private void Update()
         {
-            if (player == null) return;
-            if (!isFollowing)
-            {
-                transform.Translate(Vector2.up * speed * Time.deltaTime);
-                followTimer += Time.deltaTime;
-                if (followTimer >= followDelay)
-                {
-                    isFollowing = true;
-                }
-            }
-            else
-            {
+            if (player == null || !isFollowing) return;
 
-                Vector3 direction = (player.position - transform.position).normalized;
-                transform.Translate(direction * speed * Time.deltaTime, Space.World);
-
-                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                Quaternion targetRotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-            }
+            Vector3 direction = (player.position - transform.position).normalized;
+            SetDirection(direction, speed);
+            SetRotation(direction);
         }
+
 
         public override void SetDirection(Vector2 _direction, float _speed)
         {
-            
+            Rb.velocity = _direction.normalized * _speed;
         }
 
         public override void SetRotation(Vector2 _direction)
@@ -57,11 +61,19 @@ public class BossFollowingRocket : BossProjectile<BossFollowingRocket>, IDamagab
             isFollowing = false;
         }
 
+        protected override void OnTriggerEnter2D(Collider2D _other)
+        {
+            if (_other.gameObject.TryGetComponent(out IDamagable idamagable))
+            {
+                idamagable.TakeDamage(DamageValue);
+            }
+        }
+        
         public int Health { get; set; }
         public void TakeDamage(int _damageAmount)
         {
             Health -= _damageAmount;
-            if (Health >= 0) return;
+            if (Health > 0) return;
             DisablePoolable();
             ObjectPool.DeactivateItem(this);
         }

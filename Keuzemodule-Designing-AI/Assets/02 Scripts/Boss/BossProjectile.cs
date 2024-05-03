@@ -5,7 +5,7 @@ public abstract class BossProjectile<T> : MonoBehaviour, IBossable, IPoolable wh
     protected Rigidbody2D Rb;
     protected ObjectPool<T> ObjectPool;
     public bool Active { get; set; }
-    private const int damageValue = 1;
+    protected const int DamageValue = 1;
 
     public void Setup(ObjectPool<T> _pool)
     {
@@ -20,7 +20,7 @@ public abstract class BossProjectile<T> : MonoBehaviour, IBossable, IPoolable wh
     {
         if (_other.gameObject.TryGetComponent(out IDamagable idamagable))
         {
-            idamagable.TakeDamage(damageValue);
+            idamagable.TakeDamage(DamageValue);
         }
 
         if (!_other.gameObject.TryGetComponent(out Iwallable shootable)) return;
@@ -36,7 +36,6 @@ public abstract class BossProjectile<T> : MonoBehaviour, IBossable, IPoolable wh
 
     public void EnablePoolable()
     {
-        SetDirection(Vector2.left, 10f);
         gameObject.SetActive(true);
     }
 

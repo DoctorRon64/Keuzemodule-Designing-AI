@@ -88,4 +88,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   rotationSpeed: 10
-  damage: 1
+  followDelay: 2.5
+  health: 3
