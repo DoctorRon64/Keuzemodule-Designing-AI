@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 1197407398269933514}
   - component: {fileID: 4113989279218612279}
   - component: {fileID: 8993784002354363662}
-  - component: {fileID: 2846523029879430}
   - component: {fileID: 1959385837360055537}
+  - component: {fileID: 8746924410510615760}
+  - component: {fileID: 2846523029879430}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -162,28 +163,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &2846523029879430
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3316980081181789226}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d311cd1143a252748891027c94aa5a06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 3237551037882721876, guid: 4658ba01f7141d74eaf171fde5b21df1, type: 3}
-  shootingPoint: {fileID: 0}
-  bulletAmount: 25
-  bulletSpawnDistance: 0.7
-  bulletSpeed: 10
-  fireRate: 0.1
-  moveSpeed: 6
-  jumpForce: 7
-  keys: 2000000030010000
-  isGrounded: 0
 --- !u!95 &1959385837360055537
 Animator:
   serializedVersion: 5
@@ -205,6 +184,82 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8746924410510615760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3316980081181789226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 1
+    m_ImpulseShape: 1
+    m_CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_ImpulseDuration: 0.2
+    m_ImpulseType: 0
+    m_DissipationRate: 0.25
+    m_RawSignal: {fileID: 0}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_RepeatMode: 0
+    m_Randomize: 1
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0.2
+      m_DecayTime: 0.7
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 100
+    m_PropagationSpeed: 343
+  m_DefaultVelocity: {x: 0, y: -1, z: 0}
+--- !u!114 &2846523029879430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3316980081181789226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d311cd1143a252748891027c94aa5a06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 3237551037882721876, guid: 4658ba01f7141d74eaf171fde5b21df1, type: 3}
+  shootingPoint: {fileID: 792094423701284665}
+  bulletAmount: 25
+  bulletSpawnDistance: 0.7
+  bulletSpeed: 10
+  fireRate: 0.1
+  moveSpeed: 6
+  jumpForce: 7
+  keys: 2000000030010000
+  isGrounded: 0
+  maxHealth: 25
 --- !u!1 &6816567361962704396
 GameObject:
   m_ObjectHideFlags: 0

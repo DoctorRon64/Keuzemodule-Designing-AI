@@ -4,7 +4,7 @@ public class BossRockets : BossProjectile<BossRockets>
 {
     public override void SetDirection(Vector2 _direction, float _speed)
     {
-        rb.velocity = _direction.normalized * _speed;
+        Rb.velocity = _direction.normalized * _speed;
     }
 
     public override void SetRotation(Vector2 _direction)

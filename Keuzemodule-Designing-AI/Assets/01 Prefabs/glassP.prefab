@@ -50,11 +50,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3037962709857545211, guid: 48746cae15721b640a1ee045efe728e1, type: 3}
       propertyPath: throwForce
-      value: 15
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3037962709857545211, guid: 48746cae15721b640a1ee045efe728e1, type: 3}
       propertyPath: upwardForce
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3037962709857545211, guid: 48746cae15721b640a1ee045efe728e1, type: 3}
       propertyPath: throwDirection.x
@@ -62,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3037962709857545211, guid: 48746cae15721b640a1ee045efe728e1, type: 3}
       propertyPath: throwDirection.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3576963516165000285, guid: 48746cae15721b640a1ee045efe728e1, type: 3}
       propertyPath: m_Name

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections;
 
@@ -9,6 +10,11 @@ public class Bullet : MonoBehaviour, IPoolable
     private readonly int damageValue = 1;
     private SpriteRenderer spriteRenderer;
     [SerializeField] private Animator anim;
+
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
     public void SetupBullet(ObjectPool<Bullet> _pool)
     {
@@ -36,10 +42,8 @@ public class Bullet : MonoBehaviour, IPoolable
 
         if (!_other.gameObject.TryGetComponent(out IShootable _shootable) &&
             !_other.gameObject.TryGetComponent<Iwallable>(out Iwallable _wallable)) return;
-
-        
         if (spriteRenderer != null) spriteRenderer.enabled = false;
-        anim.Play("shoot");
+        anim.Play("smokebullet");
 
         StartCoroutine(WaitUntilAnimationFinished());
     }

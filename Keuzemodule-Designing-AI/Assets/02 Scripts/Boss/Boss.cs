@@ -2,49 +2,65 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-
-
-public class Boss : MonoBehaviour, IBossable, IDamagableBoss, IShootable
+[Serializable]
+public class BossProjectileController<T> where T : BossProjectile<T>
 {
-    [Header("Smoke")] 
-    [SerializeField] private GameObject smokePrefab;
-    [SerializeField] private float smokeSpeed = 10f;
-    [SerializeField] private float ySmokeSpawnRange = 0.5f;
-    [SerializeField] private int smokeAmount = 10;
-    
-    [Header("Rocket")]
-    [SerializeField] private GameObject rocketPrefab;
-    [SerializeField] private float rocketSpeed = 5f;
-    [SerializeField] private float xRocketSpawnRange = 2.0f;
-    [SerializeField] private int rocketAmount = 10;
+    public GameObject prefab;
+    public float speed = 10f;
+    public float spawnRange = 0.5f;
+    public int amount = 10;
+    public ObjectPool<T> ObjectPool;
 
-    [SerializeField] private GameObject followRocketPrefab;
-    [SerializeField] private int followRocketAmount = 10;
-    private ObjectPool<BossFollowingRocket> followingRocketPool;
+    public void InitializePool()
+    {
+        ObjectPool = new ObjectPool<T>(prefab.GetComponent<T>());
+        for (int i = 0; i < amount; i++)
+        {
+            T poolObject = (T)ObjectPool.AddNewItemToPool();
+            poolObject.Setup(ObjectPool);
+        }
+    }
+}
 
-    [Header("Glass")]
-    [SerializeField] private List<GameObject> glassPrefab;
+public sealed class Boss : MonoBehaviour, IBossable, IDamagableBoss, IShootable
+{
+    [Header("projectile Controllers")]
+    [SerializeField] private BossProjectileController<BossSmoke> smokeController;
+    [SerializeField] private BossProjectileController<BossRockets> rocketController;
+    [SerializeField] private BossProjectileController<BossFollowingRocket> followRocketController;
+
+    [Header("Glass")] 
+    [SerializeField] private List<GameObject> glassPrefabs;
     [SerializeField] private int glassAmount = 10;
     private ObjectPool<BossGlass> glassPool;
-    
-    [Header("bullet")]
+
+    [Header("bullet")] 
+    [SerializeField] private int bossDamage = 2;
     [SerializeField] private Transform shootingPoint;
     [SerializeField] private float bulletSpawnDistance = 1.0f;
     [SerializeField] private float fireRate = 0.2f;
-    private ObjectPool<BossRockets> rocketPool;
-    private ObjectPool<BossSmoke> smokePool;
-    private bool isShooting;
+    private bool isShooting; //private flag
     private float nextFireTime;
-
-    [Header("Arms")] 
+    
+    //Arms 
     private List<BossArms> bossArms;
 
+    //Animations
+    private Animator anim;
+    private static readonly int hitParam = Animator.StringToHash("Hit");
+    private const string bossHurtAnim = "Boss Hurt";
+
     [Header("health")]
+    private AudioSource bossSoundPlayer;
+    [SerializeField] private ParticleSystem hurtParticles;
+    [SerializeField] private List<AudioClip> hurtSound;
     public Action<int> OnBossDied;
     public Action<int> OnHealthChanged;
     public int maxHealth = 500;
     private int health;
+
     public int Health
     {
         get => health;
@@ -55,40 +71,44 @@ public class Boss : MonoBehaviour, IBossable, IDamagableBoss, IShootable
             InvokeNewHealth(health);
         }
     }
-    
 
-
-    protected virtual void InvokeNewHealth(int _newHealth)
+    private void InvokeNewHealth(int _newHealth)
     {
-        OnHealthChanged?.Invoke(_newHealth);
+        OnHealthChanged?.Invoke(_newHealth); ;
     }
-    
+
     private void Awake()
     {
         health = maxHealth;
+        bossSoundPlayer = GetComponent<AudioSource>();
+        anim = GetComponent<Animator>();
         
         shootingPoint.localPosition = new Vector3(bulletSpawnDistance, 0f, 0f);
-
         var bossArmsArray = FindObjectsOfType<BossArms>();
         bossArms = new List<BossArms>(bossArmsArray);
         
-        smokePool = new ObjectPool<BossSmoke>(smokePrefab.GetComponent<BossSmoke>());
-        rocketPool = new ObjectPool<BossRockets>(rocketPrefab.GetComponent<BossRockets>());
-        glassPool = new ObjectPool<BossGlass>(glassPrefab.Select(_prefab => _prefab.GetComponent<BossGlass>()).ToList());
-        followingRocketPool = new ObjectPool<BossFollowingRocket>(followRocketPrefab.GetComponent<BossFollowingRocket>());
-        
-        InitializePool(followingRocketPool, followRocketAmount);
+        glassPool = new ObjectPool<BossGlass>(glassPrefabs.Select(_prefab => _prefab.GetComponent<BossGlass>()).ToList());
         InitializePool(glassPool, glassAmount);
-        InitializePool(rocketPool, rocketAmount);
-        InitializePool(smokePool, smokeAmount);
+
+        smokeController.InitializePool();
+        rocketController.InitializePool();
+        followRocketController.InitializePool();
     }
-    
-    private void InitializePool<T>(ObjectPool<T> _pool, int _amount) where T : BossProjectile<T>
+
+    private static void InitializePool<T>(ObjectPool<T> _pool, int _amount) where T : BossProjectile<T>
     {
         for (int i = 0; i < _amount; i++)
         {
             T poolObject = (T)_pool.AddNewItemToPool();
             poolObject.Setup(_pool);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D _other)
+    {
+        if (_other.gameObject.TryGetComponent(out IDamagable damagable))
+        {
+            damagable.TakeDamage(bossDamage);
         }
     }
 
@@ -107,13 +127,14 @@ public class Boss : MonoBehaviour, IBossable, IDamagableBoss, IShootable
             arm.DeactivateArms();
         }
     }
-    
+
     public void ThrowGlass(int _amount)
     {
         for (int i = 0; i < _amount; i++)
         {
-            float randomY = UnityEngine.Random.Range(-ySmokeSpawnRange, ySmokeSpawnRange);
-            Vector3 spawnPosition = new Vector3(transform.position.x, transform.position.y + randomY, transform.position.z);
+            float randomY = Random.Range(-smokeController.spawnRange, smokeController.spawnRange);
+            Vector3 transformPos = transform.position;
+            Vector3 spawnPosition = new Vector3(transformPos.x, transformPos.y + randomY, transformPos.z);
             RequestGlass(spawnPosition);
         }
     }
@@ -122,9 +143,9 @@ public class Boss : MonoBehaviour, IBossable, IDamagableBoss, IShootable
     {
         for (int i = 0; i < _amount; i++)
         {
-            float random = UnityEngine.Random.Range(-xRocketSpawnRange, xRocketSpawnRange);
+            float random = Random.Range(-followRocketController.spawnRange, followRocketController.spawnRange);
             Vector3 spawnRange = new Vector3(random, random, 0f);
-            RequestProjectile(followingRocketPool, spawnRange, Vector2.up, rocketSpeed);
+            RequestProjectile(followRocketController.ObjectPool, spawnRange, Vector2.up, followRocketController.speed);
         }
     }
 
@@ -140,23 +161,24 @@ public class Boss : MonoBehaviour, IBossable, IDamagableBoss, IShootable
     {
         for (int i = 0; i < _amount; i++)
         {
-            float random = UnityEngine.Random.Range(-xRocketSpawnRange, xRocketSpawnRange);
+            float random = Random.Range(-rocketController.spawnRange, rocketController.spawnRange);
             Vector3 spawnRange = new Vector3(random, 0f, 0f);
-            RequestProjectile(rocketPool, spawnRange, Vector2.down, rocketSpeed);
+            RequestProjectile(rocketController.ObjectPool, spawnRange, Vector2.down, rocketController.speed);
         }
     }
-    
+
     public void ShootSmoke(int _amount)
     {
         for (int i = 0; i < _amount; i++)
         {
-            float random = UnityEngine.Random.Range(-ySmokeSpawnRange, ySmokeSpawnRange);
+            float random = Random.Range(-smokeController.spawnRange, smokeController.spawnRange);
             Vector3 spawnRange = new Vector3(0f, random, 0f);
-            RequestProjectile(smokePool, spawnRange, Vector2.left, smokeSpeed);
+            RequestProjectile(smokeController.ObjectPool, spawnRange, Vector2.left, smokeController.speed);
         }
     }
-    
-    private void RequestProjectile<T>(ObjectPool<T> _pool, Vector3 _spawnRange, Vector2 _direction, float _speed) where T : BossProjectile<T>
+
+    private void RequestProjectile<T>(ObjectPool<T> _pool, Vector3 _spawnRange, Vector2 _direction, float _speed)
+        where T : BossProjectile<T>
     {
         nextFireTime = Time.time + fireRate;
 
@@ -173,11 +195,22 @@ public class Boss : MonoBehaviour, IBossable, IDamagableBoss, IShootable
 
     public void TakeDamage(int _damageAmount)
     {
+        
         Health -= _damageAmount;
-        Debug.Log("boss health" + _damageAmount + "" + health);
         if (Health <= 0)
         {
             OnBossDied.Invoke(1);
         }
+
+        AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
+        if (!stateInfo.IsName(bossHurtAnim))
+        {
+            anim.SetTrigger(hitParam);
+        }
+        hurtParticles.Play();
+        
+        if (bossSoundPlayer.isPlaying) return;
+        AudioClip clipToPlay = hurtSound[Random.Range(0, hurtSound.Count)];
+        bossSoundPlayer.PlayOneShot(clipToPlay);
     }
 }

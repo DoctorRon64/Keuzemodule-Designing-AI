@@ -6,18 +6,32 @@ public class BossFollowingRocket : BossProjectile<BossFollowingRocket>, IDamagab
         [SerializeField] private float speed = 5f;
         [SerializeField] private float rotationSpeed = 10f;
         [SerializeField] private int damage;
-        private Transform Player = null;
+        [SerializeField] private float followDelay = 2f;
+        private Transform player = null;
+        private bool isFollowing = false;
+        private float followTimer = 0f;
 
         private void Awake()
         {
-            Player = FindObjectOfType<Player>().transform;
+            player = FindObjectOfType<Player>().transform;
         }
 
         private void Update()
         {
-            if (Player != null)
+            if (player == null) return;
+            if (!isFollowing)
             {
-                Vector3 direction = (Player.position - transform.position).normalized;
+                transform.Translate(Vector2.up * speed * Time.deltaTime);
+                followTimer += Time.deltaTime;
+                if (followTimer >= followDelay)
+                {
+                    isFollowing = true;
+                }
+            }
+            else
+            {
+
+                Vector3 direction = (player.position - transform.position).normalized;
                 transform.Translate(direction * speed * Time.deltaTime, Space.World);
 
                 float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -37,14 +51,18 @@ public class BossFollowingRocket : BossProjectile<BossFollowingRocket>, IDamagab
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
 
-        public int Health { get; set; }
-        public void TakeDamage(int damageAmount)
+        public override void DisablePoolable()
         {
-            Health -= damageAmount;
-            if (Health < 0)
-            {
-                DisablePoolable();
-                objectPool.DeactivateItem(this);
-            }
+            base.DisablePoolable();
+            isFollowing = false;
+        }
+
+        public int Health { get; set; }
+        public void TakeDamage(int _damageAmount)
+        {
+            Health -= _damageAmount;
+            if (Health >= 0) return;
+            DisablePoolable();
+            ObjectPool.DeactivateItem(this);
         }
     }

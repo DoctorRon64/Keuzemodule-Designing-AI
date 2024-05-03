@@ -37,6 +37,12 @@ public class ObjectPool<T> where T : MonoBehaviour, IPoolable
 
 	public IPoolable AddNewItemToPool()
 	{
+		if (prefabs.Count == 0)
+		{
+			Debug.LogError("No prefabs available in the pool.");
+			return null;
+		}
+		
 		T prefab = prefabs[Random.Range(0, prefabs.Count)];
 		T instance = Object.Instantiate(prefab);
 		instance.gameObject.SetActive(false);

@@ -2,15 +2,15 @@
 
 public abstract class BossProjectile<T> : MonoBehaviour, IBossable, IPoolable where T : BossProjectile<T>
 {
-    protected Rigidbody2D rb;
-    protected ObjectPool<T> objectPool;
+    protected Rigidbody2D Rb;
+    protected ObjectPool<T> ObjectPool;
     public bool Active { get; set; }
-    private readonly int damageValue = 1;
+    private const int damageValue = 1;
 
     public void Setup(ObjectPool<T> _pool)
     {
-        rb = GetComponent<Rigidbody2D>();
-        objectPool = _pool;
+        Rb = GetComponent<Rigidbody2D>();
+        ObjectPool = _pool;
     }
 
     public abstract void SetDirection(Vector2 _direction, float _speed);
@@ -25,12 +25,12 @@ public abstract class BossProjectile<T> : MonoBehaviour, IBossable, IPoolable wh
 
         if (!_other.gameObject.TryGetComponent(out Iwallable shootable)) return;
         DisablePoolable();
-        objectPool.DeactivateItem((T)this);
+        ObjectPool.DeactivateItem((T)this);
     }
 
-    public void DisablePoolable()
+    public virtual void DisablePoolable()
     {
-        rb.velocity = Vector2.zero;
+        Rb.velocity = Vector2.zero;
         gameObject.SetActive(false);
     }
 

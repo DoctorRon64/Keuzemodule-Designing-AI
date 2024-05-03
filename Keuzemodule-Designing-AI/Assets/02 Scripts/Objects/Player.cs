@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 public class Player : MonoBehaviour, IDamagable
@@ -27,9 +28,11 @@ public class Player : MonoBehaviour, IDamagable
     private bool isWalking = false;
     private Collider2D playerCollider;
 
-    [Header("Health")] public int maxHealth = 50;
+    [Header("Health")] 
+    public int maxHealth = 50;
     private int health;
-
+    [SerializeField] private float shakeForce = 1f;
+    private CinemachineImpulseSource shakeImpulseSource;
     public int Health
     {
         get => health;
@@ -42,7 +45,7 @@ public class Player : MonoBehaviour, IDamagable
     }
 
     public Action<int> OnPlayerDied;
-    public Action<int> onHealthChanged;
+    public Action<int> OnHealthChanged;
 
     //beter animation int to string
     private static readonly int walking = Animator.StringToHash("isWalking");
@@ -53,14 +56,15 @@ public class Player : MonoBehaviour, IDamagable
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        playerCollider = GetComponent<Collider2D>();
+        shakeImpulseSource = GetComponent<CinemachineImpulseSource>();
+        
         anim.SetInteger("Player", 0);
         playerTransform = transform;
-        playerCollider = GetComponent<Collider2D>();
         mainCamera = Camera.main;
         health = maxHealth;
 
         shootingPoint.localPosition = new Vector3(bulletSpawnDistance, 0f, 0f);
-
         bulletPool = new ObjectPool<Bullet>(bulletPrefab.GetComponent<Bullet>());
         for (int i = 0; i < bulletAmount; i++)
         {
@@ -69,6 +73,11 @@ public class Player : MonoBehaviour, IDamagable
         }
     }
 
+    private void Shake()
+    {
+        shakeImpulseSource.GenerateImpulse();
+    }
+    
     void Update()
     {
         HandleActions();
@@ -87,7 +96,7 @@ public class Player : MonoBehaviour, IDamagable
 
     protected virtual void InvokeNewHealth(int newHealth)
     {
-        onHealthChanged?.Invoke(newHealth);
+        OnHealthChanged?.Invoke(newHealth);
     }
 
     void MovePlayer()
@@ -132,11 +141,9 @@ public class Player : MonoBehaviour, IDamagable
         shootingPoint.position = shootingPointPosition;
 
         Bullet bullet = bulletPool.RequestObject(shootingPoint.position) as Bullet;
-        if (bullet != null)
-        {
-            bullet.SetDirection(direction, bulletSpeed);
-            bullet.SetRotation(direction);
-        }
+        if (bullet == null) return;
+        bullet.SetDirection(direction, bulletSpeed);
+        bullet.SetRotation(direction);
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -169,6 +176,7 @@ public class Player : MonoBehaviour, IDamagable
 
     public void TakeDamage(int _damage)
     {
+        Shake();
         Health -= _damage;
         if (Health <= 0)
         {

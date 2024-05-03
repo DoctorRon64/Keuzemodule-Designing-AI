@@ -191,9 +191,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 10
-  upwardForce: 4
+  upwardForce: 2
   spinForce: 5
-  throwDirection: {x: -1, y: 1}
+  throwDirection: {x: -1, y: 0}
 --- !u!50 &-4149122668962736099
 Rigidbody2D:
   serializedVersion: 4

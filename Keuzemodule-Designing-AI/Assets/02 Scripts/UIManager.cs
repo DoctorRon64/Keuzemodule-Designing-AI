@@ -22,12 +22,12 @@ public class UIManager : MonoBehaviour
 		
 		playerHealthBar.maxValue = player.maxHealth;
 		playerHealthBar.value = player.maxHealth;
-		player.onHealthChanged += UpdatePlayerHealthBar;
+		player.OnHealthChanged += UpdatePlayerHealthBar;
 	}
 	
 	private void OnDisable()
 	{
-		player.onHealthChanged -= UpdatePlayerHealthBar;
+		player.OnHealthChanged -= UpdatePlayerHealthBar;
 		boss.OnHealthChanged -= UpdateBossBar;
 	}
 
