@@ -8673,6 +8673,14 @@ PrefabInstance:
       value: 11.11
       objectReference: {fileID: 0}
     - target: {fileID: 4879524827544947717, guid: 6c974a21ce40a8f4eac781e3b4308839, type: 3}
+      propertyPath: maxJumpForce
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4879524827544947717, guid: 6c974a21ce40a8f4eac781e3b4308839, type: 3}
+      propertyPath: initialJumpForce
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4879524827544947717, guid: 6c974a21ce40a8f4eac781e3b4308839, type: 3}
       propertyPath: jumpAcceleration
       value: 1
       objectReference: {fileID: 0}

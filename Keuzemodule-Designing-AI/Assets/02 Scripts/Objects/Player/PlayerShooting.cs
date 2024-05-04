@@ -16,14 +16,8 @@ public class PlayerShooting : MonoBehaviour
     private float nextFireTime;
     private ObjectPool<Bullet> bulletPool;
     
-    //remove auto aim
-    private Transform targetTransform;
-    
     private void Start()
     {
-        //remove auto aim
-        targetTransform = FindObjectOfType<Boss>().transform;
-        
         shootingPoint.localPosition = new Vector3(bulletSpawnDistance, 0f, 0f);
         bulletPool = new ObjectPool<Bullet>(bulletPrefab.GetComponent<Bullet>());
         for (int i = 0; i < bulletAmount; i++)
@@ -48,9 +42,7 @@ public class PlayerShooting : MonoBehaviour
         Vector3 mousePosition = Input.mousePosition;
         mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
-        //Vector2 direction = (mousePosition - transform.position).normalized;
-        //remove auto aim
-        Vector2 direction = (targetTransform.position - transform.position).normalized;
+        Vector2 direction = (mousePosition - transform.position).normalized;
         Vector3 shootingPointPosition = transform.position + (Vector3)direction * bulletSpawnDistance;
 
         shootingPointPosition = transform.position +

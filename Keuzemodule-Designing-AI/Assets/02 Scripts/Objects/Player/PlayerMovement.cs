@@ -1,12 +1,14 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float acceleration = 10f;
+
+    [Header("Jump Settings")]
     [SerializeField] private float maxJumpForce = 20f;
-    [SerializeField] private float jumpForce = 10f;
+    [SerializeField] private float initialJumpForce = 10f;
     [SerializeField] private float jumpCancelMultiplier = 0.5f;
     [SerializeField] private float jumpAcceleration;
 
@@ -14,11 +16,10 @@ public class PlayerMovement : MonoBehaviour
     private bool canJump = true;
     private bool isGrounded = false;
     private bool isOnPlatform = false;
-   
+    private bool isWallGliding = false;
     private bool isWallGlidingRight = false;
     private bool isWallGlidingLeft = false;
-    private bool isWallGliding = false;
-    
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -29,33 +30,33 @@ public class PlayerMovement : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         Move(horizontalInput);
     }
-
-    public void Move(float _horizontalInput)
+    private void Move(float horizontalInput)
     {
-        float horizontalInput = _horizontalInput;
-        if (isWallGliding)
+        if (!isGrounded)
         {
-            if (isWallGlidingLeft || isWallGlidingRight)
+            if (isWallGlidingLeft && horizontalInput < 0)
             {
-                horizontalInput = 0;
+                horizontalInput = 4;
+            }
+
+            if (isWallGlidingRight && horizontalInput > 0)
+            {
+                horizontalInput = -4;
             }
         }
 
         Vector2 targetVelocity = new Vector2(horizontalInput * moveSpeed, rb.velocity.y);
         rb.velocity = Vector2.Lerp(rb.velocity, targetVelocity, Time.deltaTime * acceleration);
-
-        if (isWallGliding)
-        {
-            rb.velocity = new Vector2(0f, rb.velocity.y);
-        }
     }
+
+
 
 
     public void Jump()
     {
         if (canJump && (isGrounded || (isOnPlatform && rb.velocity.y <= 0)))
         {
-            float jumpingForce = Mathf.Min(this.jumpForce + Time.deltaTime * jumpAcceleration, maxJumpForce);
+            float jumpingForce = Mathf.Min(initialJumpForce + Time.deltaTime * jumpAcceleration, maxJumpForce);
             rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.AddForce(Vector2.up * jumpingForce, ForceMode2D.Impulse);
             canJump = false;
@@ -66,9 +67,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isGrounded && rb.velocity.y > 0 && !canJump)
         {
-            Vector2 velocity = rb.velocity;
-            velocity = new Vector2(velocity.x, velocity.y * jumpCancelMultiplier);
-            rb.velocity = velocity;
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * jumpCancelMultiplier);
         }
     }
 
@@ -77,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
         isGrounded = grounded;
         canJump = grounded;
     }
-    
+
     private bool IsWall()
     {
         return isWallGlidingRight || isWallGlidingLeft;
@@ -87,8 +86,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.collider.TryGetComponent(out Wall wall) && !isGrounded && rb.velocity.y <= 0)
         {
-            Debug.Log(rb.velocity);
-
             float horizontalInput = Input.GetAxis("Horizontal");
             if (Mathf.Abs(horizontalInput) > 0 && !isGrounded)
             {
@@ -104,7 +101,6 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-
 
     private bool IsWallRight()
     {
@@ -124,7 +120,7 @@ public class PlayerMovement : MonoBehaviour
             isWallGlidingRight = false;
             isWallGliding = IsWall();
         }
-        
+
         if (collision.collider.TryGetComponent(out Platform platform))
         {
             isOnPlatform = false;
