@@ -8,12 +8,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider playerHealthBar;
     [SerializeField] private Slider bossBar;
     
-	private Player player;
+	private PlayerHealth player;
 	private Boss boss;
 	
 	private void Awake()
 	{
-		player = FindObjectOfType<Player>();
+		player = FindObjectOfType<PlayerHealth>();
 		boss = FindObjectOfType<Boss>();
 
 		bossBar.maxValue = boss.maxHealth;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Platform : MonoBehaviour, Iwallable
+public class Platform : MonoBehaviour, IObstacle
 {
 
 }

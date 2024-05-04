@@ -323,8 +323,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6ec199f05f354f48849fa29547e0aba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1445473341}
-  boss: {fileID: 783242943}
 --- !u!1001 &368654827
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -975,8 +973,8 @@ MonoBehaviour:
     _version: 3.28
     _category: 
     _comments: 
-    _translation: {x: -115, y: 319}
-    _zoomFactor: 0.75009733
+    _translation: {x: -231, y: 327}
+    _zoomFactor: 0.990964
   _firstActivation: 0
   _enableAction: 0
   _disableAction: 0
@@ -1116,7 +1114,7 @@ MonoBehaviour:
   - {fileID: 3576963516165000285, guid: 48746cae15721b640a1ee045efe728e1, type: 3}
   - {fileID: 4012939938641676041, guid: 38ac5a6cf24703c41a6ebe61d9024a25, type: 3}
   - {fileID: 4012939938641676041, guid: 545c2327116fb5048b889560a5296360, type: 3}
-  glassAmount: 10
+  glassAmount: 30
   bossDamage: 2
   shootingPoint: {fileID: 1925063403}
   bulletSpawnDistance: 1
@@ -1345,7 +1343,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7684826000548842053, guid: aaeedca13972bbb4182f34cba16eede5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.45
+      value: -2.62
       objectReference: {fileID: 0}
     - target: {fileID: 7684826000548842053, guid: aaeedca13972bbb4182f34cba16eede5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7360,17 +7358,6 @@ Transform:
   - {fileID: 850799112}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1445473341 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2846523029879430, guid: 6c974a21ce40a8f4eac781e3b4308839, type: 3}
-  m_PrefabInstance: {fileID: 8396463946224011308}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d311cd1143a252748891027c94aa5a06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1473918925
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8132,7 +8119,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 212acda464967d74d81ce036f1b775dc, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.183
   m_Pitch: 1
   Loop: 1
@@ -8526,7 +8513,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7684826000548842053, guid: aaeedca13972bbb4182f34cba16eede5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.45
+      value: -2.62
       objectReference: {fileID: 0}
     - target: {fileID: 7684826000548842053, guid: aaeedca13972bbb4182f34cba16eede5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -8684,6 +8671,10 @@ PrefabInstance:
     - target: {fileID: 4113989279218612279, guid: 6c974a21ce40a8f4eac781e3b4308839, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 11.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4879524827544947717, guid: 6c974a21ce40a8f4eac781e3b4308839, type: 3}
+      propertyPath: jumpAcceleration
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8746924410510615760, guid: 6c974a21ce40a8f4eac781e3b4308839, type: 3}
       propertyPath: m_DefaultVelocity.x

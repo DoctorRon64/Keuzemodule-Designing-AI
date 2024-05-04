@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BossArms : MonoBehaviour, IBossable
+public class BossArms : MonoBehaviour, IBossAttack
 {
     [SerializeField] private Transform targetTransform;
     [SerializeField] private float speed = 5.0f;

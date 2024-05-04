@@ -41,7 +41,9 @@ public class Bullet : MonoBehaviour, IPoolable
         }
 
         if (!_other.gameObject.TryGetComponent(out IShootable _shootable) &&
-            !_other.gameObject.TryGetComponent<Iwallable>(out Iwallable _wallable)) return;
+            !_other.gameObject.TryGetComponent<IObstacle>(out IObstacle _wallable)) return;
+        
+        rb.velocity = Vector2.zero;
         if (spriteRenderer != null) spriteRenderer.enabled = false;
         anim.Play("smokebullet");
 

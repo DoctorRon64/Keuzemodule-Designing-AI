@@ -14,7 +14,10 @@ GameObject:
   - component: {fileID: 8993784002354363662}
   - component: {fileID: 1959385837360055537}
   - component: {fileID: 8746924410510615760}
-  - component: {fileID: 2846523029879430}
+  - component: {fileID: 4123446446140782791}
+  - component: {fileID: 7950401194041372175}
+  - component: {fileID: 4879524827544947717}
+  - component: {fileID: 8188218372557090935}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -237,7 +240,7 @@ MonoBehaviour:
     m_DissipationDistance: 100
     m_PropagationSpeed: 343
   m_DefaultVelocity: {x: 0, y: -1, z: 0}
---- !u!114 &2846523029879430
+--- !u!114 &4123446446140782791
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -246,19 +249,60 @@ MonoBehaviour:
   m_GameObject: {fileID: 3316980081181789226}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d311cd1143a252748891027c94aa5a06, type: 3}
+  m_Script: {fileID: 11500000, guid: d1c4a9c91b144bb6a32490415cb93339, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpKey: 32
+  shootKey: 304
+--- !u!114 &7950401194041372175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3316980081181789226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 446d94370c634aafbe069e6e742c3879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 3237551037882721876, guid: 4658ba01f7141d74eaf171fde5b21df1, type: 3}
   shootingPoint: {fileID: 792094423701284665}
-  bulletAmount: 25
   bulletSpawnDistance: 0.7
   bulletSpeed: 10
   fireRate: 0.1
+  bulletAmount: 25
+--- !u!114 &4879524827544947717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3316980081181789226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e8232404fe1498ab2d7c56681fba5b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   moveSpeed: 6
   jumpForce: 7
-  keys: 2000000030010000
-  isGrounded: 0
+  acceleration: 10
+  turnSpeedMultiplier: 0.5
+  jumpCancelMultiplier: 0.5
+  maxJumpForce: 20
+  jumpAcceleration: 0
+--- !u!114 &8188218372557090935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3316980081181789226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d208c300a41945f484606d08470d87df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   maxHealth: 25
 --- !u!1 &6816567361962704396
 GameObject:

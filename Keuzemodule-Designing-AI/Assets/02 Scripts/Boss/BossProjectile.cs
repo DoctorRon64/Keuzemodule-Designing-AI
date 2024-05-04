@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class BossProjectile<T> : MonoBehaviour, IBossable, IPoolable where T : BossProjectile<T>
+public abstract class BossProjectile<T> : MonoBehaviour, IBossAttack, IPoolable where T : BossProjectile<T>
 {
     protected Rigidbody2D Rb;
     protected ObjectPool<T> ObjectPool;
@@ -23,8 +23,7 @@ public abstract class BossProjectile<T> : MonoBehaviour, IBossable, IPoolable wh
             idamagable.TakeDamage(DamageValue);
         }
 
-        if (!_other.gameObject.TryGetComponent(out Iwallable shootable)) return;
-        DisablePoolable();
+        if (!_other.gameObject.TryGetComponent(out IObstacle shootable)) return;
         ObjectPool.DeactivateItem((T)this);
     }
 

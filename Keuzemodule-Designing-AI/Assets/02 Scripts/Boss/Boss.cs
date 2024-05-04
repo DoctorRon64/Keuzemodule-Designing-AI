@@ -24,7 +24,7 @@ public class BossProjectileController<T> where T : BossProjectile<T>
     }
 }
 
-public sealed class Boss : MonoBehaviour, IBossable, IDamagableBoss, IShootable
+public sealed class Boss : MonoBehaviour, IBossAttack, IDamagableBoss, IShootable
 {
     [Header("projectile Controllers")]
     [SerializeField] private BossProjectileController<BossSmoke> smokeController;

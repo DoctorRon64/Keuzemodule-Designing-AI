@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,9 +6,15 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-	[SerializeField] private Player player;
-	[SerializeField] private Boss boss;
-	
+	private PlayerHealth player;
+	private Boss boss;
+
+	private void Awake()
+	{
+		player = FindObjectOfType<PlayerHealth>();
+		boss = FindObjectOfType<Boss>();
+	}
+
 	private void OnEnable()
 	{
 		player.OnPlayerDied += GameOver;

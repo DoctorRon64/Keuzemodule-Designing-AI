@@ -16,7 +16,7 @@ public class BossFollowingRocket : BossProjectile<BossFollowingRocket>, IDamagab
         private void Awake()
         {
             Health = health;
-            player = FindObjectOfType<Player>().transform;
+            player = FindObjectOfType<PlayerController>().transform;
         }
 
         private void Start()
@@ -66,6 +66,7 @@ public class BossFollowingRocket : BossProjectile<BossFollowingRocket>, IDamagab
             if (_other.gameObject.TryGetComponent(out IDamagable idamagable))
             {
                 idamagable.TakeDamage(DamageValue);
+                ObjectPool.DeactivateItem(this);
             }
         }
         
@@ -74,7 +75,6 @@ public class BossFollowingRocket : BossProjectile<BossFollowingRocket>, IDamagab
         {
             Health -= _damageAmount;
             if (Health > 0) return;
-            DisablePoolable();
             ObjectPool.DeactivateItem(this);
         }
     }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Ground : MonoBehaviour, Iwallable
+public class Ground : MonoBehaviour, IObstacle
 {
 
 }
