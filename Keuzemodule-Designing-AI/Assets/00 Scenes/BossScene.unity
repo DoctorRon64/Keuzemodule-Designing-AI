@@ -961,20 +961,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _serializedExposedParameters: []
-  _boundGraphSerialization: '{"type":"NodeCanvas.BehaviourTrees.BehaviourTree","nodes":[{"_position":{"x":723.1124,"y":-327.4807},"$type":"NodeCanvas.BehaviourTrees.Sequencer","$id":"0"},{"_subTree":{"_value":1},"_position":{"x":353.9518,"y":-199.0497},"$type":"NodeCanvas.BehaviourTrees.SubTree","$id":"1"},{"_subTree":{"_value":2},"_position":{"x":471.4606,"y":-201.3269},"$type":"NodeCanvas.BehaviourTrees.SubTree","$id":"2"},{"_subTree":{"_value":3},"_position":{"x":556.0176,"y":-199.2384},"$type":"NodeCanvas.BehaviourTrees.SubTree","$id":"3"},{"_subTree":{"_value":4},"_position":{"x":712.8354,"y":-190.1256},"$type":"NodeCanvas.BehaviourTrees.SubTree","$id":"4"},{"_subTree":{"_value":5},"_position":{"x":867.3472,"y":-183.91},"$type":"NodeCanvas.BehaviourTrees.SubTree","$id":"5"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"2"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"3"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"4"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"5"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"repeat":true,"$type":"NodeCanvas.BehaviourTrees.BehaviourTree+DerivedSerializationData"}}'
+  _boundGraphSerialization: '{"type":"NodeCanvas.BehaviourTrees.BehaviourTree","nodes":[{"_position":{"x":403.9249,"y":-541.3342},"$type":"NodeCanvas.BehaviourTrees.Selector","$id":"0"},{"_condition":{"valueA":{"_name":"Health","_targetVariableID":"2fe428d9-cdfc-4710-a9e9-a6d51acfb317"},"checkType":2,"valueB":{"_value":150},"$type":"NodeCanvas.Tasks.Conditions.CheckInt"},"_position":{"x":261.9716,"y":-456.0404},"$type":"NodeCanvas.BehaviourTrees.ConditionalEvaluator","$id":"1"},{"_position":{"x":251.7612,"y":-346.5228},"$type":"NodeCanvas.BehaviourTrees.Sequencer","$id":"2"},{"repeatTimes":{"_value":3},"_position":{"x":78.53455,"y":-266.1521},"$type":"NodeCanvas.BehaviourTrees.Repeater","$id":"3"},{"_position":{"x":76.65771,"y":-174.0915},"$type":"NodeCanvas.BehaviourTrees.Sequencer","$id":"4"},{"_subTree":{"_value":1},"_variablesMap":[{"_targetSubGraphVariableID":"855fad37-0fc5-4b9f-bfbb-51e3aa7a6423","_canWrite":true,"_type":"System.Int32","_value":{"$content":1,"$type":"System.Int32"}}],"_position":{"x":-231.5228,"y":-80.45276},"$type":"NodeCanvas.BehaviourTrees.SubTree","$id":"5"},{"_action":{"targetList":{"_name":"wayPoints","_targetVariableID":"b970daf8-ae26-4e88-98d1-23986e3340ec"},"patrolMode":{},"speed":{"_value":6.0},"keepDistance":{"_value":0.1},"$type":"NodeCanvas.Tasks.Actions.Patrol"},"_position":{"x":-52.01688,"y":-63.49097},"$type":"NodeCanvas.BehaviourTrees.ActionNode","$id":"6"},{"_action":{"method":{"_baseInfo":"Boss|ShootRockets|System.Void","_paramsInfo":"System.Int32"},"parameters":[{"_type":"System.Int32","_value":{"$content":10,"$type":"System.Int32"}}],"returnValue":{},"$type":"NodeCanvas.Tasks.Actions.ExecuteFunction_Multiplatform"},"_position":{"x":194.3278,"y":-63.4342},"$type":"NodeCanvas.BehaviourTrees.ActionNode","$id":"7"},{"_position":{"x":481.9019,"y":-440.8167},"$type":"NodeCanvas.BehaviourTrees.Sequencer","$id":"8"},{"_subTree":{"_value":2},"_position":{"x":405.9518,"y":-180.0497},"$type":"NodeCanvas.BehaviourTrees.SubTree","$id":"9"},{"_subTree":{"_value":3},"_position":{"x":568.0176,"y":-180.2384},"$type":"NodeCanvas.BehaviourTrees.SubTree","$id":"10"},{"_subTree":{"_value":4},"_position":{"x":712.8354,"y":-190.1256},"$type":"NodeCanvas.BehaviourTrees.SubTree","$id":"11"},{"_subTree":{"_value":5},"_position":{"x":867.3472,"y":-183.91},"$type":"NodeCanvas.BehaviourTrees.SubTree","$id":"12"},{"_subTree":{"_value":6},"_position":{"x":1048.461,"y":-194.3269},"$type":"NodeCanvas.BehaviourTrees.SubTree","$id":"13"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"8"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"1"},"_targetNode":{"$ref":"2"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"3"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"3"},"_targetNode":{"$ref":"4"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"4"},"_targetNode":{"$ref":"5"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"4"},"_targetNode":{"$ref":"6"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"4"},"_targetNode":{"$ref":"7"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"8"},"_targetNode":{"$ref":"9"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"8"},"_targetNode":{"$ref":"10"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"8"},"_targetNode":{"$ref":"11"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"8"},"_targetNode":{"$ref":"12"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"8"},"_targetNode":{"$ref":"13"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"repeat":true,"$type":"NodeCanvas.BehaviourTrees.BehaviourTree+DerivedSerializationData"}}'
   _boundGraphObjectReferences:
   - {fileID: 0}
+  - {fileID: 11400000, guid: 0bd5dbb075687a24c9aa45eb7169db46, type: 2}
   - {fileID: 11400000, guid: 48ca9fdfdbcf07045be0c276bca922b5, type: 2}
-  - {fileID: 11400000, guid: 13cc81bede8af754182ebf06875c8259, type: 2}
   - {fileID: 11400000, guid: db91beebaf853d8479b3dbbcdee2e945, type: 2}
   - {fileID: 11400000, guid: 578fc34c45d107148ab2f9a81507390f, type: 2}
   - {fileID: 11400000, guid: 60880f8cb0c4d504788e97efa5caa31e, type: 2}
+  - {fileID: 11400000, guid: 13cc81bede8af754182ebf06875c8259, type: 2}
   _boundGraphSource:
     _version: 3.28
     _category: 
     _comments: 
-    _translation: {x: -231, y: 327}
-    _zoomFactor: 0.990964
+    _translation: {x: 319.5749, y: 677.4798}
+    _zoomFactor: 0.80187494
   _firstActivation: 0
   _enableAction: 0
   _disableAction: 0
@@ -1819,7 +1820,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6545448397371361020, guid: 19443e27923d5e347a2e8e98bbb22564, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.366623
+      value: 5.91
       objectReference: {fileID: 0}
     - target: {fileID: 6545448397371361020, guid: 19443e27923d5e347a2e8e98bbb22564, type: 3}
       propertyPath: m_LocalPosition.z
