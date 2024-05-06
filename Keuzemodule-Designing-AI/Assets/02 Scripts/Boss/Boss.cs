@@ -26,25 +26,27 @@ public class BossProjectileController<T> where T : BossProjectile<T>
 
 public sealed class Boss : MonoBehaviour, IBossAttack, IDamagableBoss, IShootable
 {
-    [Header("projectile Controllers")]
-    [SerializeField] private BossProjectileController<BossSmoke> smokeController;
+    [Header("projectile Controllers")] [SerializeField]
+    private BossProjectileController<BossSmoke> smokeController;
+
     [SerializeField] private BossProjectileController<BossRockets> rocketController;
     [SerializeField] private BossProjectileController<BossFollowingRocket> followRocketController;
 
-    [Header("Glass")] 
-    [SerializeField] private List<GameObject> glassPrefabs;
+    [Header("Glass")] [SerializeField] private List<GameObject> glassPrefabs;
     [SerializeField] private int glassAmount = 10;
     private ObjectPool<BossGlass> glassPool;
 
-    [Header("bullet")] 
-    [SerializeField] private int bossDamage = 2;
+    [Header("bullet")] [SerializeField] private int bossDamage = 2;
     [SerializeField] private Transform shootingPoint;
     [SerializeField] private float bulletSpawnDistance = 1.0f;
     [SerializeField] private float fireRate = 0.2f;
     private bool isShooting; //private flag
     private float nextFireTime;
-    
+
     //Arms 
+    [SerializeField] private GameObject hatPrefab;
+    private GameObject hatInstance = null;
+    private BossHat hatScript = null;
     private List<BossArms> bossArms;
 
     //Animations
@@ -52,13 +54,16 @@ public sealed class Boss : MonoBehaviour, IBossAttack, IDamagableBoss, IShootabl
     private static readonly int hitParam = Animator.StringToHash("Hit");
     private const string bossHurtAnim = "Boss Hurt";
 
-    [Header("health")]
-    private AudioSource bossSoundPlayer;
-    [SerializeField] private ParticleSystem hurtParticles;
+    [Header("health")] [SerializeField] private ParticleSystem hurtParticles;
     [SerializeField] private List<AudioClip> hurtSound;
     public Action<int> OnBossDied;
     public Action<int> OnHealthChanged;
     public int maxHealth = 500;
+
+    public bool isHatActive = false;
+    public bool lastFase = false;
+    private bool isInvulnarble = false;
+    private AudioSource bossSoundPlayer;
     private int health;
 
     public int Health
@@ -74,7 +79,7 @@ public sealed class Boss : MonoBehaviour, IBossAttack, IDamagableBoss, IShootabl
 
     private void InvokeNewHealth(int _newHealth)
     {
-        OnHealthChanged?.Invoke(_newHealth); ;
+        OnHealthChanged?.Invoke(_newHealth);
     }
 
     private void Awake()
@@ -83,18 +88,31 @@ public sealed class Boss : MonoBehaviour, IBossAttack, IDamagableBoss, IShootabl
         bossSoundPlayer = GetComponent<AudioSource>();
         anim = GetComponent<Animator>();
         
+        hatInstance = Instantiate(hatPrefab.gameObject, transform.position, Quaternion.identity);
+        hatScript = hatInstance.GetComponent<BossHat>();
+        hatScript.OnHatDestroyed += OnHatDestroyed;
+        
         shootingPoint.localPosition = new Vector3(bulletSpawnDistance, 0f, 0f);
         var bossArmsArray = FindObjectsOfType<BossArms>();
         bossArms = new List<BossArms>(bossArmsArray);
-        
-        glassPool = new ObjectPool<BossGlass>(glassPrefabs.Select(_prefab => _prefab.GetComponent<BossGlass>()).ToList());
+
+        glassPool = new ObjectPool<BossGlass>(
+            glassPrefabs.Select(_prefab => _prefab.GetComponent<BossGlass>()).ToList());
         InitializePool(glassPool, glassAmount);
 
         smokeController.InitializePool();
         rocketController.InitializePool();
         followRocketController.InitializePool();
     }
-
+    
+    private void OnDisable()
+    {
+        if (hatScript != null)
+        {
+            hatScript.OnHatDestroyed -= OnHatDestroyed;
+        }
+    }
+    
     private static void InitializePool<T>(ObjectPool<T> _pool, int _amount) where T : BossProjectile<T>
     {
         for (int i = 0; i < _amount; i++)
@@ -118,6 +136,25 @@ public sealed class Boss : MonoBehaviour, IBossAttack, IDamagableBoss, IShootabl
         {
             arm.ActivateArms();
         }
+    }
+    
+    public void DropHat()
+    {
+        isInvulnarble = true;
+        isHatActive = true;
+       
+        hatScript.SetPosition(transform.position);
+        hatInstance.SetActive(true);
+    }
+    
+    private void OnHatDestroyed()
+    {
+        hatScript.OnHatDestroyed -= OnHatDestroyed;
+        hatInstance.SetActive(false);
+        
+        isHatActive = false;
+        isInvulnarble = false;
+        lastFase = true;
     }
 
     public void DeactivateArms()
@@ -195,7 +232,7 @@ public sealed class Boss : MonoBehaviour, IBossAttack, IDamagableBoss, IShootabl
 
     public void TakeDamage(int _damageAmount)
     {
-        
+        if (isInvulnarble) return;
         Health -= _damageAmount;
         if (Health <= 0)
         {
@@ -207,8 +244,9 @@ public sealed class Boss : MonoBehaviour, IBossAttack, IDamagableBoss, IShootabl
         {
             anim.SetTrigger(hitParam);
         }
+
         hurtParticles.Play();
-        
+
         if (bossSoundPlayer.isPlaying) return;
         AudioClip clipToPlay = hurtSound[Random.Range(0, hurtSound.Count)];
         bossSoundPlayer.PlayOneShot(clipToPlay);
