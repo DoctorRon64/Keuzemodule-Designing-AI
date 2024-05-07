@@ -48,19 +48,14 @@ public class PlayerMovement : MonoBehaviour
         Vector2 targetVelocity = new Vector2(horizontalInput * moveSpeed, rb.velocity.y);
         rb.velocity = Vector2.Lerp(rb.velocity, targetVelocity, Time.deltaTime * acceleration);
     }
-
-
-
-
+    
     public void Jump()
     {
-        if (canJump && (isGrounded || (isOnPlatform && rb.velocity.y <= 0)))
-        {
-            float jumpingForce = Mathf.Min(initialJumpForce + Time.deltaTime * jumpAcceleration, maxJumpForce);
-            rb.velocity = new Vector2(rb.velocity.x, 0);
-            rb.AddForce(Vector2.up * jumpingForce, ForceMode2D.Impulse);
-            canJump = false;
-        }
+        if (!canJump || (!isGrounded && (!isOnPlatform || !(rb.velocity.y <= 0)))) return;
+        float jumpingForce = Mathf.Min(initialJumpForce + Time.deltaTime * jumpAcceleration, maxJumpForce);
+        rb.velocity = new Vector2(rb.velocity.x, 0);
+        rb.AddForce(Vector2.up * jumpingForce, ForceMode2D.Impulse);
+        canJump = false;
     }
 
     public void HandleJumpCancel()
@@ -84,21 +79,19 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.collider.TryGetComponent(out Wall wall) && !isGrounded && rb.velocity.y <= 0)
+        if (!collision.collider.TryGetComponent(out Wall wall) || isGrounded || !(rb.velocity.y <= 0)) return;
+        float horizontalInput = Input.GetAxis("Horizontal");
+        if (Mathf.Abs(horizontalInput) > 0 && !isGrounded)
         {
-            float horizontalInput = Input.GetAxis("Horizontal");
-            if (Mathf.Abs(horizontalInput) > 0 && !isGrounded)
-            {
-                isWallGlidingRight = horizontalInput > 0;
-                isWallGlidingLeft = horizontalInput < 0;
-                isWallGliding = (isWallGlidingRight && isWallGlidingRight != IsWallRight()) ||
-                                (isWallGlidingLeft && isWallGlidingLeft != IsWallLeft());
-                SetGrounded(false);
-            }
-            else
-            {
-                isWallGliding = false;
-            }
+            isWallGlidingRight = horizontalInput > 0;
+            isWallGlidingLeft = horizontalInput < 0;
+            isWallGliding = (isWallGlidingRight && isWallGlidingRight != IsWallRight()) ||
+                            (isWallGlidingLeft && isWallGlidingLeft != IsWallLeft());
+            SetGrounded(false);
+        }
+        else
+        {
+            isWallGliding = false;
         }
     }
 

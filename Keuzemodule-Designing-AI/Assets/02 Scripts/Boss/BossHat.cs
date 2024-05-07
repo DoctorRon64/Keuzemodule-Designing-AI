@@ -1,25 +1,30 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class BossHat : MonoBehaviour, IShootable, IDamagableBoss
 {
     public delegate void HatDestroyedHandler();
     public event HatDestroyedHandler OnHatDestroyed;
+    public Action<int> OnHealthChanged;
 
     [SerializeField] private float driftStrength = 1f;
     [SerializeField] private float maxAngularVelocity = 10f;
-    [SerializeField]private int maxHealth = 20;
+    public int maxHealth = 20;
 
     private Rigidbody2D rb;
     private Vector2 driftDirection;
     private bool onTimePositionSet = false;
     private int health;
-
+    
     public int Health 
     {
         get => health;
         set
         {
+            if (health == value) return;
             health = value;
+            InvokeNewHealth(health);
             if (health <= 0)
             {
                 DestroyHat();
@@ -27,10 +32,13 @@ public class BossHat : MonoBehaviour, IShootable, IDamagableBoss
         }
     }
 
+    protected virtual void InvokeNewHealth(int _newHealth)
+    {
+        OnHealthChanged?.Invoke(_newHealth);
+    }
+    
     public void SetPosition(Vector2 _pos)
     {
-        Debug.Log("activate hat on " + _pos);
-
         if (onTimePositionSet) return;
         transform.position = _pos;
         onTimePositionSet = true;
@@ -59,6 +67,6 @@ public class BossHat : MonoBehaviour, IShootable, IDamagableBoss
     private void DestroyHat()
     {
         OnHatDestroyed?.Invoke();
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

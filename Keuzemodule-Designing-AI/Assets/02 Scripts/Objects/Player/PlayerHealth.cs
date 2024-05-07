@@ -44,7 +44,7 @@ public class PlayerHealth : MonoBehaviour, IDamagable
 
     private void Die()
     {
-        OnPlayerDied?.Invoke(2);
+        OnPlayerDied?.Invoke(3);
     }
 
     protected virtual void InvokeNewHealth(int newHealth)

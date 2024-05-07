@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 [Serializable]
@@ -26,12 +27,12 @@ public class BossProjectileController<T> where T : BossProjectile<T>
 
 public sealed class Boss : MonoBehaviour, IBossAttack, IDamagableBoss, IShootable
 {
-    [Header("projectile Controllers")] [SerializeField]
-    private BossProjectileController<BossSmoke> smokeController;
-
+    [Header("projectile Controllers")] 
+    [SerializeField] private BossProjectileController<BossSmoke> smokeController;
     [SerializeField] private BossProjectileController<BossRockets> rocketController;
     [SerializeField] private BossProjectileController<BossFollowingRocket> followRocketController;
-
+    [SerializeField] private BossProjectileController<BossBullets> bulletController;
+    
     [Header("Glass")] [SerializeField] private List<GameObject> glassPrefabs;
     [SerializeField] private int glassAmount = 10;
     private ObjectPool<BossGlass> glassPool;
@@ -51,19 +52,25 @@ public sealed class Boss : MonoBehaviour, IBossAttack, IDamagableBoss, IShootabl
 
     //Animations
     private Animator anim;
-    private static readonly int hitParam = Animator.StringToHash("Hit");
     private const string bossHurtAnim = "Boss Hurt";
+    private static readonly int hitParam = Animator.StringToHash("Hit");
 
-    [Header("health")] [SerializeField] private ParticleSystem hurtParticles;
+    [Header("UI")] 
+    [SerializeField] private Text stateText;
+    
+    [Header("health")] 
+    [SerializeField] private ParticleSystem hurtParticles;
     [SerializeField] private List<AudioClip> hurtSound;
     public Action<int> OnBossDied;
     public Action<int> OnHealthChanged;
+    public Action<bool> OnHatActive;
     public int maxHealth = 500;
 
     public bool isHatActive = false;
     public bool lastFase = false;
     private bool isInvulnarble = false;
     private AudioSource bossSoundPlayer;
+    private PlayerController player;
     private int health;
 
     public int Health
@@ -86,6 +93,7 @@ public sealed class Boss : MonoBehaviour, IBossAttack, IDamagableBoss, IShootabl
     {
         health = maxHealth;
         bossSoundPlayer = GetComponent<AudioSource>();
+        player = FindObjectOfType<PlayerController>();
         anim = GetComponent<Animator>();
         
         hatInstance = Instantiate(hatPrefab.gameObject, transform.position, Quaternion.identity);
@@ -103,6 +111,12 @@ public sealed class Boss : MonoBehaviour, IBossAttack, IDamagableBoss, IShootabl
         smokeController.InitializePool();
         rocketController.InitializePool();
         followRocketController.InitializePool();
+        bulletController.InitializePool();
+    }
+
+    public void ChangeTextState(string _newText)
+    {
+        stateText.text = _newText;
     }
     
     private void OnDisable()
@@ -142,7 +156,8 @@ public sealed class Boss : MonoBehaviour, IBossAttack, IDamagableBoss, IShootabl
     {
         isInvulnarble = true;
         isHatActive = true;
-       
+        OnHatActive.Invoke(isHatActive);
+        
         hatScript.SetPosition(transform.position);
         hatInstance.SetActive(true);
     }
@@ -153,8 +168,19 @@ public sealed class Boss : MonoBehaviour, IBossAttack, IDamagableBoss, IShootabl
         hatInstance.SetActive(false);
         
         isHatActive = false;
+        OnHatActive.Invoke(isHatActive);
         isInvulnarble = false;
         lastFase = true;
+    }
+
+    public void ShootBullets(int _amount)
+    {
+        for (int i = 0; i < _amount; i++)
+        {
+            float random = Random.Range(-bulletController.spawnRange, bulletController.spawnRange);
+            Vector3 spawnRange = new Vector3(random, random, 0f);
+            RequestProjectile(bulletController.ObjectPool, spawnRange, player.transform.position, bulletController.speed);
+        }
     }
 
     public void DeactivateArms()
@@ -236,7 +262,7 @@ public sealed class Boss : MonoBehaviour, IBossAttack, IDamagableBoss, IShootabl
         Health -= _damageAmount;
         if (Health <= 0)
         {
-            OnBossDied.Invoke(1);
+            OnBossDied.Invoke(2);
         }
 
         AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);

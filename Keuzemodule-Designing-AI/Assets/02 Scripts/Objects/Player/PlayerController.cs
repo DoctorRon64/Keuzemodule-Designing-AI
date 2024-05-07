@@ -33,8 +33,6 @@ public class PlayerController : MonoBehaviour
 
     private void HandleInput()
     {
-        
-
         if (Input.GetKeyDown(jumpKey))
         {
             playerMovement.Jump();
